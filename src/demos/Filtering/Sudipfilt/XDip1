@@ -18,14 +18,13 @@ amps=1,0,0,1	# In this demo, we try to kill a reflector of given slope
 # the steepest reflector is spatially aliased.
 #
 # In this demo, we "fool the program" (see the sudipfilt self-doc)
-# by using nominal units in sudipfilt.  The data is created with
-# "physical" parameters of dt=4ms and (nominally) dx=d2=0.016km=16m:
+# by using nominal units in sudipfilt.  The data "physical" parameters 
+# of dt=4ms and offset=400 are ignored.
 dt=1
 dx=1
 
 # First make the synthetic data for the dip filtering demo.
-# Assume that trace spacing is measured in km.
-suplane | sushw key=d2 a=0.016 >suplane.data
+suplane > suplane.data
 
 # Plot the model 
 suxwigb <suplane.data title="Data: 3 sloping reflectors--Use dt=dx=1" \
@@ -66,7 +65,7 @@ suxwigb title="slope=$slopes amps=$amps bias=$bias" \
 # Failed because steep reflector is spatially aliased.  Here the
 # bias parameter can help (see the sudipfilt self-doc).  Look at
 # the F-K spectrum:
-suspecfk <suplane.data |
+suspecfk <suplane.data dt=$dt dx=$dx |
 suxwigb title="F-K Spectrum of Data" \
 	windowtitle="F-K" \
 	label1="Frequency" label2="K"\
