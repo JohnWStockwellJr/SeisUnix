@@ -304,7 +304,21 @@ NULL};
 	char tmpfilename[L_tmpnam];
 	FILE *tmpfileptr;
 
-	tmpnam(tmpfilename);
+#ifdef __MSDOS__
+        /* MSDOS doesn't seem to have a tmpnam_s() so continue to use the tmpnam() 
+         * function.  tmpnam_s() is available on WIN32 with possible code:
+         * errno_t err;
+         * err = tmpnam_s(tmpfilename, L_tmpnam);
+         * if (err)
+         * {
+         * printf("Error occurred creating temp file.\n");
+         * exit(1);
+         * }
+        */
+        tmpname(tmpfilename);
+#else
+        mkstemp(tmpfilename);
+#endif
 	tmpfileptr=fopen(tmpfilename, "w");
 	/*fwrite(defaults, sizeof(char), strlen(defaults), tmpfileptr); */
 
