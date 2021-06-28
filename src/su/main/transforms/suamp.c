@@ -174,6 +174,15 @@ main(int argc, char **argv)
 	/* Allocate arrays for real and imaginary parts */
 	xr = ealloc1float(nfby2);
 	xi = ealloc1float(nfby2);
+	
+		
+	float *xout=NULL;
+	float *phase=NULL;
+	if(imode == OUPHASE || imode == SUPHASE) {
+  	   /* allocate space for the phase */
+	   phase = ealloc1float(nfby2);
+	   xout = ealloc1float(nfby2);
+	}
 
 	/* Main loop over traces */
 	do {
@@ -260,13 +269,6 @@ main(int argc, char **argv)
 		break;
 		case SUPHASE:
 		{
-			float *xout=NULL;
-			float *phase=NULL;
-			
-			/* allocate space for the phase */
-			phase = alloc1float(nfby2);
-			xout = alloc1float(nfby2);
-
 			for (i = 0; i < nfby2; ++i) {
 				float re = xr[i];
 				float im = xi[i];
@@ -296,13 +298,6 @@ main(int argc, char **argv)
 		break;
 		case OUPHASE:
 		{
-			float *phase=NULL;
-			float *xout=NULL;
-			
-			/* allocate space */
-			xout = alloc1float(nfby2);
-			phase = ealloc1float(nfby2);
-			
 			memset((void *) phase,  0, nfby2*FSIZE);
 			/* unwrap the phase */
 			if (unwrap)
@@ -330,7 +325,14 @@ main(int argc, char **argv)
 		puttr(&tr);
 
 	} while (gettr(&tr));
-
+	
+	if(imode == OUPHASE || imode == SUPHASE) {
+  	   /* free space for the phase */
+	   free1float(phase);
+	   free1float(xout);
+	}
+	free1float(xr);
+	free1float(xi);
 
 	return(CWP_Exit());
 }
