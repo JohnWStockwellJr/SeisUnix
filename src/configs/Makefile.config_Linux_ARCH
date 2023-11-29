@@ -50,7 +50,7 @@ XDRLFLAGS = -ltirpc
 ENDIANFLAG = -DCWP_LITTLE_ENDIAN
 LARGE_FILE_FLAG = -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
 
-CWP_FLAGS = $(LARGE_FILE_FLAG) $(ENDIANFLAG) $(XDRFLAG) $(XDRIFLAGS) $(XDRLFLAGS) $(LINEHDRFLAG)
+CWP_FLAGS = $(LARGE_FILE_FLAG) $(ENDIANFLAG) $(XDRFLAG) $(XDRIFLAGS) $(XDRLFLAGS) $(LINEHDRFLAG) -fcommon
 
 #-----------------------------------------------------------------------
 # system stuff
@@ -114,3 +114,5 @@ FOPTS = -g -std=legacy -no-pie
 FFLAGS = $(FOPTS) -ffixed-line-length-none
 
 C++FLAGS = -I$I $(OPTC) $(CWP_FLAGS)
+
+MGLCFLAGS += -fcommon
