@@ -1,9 +1,0 @@
-#
-#	ARGUMENTS FOR: z2xyz
-#
-SourceFileName=/par/main/z2xyz.c
-#
-#	DO NOT MODIFY THE ABOVE PROPERTY
-#
-Description=Description no available
-outpar=/dev/tty

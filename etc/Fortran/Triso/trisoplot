@@ -1,9 +1,0 @@
-#
-#	ARGUMENTS FOR: trisoplot
-#
-SourceFileName=/Fortran/Triso/trisoplot.c
-#
-#	DO NOT MODIFY THE ABOVE PROPERTY
-#
-Description=Description no available
-outpar=/dev/tty
