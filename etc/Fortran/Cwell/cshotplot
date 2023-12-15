@@ -1,9 +1,0 @@
-#
-#	ARGUMENTS FOR: cshotplot
-#
-SourceFileName=/Fortran/Cwell/cshotplot.f
-#
-#	DO NOT MODIFY THE ABOVE PROPERTY
-#
-Description=Description no available
-outpar=/dev/ttyaa

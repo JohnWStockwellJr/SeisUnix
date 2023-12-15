@@ -1,9 +1,0 @@
-#
-#	ARGUMENTS FOR: h2b
-#
-SourceFileName=/par/main/h2b.c
-#
-#	DO NOT MODIFY THE ABOVE PROPERTY
-#
-Description=Description no available
-outpar=/dev/tty
