@@ -1,5 +1,0 @@
-model                               :model file
-5                                   :#interfaces in model
-plotcolors                          :model colors file
-mq                                  :first plot descriptor (mwq)    ...SEE
-dummywell

@@ -1,6 +1,0 @@
-#!/bin/sh -v
-make /users/shuki/bin/suspike
-#suspike ntr=60 t0=20,50,80 x0=0,20,40 | tee j | sudmo > jdmo 
-suspike ntr=60 t0=20,50,80 x0=0,20,40 | sutee j | sudmo -v > jdmo 
-plot <j
-plot <jdmo

@@ -1,4 +1,0 @@
-SUGAUSSTAPER - Multiply traces with gaussian taper		
-SURAMP - Linearly taper the start and/or end of traces to zero.	
-SUTAPER - Taper the edge traces of a data panel to zero.	
-SUTXTAPER - TAPER in (X,T) the edges of a data panel to zero.	

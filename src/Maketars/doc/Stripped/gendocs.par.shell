@@ -1,4 +1,0 @@
- GENDOCS - generate complete list of selfdocs in latex form
-
- Usage: gendocs -o  output filename is:  selfdocs.tex
-

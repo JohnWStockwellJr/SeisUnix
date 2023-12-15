@@ -1,9 +1,0 @@
-SURELAN - compute residual-moveout semblance for cdp gathers based	
-SURELANAN - REsiduaL-moveout semblance ANalysis for ANisotropic media	
- SUTIVEL -  SU Transversely Isotropic velocity table builder		
-SUVEL2DF - compute stacking VELocity semblance for a single time in   
-SUVELAN - compute stacking velocity semblance for cdp gathers		     
-SUVELAN_NCCS - compute stacking VELocity panel for cdp gathers	     
-SUVELAN_NSEL - compute stacking VELocity panel for cdp gathers	     
-SUVELAN_UCCS - compute stacking VELocity panel for cdp gathers	     
-SUVELAN_USEL - compute stacking velocity panel for cdp gathers	     

@@ -1,8 +1,0 @@
-#! /bin/ksh
-# Display model
-set -x
-
-SCRATCH=/scratch/jkc/Nmodata
-
-sumodel <$SCRATCH/traces.su nintf=5 mname=model dx=50 dz=25 ns=250 |
-suximage wbox=600 d1=25 d2=50 label1="Depth" label2="Range" title="MODEL" &

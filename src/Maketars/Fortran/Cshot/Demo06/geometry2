@@ -1,4 +1,0 @@
-1          100.                        :reference station number and x-coord.
-300.       200.                        :station spacing and receiver depth
-4    5   6   7       14   100.         :shot 1 - r1 r2 r3 r4 s sdepth
-17  18  19  20       27   400.         :shot 2 - r1 r2 r3 r4 s sdepth

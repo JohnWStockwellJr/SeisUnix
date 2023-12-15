@@ -1,9 +1,0 @@
-#!/bin/sh
-set -x
-#velin='/bigdata/seis/3D/Ssx/velan/raw_v_functions_rf_rs.su'
-#velout_nn='/bigdata/seis/3D/Ssx/velan/int_v_functions_nn_rf_rs.su'
-velin='/mnt/sdata/Ssx/velan/raw_v_functions.su'
-velout_nn='/mnt/sdata/Ssx/velan/int_v_functions_nn.su'
-
-	su3dint_nn < $velin n2=119 d2=25 n3=123 d3=20  p=1.4 r=400 \
-		> $velout_nn

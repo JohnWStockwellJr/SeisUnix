@@ -1,7 +1,0 @@
-ELACHECK - get elastic coefficients of model  	   		
-ELAMODEL - make piecewise homogeneous anisotropic model    		
-ELARAY - ray tracing for elastic anisotropic models
-ELASYN - SYNthetic seismograms for triangulated elastic media		
-ELATRIUNI - convert TRIangulated ELAstic models to UNIformly sampled models
-GBBEAM - Gaussian beam synthetic seismograms for a sloth model 	
-RAYDATA - simple program to display ray data from elaray		

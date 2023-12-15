@@ -1,9 +1,0 @@
- SUVLENGTH - Adjust variable length traces to common length   	
-
- suvlength <vdata >stdout					
-
- Required parameters:						
- 	none							
-
- Optional parameters:						
- 	ns=	output number of samples (default: 1st trace ns)

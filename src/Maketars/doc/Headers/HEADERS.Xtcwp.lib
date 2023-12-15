@@ -1,6 +1,0 @@
-AXES - the Axes Widget
-COLORMAP - Functions to manipulate X colormaps:
-FX - Functions to support floating point coordinates in X
-MISC - Miscellaneous X-Toolkit functions
-RESCONV - general purpose resource type converters
-RUBBERBOX -  Function to draw a rubberband box in X-windows plots

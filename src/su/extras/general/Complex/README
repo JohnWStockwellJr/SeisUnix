@@ -1,7 +1,0 @@
-For reasons unknown, the lorder trick in the makefile failed.
-It works when you just type it???
-It worked in ../src/general/utilities???
-* I think the reason is that ANY call to Bourne shell (the pipe!) fails
-
-Also the lint lib wouldn't make, altho just giving the commands was fine.
---Check out "PROGRAMMING TOOLS AND INTERFACES"

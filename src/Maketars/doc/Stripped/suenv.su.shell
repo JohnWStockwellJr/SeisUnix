@@ -1,6 +1,0 @@
- SUENV - Instantaneous amplitude, frequency, and phase via: SUATTRIBUTES
- 
- Usage:   suenv < stdin > stdout 
- 
- Note: this shell mimmics the old program SUENV, supersceded by SUATTRIBUTES
- See selfdoc of:   suattributes   for more information

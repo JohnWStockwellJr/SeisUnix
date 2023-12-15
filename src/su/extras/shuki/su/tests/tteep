@@ -1,6 +1,0 @@
-#!/bin/sh -ve
-make junk
-susort offset sx < junk | suteep "sutpow tpow=2 >jtpow=2" | sutpow tpow=3 > jtpow=3 
-exit
-plot<jtpow=2
-plot<jtpow=3

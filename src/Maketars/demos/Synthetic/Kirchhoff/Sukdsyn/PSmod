@@ -1,9 +1,0 @@
-#! /bin/sh
-
-supsimage < data title="Suplane data"  > planedata.eps
-
-echo
-echo " The output is:  planedata.eps"
-echo " You may view this with your PostScript Previewer."
-
-exit 0

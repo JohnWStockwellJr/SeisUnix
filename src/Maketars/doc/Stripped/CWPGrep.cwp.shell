@@ -1,9 +1,0 @@
- Grep  - recursively call egrep in pwd
-
- Usage: Grep [-egrep_options] pattern
-
- Caution:  Do NOT redirect into file in pwd, either use something
-	like  >../Grep.out or perhaps pipe output into mail to yourself.
-
- Author: Jack, 7/95
-

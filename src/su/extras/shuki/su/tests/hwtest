@@ -1,6 +1,0 @@
-#!/bin/csh -v
-make junk
-suchw
-suchw < junk key1=tracr key2=tracl b=2 a=100 d=2 | supr -v 
-sushw
-sushw < junk key=tracr j=10 b=1 c=1 | supr -v 

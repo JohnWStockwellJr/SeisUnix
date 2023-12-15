@@ -1,7 +1,0 @@
-DCTCOMP - Compression by Discrete Cosine Transform			
-DCTUNCOMP - Discrete Cosine Transform Uncompression 			
-ENTROPY - compute the ENTROPY of a signal			
-WPTCOMP - Compression by Wavelet Packet Compression 			
-WPTUNCOMP - Uncompress  WPT compressed data				
-WTCOMP - Compression by Wavelet Transform				
-WTUNCOMP - UNCOMPression of WT compressed data			

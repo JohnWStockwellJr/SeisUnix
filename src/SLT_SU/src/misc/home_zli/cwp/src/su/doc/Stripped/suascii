@@ -1,7 +1,0 @@
-SUASCII - print non zero header values and data
-suascii <stdin >ascii_file
-Optional parameter:
-	bare=0		print headers and data
-			bare=1 print only data
-Notes: suwind/suus provide trace selection and/or subsampling.
-	 with bare=1 traces are separated by a blank line.

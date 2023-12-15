@@ -1,7 +1,0 @@
-Fftlab.Width: 600
-Fftlab.Height: 400
-Fftlab*fontList: Rom14
-Fftlab*Background: LightGray
-Fftlab*topShadowColor: White
-Fftlab*XmDrawingArea.Background: White
-Fftlab*XmDrawingArea.Foreground: Black

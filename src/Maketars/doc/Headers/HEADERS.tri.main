@@ -1,7 +1,0 @@
-GBBEAM - Gaussian beam synthetic seismograms for a sloth model 	
-NORMRAY - dynamic ray tracing for normal incidence rays in a sloth model
-TRI2UNI - convert a TRIangulated model to UNIformly sampled model	
-TRIMODEL - make a triangulated sloth (1/velocity^2) model                  		
-TRIRAY - dynamic RAY tracing for a TRIangulated sloth model		
-TRISEIS - Gaussian beam synthetic seismograms for a sloth model	
-UNI2TRI - convert UNIformly sampled model to a TRIangulated model	

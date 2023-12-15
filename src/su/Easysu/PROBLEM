@@ -1,4 +1,0 @@
-TermGet in envtest.c searches for the environmental variable TERMCAP
-and it isn't there.  A core dump ensues shortly thereafter since
-env = getenv("TERMCAP") is a nil pointer handed to the ptr variable
-for serious activity.

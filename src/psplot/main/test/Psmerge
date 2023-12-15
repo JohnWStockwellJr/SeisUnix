@@ -1,4 +1,0 @@
-#! /bin/sh
-
-psmerge in=test.eps scale=1.2,1.2 origin=1.5,1.5 rotate=90 translate=6.5,2 |
-xpwin

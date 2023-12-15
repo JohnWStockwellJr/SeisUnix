@@ -1,9 +1,0 @@
-s                                         :sort option (s,r)
-1   1                                    :first, last shot for sort
-1  100                                      :first, last trace
-2. 5. 30. 40.                           :frequency spectrum of wavelet
-.150                                      :wavelet length(secs)
-.004                                     :sample rate (secs)
-2.                                        :trace length (secs)
-demo6shot                                 :input filename
-demo6traces                               :output filename

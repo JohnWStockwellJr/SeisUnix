@@ -1,6 +1,0 @@
-demo6traces          :Input trace file name (15 chars).
-100                  :Number of traces on each line.
-0.0 2.000            :Initial time, final time.
-0.0                  :Skip time.
-0.004                :Time spacing.
-5.0 10.0 30.0 35.    :filter parameters.

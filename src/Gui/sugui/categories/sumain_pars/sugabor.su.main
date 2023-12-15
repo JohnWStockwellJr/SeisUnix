@@ -1,7 +1,0 @@
-dt=double
-verbose=0
-fmin=FRAC0
-fmax=FRAC1
-band=FRAC2
-beta=BETA
-alpha=beta

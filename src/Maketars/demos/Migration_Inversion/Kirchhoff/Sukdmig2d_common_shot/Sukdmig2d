@@ -1,9 +1,0 @@
-#! /bin/sh
-# shell for Kirchhoff depth migration
-set -v
-
-sufrac < data phasefac=.25  > data.tmp
-
-sukdmig2d < data.tmp par=kdmig.par>kd.data 
- 	exit
-

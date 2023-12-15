@@ -1,4 +1,0 @@
-The programs in this directory are drivers for the functions in ../lib.
-They are useful for showing usages and as debugging tools.
-At some point they might be developed into a test suite along the lines
-started in ../lib.

@@ -1,6 +1,0 @@
-#! /bin/sh
-
-cd Demos ; Clean
-
-
-exit 0

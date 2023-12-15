@@ -1,8 +1,0 @@
-ptmin=1
-ptmax=INT_MAX
-verbose=0
-vblock=50
-buff=1
-gain=0
-aux=0
-errmax=0

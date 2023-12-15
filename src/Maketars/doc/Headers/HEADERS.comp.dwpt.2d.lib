@@ -1,8 +1,0 @@
-WPC - routines for compress a 2D seismic section using wavelet packets 
-WPCBUFFAL - routines to allocate/initialize and free buffers
-WPCCODING - Routines for in memory coding of the quantized coeffiecients
-WPCENDEC -  Wavelet Packet Coding, Encoding and Decoding routines
-WPCHUFF -Routines for in memory Huffman coding/decoding
-WPCPACK2 - routine to perform a 2D wavelet packet transform 
-WPCQUANT - quantization routines for WPC
-WPCSILENCE - routines for in memory silence en/decoding

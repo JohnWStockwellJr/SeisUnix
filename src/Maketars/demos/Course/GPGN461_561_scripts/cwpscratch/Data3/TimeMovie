@@ -1,4 +1,0 @@
-#! /bin/sh
-
-suxmovie < /cwpscratch/Data3/timemovie.su perc=98 n1=1500 n2=2142  loop=1 title="time section frame %g" &
-

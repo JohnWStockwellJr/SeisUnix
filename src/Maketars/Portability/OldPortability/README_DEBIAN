@@ -1,8 +1,0 @@
-Makefile.config selections are
-similar to other Linux, except Debian is not yet Posix compliant,
-so use this OPTC in Makefile.config. All other Linux settings should
-be used.
-
-# O3 optimization full ansi non-Posix compliant systems
-# this includes Mac OS X and CYGWIN32
-OPTC = -O3 -Wall -ansi -pedantic

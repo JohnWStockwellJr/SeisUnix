@@ -1,2 +1,0 @@
-For PS/2, had to invent cwpport.h because of missing EXIT_SUCCESS and
-EXIT_FAILURE.  On conforming systems, use cwp.h.orig.

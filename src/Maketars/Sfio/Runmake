@@ -1,2 +1,0 @@
-(cd ./src/lib/vthread; make install)
-(cd ./src/lib/sfio; make install)

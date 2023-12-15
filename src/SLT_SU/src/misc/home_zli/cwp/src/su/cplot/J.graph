@@ -1,6 +1,0 @@
-#! /bin/sh
-suplane |
-sumax output=binary |
-suaddhead ns=32 |
-sugraph |
-tube

@@ -1,7 +1,0 @@
- sushw<ref.stk key=dt a=4000|
- sugain agc=1 wagc=0.4|
- supsimage n1=301 d1=40 d2=80 f2=80 perc=99\
-     label1=" Depth(ft)" style=seismic\
-     label2=" Midpoint(ft)"\
-     ybox=3.5 hbox=4 grid1=dash grid2=dash  \
-     title=" Inversion (AGC) "\

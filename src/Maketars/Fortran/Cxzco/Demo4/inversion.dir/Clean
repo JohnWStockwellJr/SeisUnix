@@ -1,7 +1,0 @@
-#! /bin/sh
-# Clean up residue from runs
-
-rm -f PTRACES reflect reflectcos CZ2DAT demo1traces
-rm -f a1 a2 b1 b2 cos1 cos2 out1 out2
-rm -f R_values cos_first cos_second demo4traces getcosines getcosines.o
-rm -f junk1 junk2 rc1 rc2

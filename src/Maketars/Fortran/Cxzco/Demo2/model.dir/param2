@@ -1,9 +1,0 @@
-s                                :job option (s,r)
-1   200                          :first, last shot for sort
-6   6                            :first, last trace OR first last receiver
-10. 15. 45.  50.                 :frequency spectrum of wavelet
-.100                             :wavelet length (secs)
-.004                             :sample rate (secs)
-1.996                            :record length (secs)
-demo2shot                        :input filename
-demo2traces                      :output filename

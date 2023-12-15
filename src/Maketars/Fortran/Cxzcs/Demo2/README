@@ -1,6 +1,0 @@
-README for CXZCS Demo2 ---
-
-The shell scripts Xcshot and PScshot show the user how to
-create an earth model and a ray plot using the CWP program CSHOT. 
-CSHOT will be used to create common shot data that CXZCS will 
-invert in Demo3-Demo6.

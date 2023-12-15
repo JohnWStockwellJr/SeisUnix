@@ -1,8 +1,0 @@
-	This directory contains the modifications to the SU include
-files to allow compiling the modules for distributed execution.
-
-dsuglobvars.h: 	Gglobal variables needed by dsu main modules
-dsuglobdefs.h: 	Global definitions to overwrite SU definitions
-dsusegy.h:     	Modifications added to segy.h
-segy.h:     	segy.h modified (at the end)
-dsulib.h:	Types and function protypes used by the distributed library.

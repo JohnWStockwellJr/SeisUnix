@@ -1,8 +1,0 @@
-AXESBOX - Functions to draw axes in X-windows graphics
-COLORMAP - Functions to manipulate X colormaps:
-DRAWCURVE - Functions to draw a curve from a set of points
-IMAGE - Function for making the image in an X-windows image plot
-LEGENDBOX - draw a labeled axes box for a legend (i.e. colorscale)
-RUBBERBOX -  Function to draw a rubberband box in X-windows plots
-WINDOW - Function to create a window in X-windows graphics
-XCONTOUR - draw contour of a two-dimensional array via X vectorplot calls

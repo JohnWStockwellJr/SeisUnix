@@ -1,5 +1,0 @@
-	$(LIB)(buffalloc.o)	\
-	$(LIB)(huffman.o)	\
-	$(LIB)(pcoding.o)	\
-	$(LIB)(quant.o)		\
-	$(LIB)(rle.o)

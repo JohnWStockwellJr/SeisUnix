@@ -1,7 +1,0 @@
-#! /bin/sh
-
-
-suttoz nz=1500  dz=3  par=suttoz.par \
- < stolt.seis.su > stolt.depth.seis.su
-
-exit 0

@@ -1,7 +1,0 @@
-RKE - integrate a system of n-first order ordinary differential equations
-      from a given time to a target time using the Runge Kutta method,
-      enhanced the the error checking algorithm created by R. England (1969).
-
-Credits :
-Ordinary differential equation solver, Runge-Kutta-England technique.
-Made available for SU by the author's permission, 1 Sept 2006.

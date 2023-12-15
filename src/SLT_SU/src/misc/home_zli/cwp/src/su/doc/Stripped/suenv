@@ -1,8 +1,0 @@
-SUENV - Complex envelope or phase time trace
-suenv <stdin >stdout mode=amp
-Required parameters:
-	none
-Optional parameter:
-	mode=amp	output flag
-	       		amp = envelope traces
-	       		phase = phase traces

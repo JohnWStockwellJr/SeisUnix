@@ -1,9 +1,0 @@
-#! /bin/sh
-
-suspike nspk=1 ntr=1 it1=32 ix1=1 |
-subfilt fstoplo=2.0 fpasslo=10.0 fpasshi=20.0 fstophi=25.0 |
-suspecfx |
-suxgraph title="Butterworth Filter Spectrum"  \
-	label1="Frequency (Hz)" label2="Amplitude" &
-
-exit 0

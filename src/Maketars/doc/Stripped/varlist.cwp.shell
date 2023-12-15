@@ -1,6 +1,0 @@
- VARLIST - list variables used in a Fortran program
-
- Usage: varlist file.f ... 
- 
- Output is in the file: vars.file
-

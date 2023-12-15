@@ -1,5 +1,0 @@
- CTRLSTRIP - Strip non-graphic characters
-
- ctrlstrip <dirtyfile >cleanfile
- 
-

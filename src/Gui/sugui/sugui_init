@@ -1,4 +1,0 @@
-setenv JAVA_HOME /usr/local/jdk1.1.1
-setenv CLASSPATH ".:$JAVA_HOME/lib/classes.zip:/TimnaMount/usr/local/cwp/src/Gui/sugui/classes"
-alias sugui "java -DDSUGUIDIR=/TimnaMount/usr/local/cwp/src/Gui/sugui sugui"
-set path=($JAVA_HOME/bin $path )

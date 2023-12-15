@@ -1,7 +1,0 @@
-31 January 2001
-
-This release detects an attempt to read from a pipe and exits w/
-an error message.
-
-Reginald H. Beardsley                            rhb@acm.org
-

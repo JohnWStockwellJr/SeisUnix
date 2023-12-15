@@ -1,7 +1,0 @@
-README for Rayt2d demos
-
-Rayt2d           make and display traveltimes in the Inria Marmousi model.
-Rayt2dInterp     make and display traveltimes in the interpolated 
-		 Inria Marmousi model.
-
-Clean.sh   clean up after the demo

@@ -1,6 +1,0 @@
-7000.                           :x-coord. of top of well
-7000.  2000.                    :x,z coord. pair down the well
-5000.  7000.                    :x,z coord. pair at bottom of well
-1.   -999999.                   :end of well definition
-500.                            :depth to first source
-25   200.                       :#sources, source spacing

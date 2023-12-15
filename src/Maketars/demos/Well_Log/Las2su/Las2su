@@ -1,9 +1,0 @@
-#! /bin/sh
-
-
-# run las2su on file in LAS format.
-las2su < test.las  > las.su
-
-suxwigb < las.su title="well log in SU format" clip=100 &
-
-exit 0

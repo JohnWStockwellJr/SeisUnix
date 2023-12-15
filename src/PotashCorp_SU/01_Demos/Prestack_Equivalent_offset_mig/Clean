@@ -1,5 +1,0 @@
-#!/bin/bash
-
-List=" cdps csp_* list_* prestack* tmp* shots* "
-
-rm -fr $List

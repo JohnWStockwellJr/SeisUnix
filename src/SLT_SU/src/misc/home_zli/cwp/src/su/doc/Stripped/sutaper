@@ -1,4 +1,0 @@
-SUTAPER - Taper the edge traces of a data panel to zero.
-sutaper <diskfile >stdout [ntaper=5]
-The taper is an \"ntaper\" point sine-squared taper
-symmetrically applied at each end of the data set.

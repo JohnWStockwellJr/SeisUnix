@@ -1,5 +1,0 @@
-clrch(nt,nt2)
-{
-	vclr(0,1,nt);
-	vclr(nt2,1,nt);
-}

@@ -1,4 +1,0 @@
-#!/bin/csh
-foreach i (. include lCC lsu lvec lcplot pens plotprogs progs)
-	(cd $i; sccs info)
-end

@@ -1,4 +1,0 @@
-#! /bin/sh
-
-
-rm  *out junk* *.ps

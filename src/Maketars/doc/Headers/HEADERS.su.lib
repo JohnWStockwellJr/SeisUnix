@@ -1,8 +1,0 @@
-FGETGTHR - get gathers from SU datafiles
-fgethdr - get segy tape identification headers from the file by file pointer
-FGETTR - Routines to get an SU trace from a file 
-FPUTGTHR - put gathers to a file
-FPUTTR - Routines to put an SU trace to a file 
-HDRPKGE - routines to access the SEGY header via the hdr structure.
-TABPLOT - TABPLOT selected sample points on selected trace
-VALPKGE - routines to handle variables of type Value

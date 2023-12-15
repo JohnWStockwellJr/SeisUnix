@@ -1,5 +1,0 @@
-Q: How do I suppress large noise spikes on my data?
-
-A: Use "sugain" with the trap= option to suppress noise spikes.
-
-

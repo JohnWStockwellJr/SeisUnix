@@ -1,7 +1,0 @@
-This is the collection of Makefile.config files for a collection
-of common architectures. Pick the one that fits your system
-the closest and 
-
-cp Makefile.config_your_system  ../Makefile.config
-
-Some hand editing may be necessary to perform the full installation.

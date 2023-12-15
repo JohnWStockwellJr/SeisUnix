@@ -1,2 +1,0 @@
-Need the OLD includes here to avoid conflict with Dave's free1, etc.
-Unhooked ID and RCS stuff for now, could kill bool first too.

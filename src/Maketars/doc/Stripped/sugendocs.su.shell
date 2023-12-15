@@ -1,5 +1,0 @@
- SUGENDOCS - generate complete list of selfdocs in latex form
-
- Usage: sugendocs -o  output filename is: selfdocs.tex
- Note: this shell simply calls    gendocs
-

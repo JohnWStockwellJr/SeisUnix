@@ -1,4 +1,0 @@
-
-
-CC in all Makefiles in sub-directories are redefined to be /vol/lang/acc/acc
-SUN's ansi-C compiler.     ---- Zhiming Li

@@ -1,8 +1,0 @@
-#!/bin/csh
-/home/stgpzli/OS6bin/      /fxymcal \
-</data/sonic1/spike.3d.sm.data \
-fmin=5 \
-fmax=60 \
-fmaxend=30 \
-njobs=5 \
-> FXYMCAL.OUTPUT

@@ -1,6 +1,0 @@
-6000.                          :x-coord. of top of receiver well
-6200.  3000.
-7000.  6000. 
-1.   -99999.                   :end of well definition
-500.                           :depth to first receiver
-20      200.                   :#receivers, receiver spacing

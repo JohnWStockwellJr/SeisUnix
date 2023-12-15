@@ -1,6 +1,0 @@
-#! /bin/sh
-# Clean up residue from runs
-
-demo=5
-
-rm -f demo${demo}plot demo${demo}par demo${demo}.eps cshot1plot

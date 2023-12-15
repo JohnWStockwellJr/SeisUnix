@@ -1,8 +1,0 @@
-#!/bin/csh
-tar cf - cwp | compress -c > /data/zli/tar/cwp.tar.Z
-tar cf - par | compress -c > /data/zli/tar/par.tar.Z
-tar cf - wgc | compress -c > /data/zli/tar/wgc.tar.Z
-tar cf - psplot | compress -c > /data/zli/tar/psplot.tar.Z
-tar cf - xplot | compress -c > /data/zli/tar/xplot.tar.Z
-tar cf - su | compress -c > /data/zli/tar/su.tar.Z
-tar cf - Xcwp | compress -c > /data/zli/tar/Xcwp.tar.Z

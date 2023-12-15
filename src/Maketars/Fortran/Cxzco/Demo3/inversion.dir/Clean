@@ -1,6 +1,0 @@
-#! /bin/sh
-# Clean up residue from runs
-
-demo=3
-
-rm -f PTRACES mara mara.cos CZ2DAT demo${demo}traces

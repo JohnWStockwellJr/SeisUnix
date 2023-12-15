@@ -1,9 +1,0 @@
-The files in OldPortability have been made obsolete by
-recent changes to the installation procedure of SU.
-
-In the new procedure, please look in the directory
-
-$CWPROOT/src/configs
-
-for the Makefile.config that fits your platfrom and
-mv ths to $CWPROOT/src/Makefile.config

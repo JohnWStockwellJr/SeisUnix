@@ -1,5 +1,0 @@
- CWPFIND - look for files with patterns in CWPROOT/src/cwp/lib
-
- Usage: cwpfind  pattern_fragment
-        cwpfind -e exact_pattern
-

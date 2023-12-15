@@ -1,4 +1,0 @@
-#! /bin/sh -v
-
-suplane dt=0.001 nt=2000 ntr=5280 >junk.su
-segywrite <junk.su verbose=1 ntrace=100

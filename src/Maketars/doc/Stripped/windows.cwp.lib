@@ -1,8 +1,0 @@
-WINDOW - windowing routines
-
-hanningnWindow - returns an n element long hanning window 
-
-Function prototypes:
-void hanningnWindow(int n,float *w);
-Author: Potash Corporation, Sascatchewan: Balasz Nemeth given to CWP 2008
-

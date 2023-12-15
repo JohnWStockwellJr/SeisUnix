@@ -1,6 +1,0 @@
-#! /bin/sh
-
-sukdmig2d infile=simple.su outfile=kdmig.simple.su ttfile=tfile.simple \
-ft=0 fzt=0 nzt=501 dzt=4.00  angmax=80.0 nxo=80 dxo=40 nzo=150 dzo=12 \
-fxt=0 nxt=80 dxt=40 fs=0 ns=80 ds=40 \
-dxm=40 v0=2000 noff=1 off0=0 doff=0 

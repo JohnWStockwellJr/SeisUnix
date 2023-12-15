@@ -1,7 +1,0 @@
-verbose=0
-tmpdir=void
-dt=double
-dx=tr
-slopes=void
-amps=void
-bias=0

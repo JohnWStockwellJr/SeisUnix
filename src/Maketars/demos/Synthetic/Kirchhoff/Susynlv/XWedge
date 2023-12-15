@@ -1,7 +1,0 @@
-#! /bin/sh
-
-susynlv ref="1:0,1;6,1" ref="2:1,3;4,1" |
-suxwigb perc=99 interp=1 xcur=2 title="Wedge model"
-
-exit 0
-

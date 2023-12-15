@@ -1,7 +1,0 @@
-SUZERO -- zero-out data within a time window
-suzero itmax= < indata > outdata
-Required parameters
-	itmax=		last time sample to zero out
-Optional parameters
-	itmin=0		first time sample to zero out
-See also: sukill, sumute

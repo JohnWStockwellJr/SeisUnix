@@ -1,6 +1,0 @@
- TIME_NOW - prints time in ZULU format with no spaces 
-
- Usage: time_now
-
- Note: Useful for building dated filenames
-

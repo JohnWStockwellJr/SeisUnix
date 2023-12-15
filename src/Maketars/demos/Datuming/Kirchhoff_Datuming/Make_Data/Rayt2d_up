@@ -1,7 +1,0 @@
-#! /bin/sh
-# shell for generating traveltimes by ray tracing 
-set -v
-
-rayt2d <vfile_datum par=rayup.par 
- 	exit
-

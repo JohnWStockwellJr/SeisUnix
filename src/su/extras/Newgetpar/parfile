@@ -1,7 +1,0 @@
-xmin=0.0
-dx=100.
-label2 = "X"
-label1 = "Depth"
-dt=25.
-tmin = 1000.0
-fill = 0

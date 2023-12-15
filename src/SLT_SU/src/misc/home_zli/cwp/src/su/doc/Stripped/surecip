@@ -1,9 +1,0 @@
-SURECIP - sum opposing offsets in prepared data (see below)
-surecip <stdin >stdout
-Sum traces with equal positive and negative offsets (i.e. assume
-reciprocity holds).
-Usage:
-	suabshw <data >absdata
-	susort cdp offset <absdata | surecip >sumdata
-Note that this processing stream can be simply evoked by:
-	recip data sumdata

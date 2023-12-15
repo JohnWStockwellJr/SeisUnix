@@ -1,8 +1,0 @@
-IBM fortran doesn't accept underbars.  If your compiler insists on them,
-the compiler error messages will probably be enough hint, but in Undermains
-are (vastly out of date) codes with the underbars.  Use these to edit the
-current versions--do NOT overwrite the current versions with them.
-
-On RS6000, sumax drops core with -O, so recompiled -g.
-
-suzoep isn't ready yet and probably shouldn't be in this directory anyway.

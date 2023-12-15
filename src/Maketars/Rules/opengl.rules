@@ -1,4 +1,0 @@
-
-MGLLFLAGS= $(PRELFLAGS) -L$L -L$(LX11) -L$(LGLUT) -L$(LGL) \
-	-lglut -lXmu -lXt -lSM -lICE -lXext -lXi -lX11 -lm \
-	-lGL -lGLU -lglut -ltrack -lpar -lcwp -lm $(POSTLFLAGS)

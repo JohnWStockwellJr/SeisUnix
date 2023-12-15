@@ -1,4 +1,0 @@
-mkntab.c compiled with:
-	cc -O mkntab.c -I$I -L$L -lcwp -lm
-on virgil 05/04/94  (RS6000 Model 530)
-

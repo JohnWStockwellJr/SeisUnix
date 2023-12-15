@@ -1,4 +1,0 @@
-CPUSEC - return cpu time (UNIX user time) in seconds
-CPUTIME - return cpu time (UNIX user time) in seconds using ANSI C built-ins
-WALLSEC - Functions to time processes
-WALLTIME - Function to show time a process takes to run

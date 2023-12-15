@@ -1,7 +1,0 @@
-#! /bin/sh
-
-suplane |
-sutvband tf=.064,.192 \
-	  f=2,4,50,60 \
-	  f=2,4,25,30 |
-supswigb | images

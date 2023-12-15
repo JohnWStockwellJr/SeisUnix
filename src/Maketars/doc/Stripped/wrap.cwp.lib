@@ -1,6 +1,0 @@
-wrapArray - wrap an array
-
-Function prototype:
-void wrapArray(void *base,size_t nmemb,size_t size,int f)
-Author: Potash Corporation: Balasz Nemeth, given to CWP 2008
-

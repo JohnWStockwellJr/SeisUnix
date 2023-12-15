@@ -1,6 +1,0 @@
- ifmin=15 ifmax=184 ifend=92 nf=170 
-ijob=1 ifmin_i=15 ifmax_i=39 nf_i=25 fmin_i=4.882812 fmax_i=12.695312 
-ijob=2 ifmin_i=40 ifmax_i=64 nf_i=25 fmin_i=13.020834 fmax_i=20.833334 
-ijob=3 ifmin_i=65 ifmax_i=89 nf_i=25 fmin_i=21.158855 fmax_i=28.971355 
-ijob=4 ifmin_i=90 ifmax_i=119 nf_i=30 fmin_i=29.296875 fmax_i=38.736980 
-ijob=5 ifmin_i=120 ifmax_i=184 nf_i=65 fmin_i=39.062500 fmax_i=59.895836 

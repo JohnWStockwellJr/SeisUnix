@@ -1,9 +1,0 @@
-README for Demo2
-
-This demo shows the simple syncline model, the triangulation
-plot, a zero offset seismic section, and finite (common) offset
-seismic section.
-
-Run the Demo by typing
-
-PSdemo

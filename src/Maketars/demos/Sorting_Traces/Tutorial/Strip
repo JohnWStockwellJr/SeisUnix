@@ -1,5 +1,0 @@
-
-#! /bin/sh
-# Strip - Strip out echoes and pauses to give pure Example file
-
-cat Xsort | sed '/echo/d' | sed '/pause/d' >Commands_Only

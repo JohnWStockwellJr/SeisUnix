@@ -1,6 +1,0 @@
-SUATTRIBUTES - instantaneous trace ATTRIBUTES 			
-
-SUHISTOGRAM - create histogram of input amplitudes		
-SUMAX - get trace by trace local/global maxima, minima, or absolute maximum
-SUMEAN - get the mean values of data traces				",	
-SUQUANTILE - display some quantiles or ranks of a data set            

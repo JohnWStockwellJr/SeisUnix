@@ -1,7 +1,0 @@
-The version of errpkge.c in this directory uses varargs.h in case the
-ANSI C stdargs.h used in ../lib is missing during a port.
-Or you could try the stdarg.h in this directory.
-
-The programs fgetpos.c, fsetpos.c *should* be in stdio.h for ANSI C.
-These are BOTH in the file fgetpos.c.
-

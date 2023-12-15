@@ -1,9 +1,0 @@
-RESCONV - general purpose resource type converters
-
-XtcwpStringToFloat	convert  string to float in resource
-
-Function Prototype:
-void XtcwpStringToFloat (XrmValue *args, int *nargs, 
-	XrmValue *fromVal, XrmValue *toVal);
-
-Author:  Dave Hale, Colorado School of Mines, 08/28/90

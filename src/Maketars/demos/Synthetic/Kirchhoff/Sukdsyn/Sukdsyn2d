@@ -1,8 +1,0 @@
-#! /bin/sh
-# shell for raytracing travektime
-set -v
-
-sustrip < kd.data > data.stripped
-sukdsyn2d infile=data.stripped  par=kdsyn.par > kdsyn.data 
- 	exit
-

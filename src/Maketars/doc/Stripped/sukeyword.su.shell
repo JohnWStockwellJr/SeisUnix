@@ -1,6 +1,0 @@
- SUKEYWORD -- guide to SU keywords in segy.h
-
- Usage: sukeyword -o            to begin at the top of segy.h
-        sukeyword [string]      to find [string]
-
- Note:  keyword=  occurs in many SU programs.

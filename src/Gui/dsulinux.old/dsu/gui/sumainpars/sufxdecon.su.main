@@ -1,9 +1,0 @@
-verbose=0
-dt=double
-taper=1
-fmin=6
-fmax=6
-twlen=float
-ntrw=10
-ntrf=4
-tmpdir=void

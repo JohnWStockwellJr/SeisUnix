@@ -1,6 +1,0 @@
-In this example there is one additional event described by the
-integers
-0 4 3 4 0
-in the last record of param1.  The integers specify the reflecting
-interfaces of the event.  Thus, the event contains a source ghost,
-a multiple in layer 4, and a receiver ghost.

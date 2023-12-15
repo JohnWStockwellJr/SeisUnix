@@ -1,6 +1,0 @@
- SUNAME - get name line from self-docs
-
- Usage: suname [name]
-
- Note: dummy selfdocs have been included in all cwp and shell programs
-       that don't have automatic selfdocs.

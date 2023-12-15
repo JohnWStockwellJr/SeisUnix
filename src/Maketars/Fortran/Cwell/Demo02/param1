@@ -1,6 +1,0 @@
-syncline                            :model file
-4                                   :#interfaces in model
-plotcolors                          :model colors file
-m                                   :first plot descriptor (mq)
-rwell                               :receiver well coordinates
-wgq                                 :receiver plot descriptor (wgq)

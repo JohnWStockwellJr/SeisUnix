@@ -1,3 +1,0 @@
-SUUNPACK1 - unpack segy trace data from chars to floats
-suunpack1 <packed_file >unpacked_file
-suunpack1 is the approximate inverse of supack1

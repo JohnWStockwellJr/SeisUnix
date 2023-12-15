@@ -1,5 +1,0 @@
-DCTCOMP - Compression by Discrete Cosine Transform			
-SUPACK1 - pack segy trace data into chars			
-SUPACK2 - pack segy trace data into 2 byte shorts		
-SUUNPACK1 - unpack segy trace data from chars to floats	
-SUUNPACK2 - unpack segy trace data from shorts to floats	

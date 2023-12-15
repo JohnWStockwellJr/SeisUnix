@@ -1,5 +1,0 @@
-setenv DSUINST /TimnaMount/usr/local/cwp/src/Gui/dsulinux/dsu
-setenv JAVA_HOME /usr/local/jdk1.1.1
-setenv CLASSPATH ".:$JAVA_HOME/lib/classes.zip:/TimnaMount/usr/local/cwp/src/Gui/dsulinux/dsu/gui"
-alias sugui "java -DDSUGUIDIR=/TimnaMount/usr/local/cwp/src/Gui/dsulinux/dsu/gui dsugui"
-set path=($JAVA_HOME/bin $path )

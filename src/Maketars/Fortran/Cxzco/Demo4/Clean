@@ -1,6 +1,0 @@
-#! /bin/sh
-# Clean up residue from runs
-
-rm -f record
-(cd model.dir; Clean)
-(cd inversion.dir; Clean)

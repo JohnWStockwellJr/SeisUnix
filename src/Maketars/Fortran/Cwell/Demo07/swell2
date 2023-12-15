@@ -1,5 +1,0 @@
-3000.                           :x-coord. of top of source well
-5000.  6000.
-1.   -99999.                    :end of source well definition
-250.                            :depth to first source
-2   3000.  3      1500.                    :#sources, source spacing

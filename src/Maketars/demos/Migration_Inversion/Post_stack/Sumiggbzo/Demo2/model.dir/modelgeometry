@@ -1,4 +1,0 @@
-1        100.                   :reference station number and x-coord.
-20.       0.                    :station spacing and receiver depth
-1   2   3   40    120.  2600.   :shots  - s1 s2 s3 s4 output_xstation output_z
-101 102 103 140   120.  2600.   :recvrs - r1 r2 r3 r4 output_xstation output_z

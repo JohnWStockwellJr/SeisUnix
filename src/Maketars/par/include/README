@@ -1,2 +1,0 @@
-For a pre-ANSI port, the function prototypes in par.h will have to
-have their arguments deleted.

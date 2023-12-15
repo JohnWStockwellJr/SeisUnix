@@ -1,8 +1,0 @@
-WPC1TRANS - routines to perform a 1D wavelet packet transform 
-
-wpc1Trans - decompose/reconstruct a signal into/from its wavelet packet
-		coefficients
-Function Prototype:
-void wpc1Trans(float *x, void *inconf, int type);
-
-Author:		Tong Chen, 08/04/94

@@ -1,8 +1,0 @@
-There is a new model for this example - called syncline.
-It's ok to have negative x-coordinates in the model, as is the case
-here.  Also, in the geometry file a station can be refenced to a negative
-x-coordinate (see file geometry5).  The integers describing the stations should
-always be positive though, in other words, the minimum station number is 1.
-
-It is generally a good idea to stay away from the very edges of the model.
-So, if you must have a receiver at x = 0., then start the model at x < 0.

@@ -1,5 +1,0 @@
-# GENDOCS - generate complete list of selfdocs in latex form
-# STRIPTOTXT -  put files from $CWPROOT/src/doc/Stripped into a new
-# UPDATEDOC - put self-docs in ../doc/Stripped and ../doc/Headers
-# UPDATEDOCALL - put self-docs in ../doc/Stripped
-# UPDATEHEAD - update ../doc/Headers/Headers.all

@@ -1,7 +1,0 @@
-Files in the directory $CWPROOT/src/dsu/gui:
-
-dsu.c: main GUI program
-	
-	- Start PVm
-	- Load application info (applinfo.c modules)
-	- Executes dsumain.tcl

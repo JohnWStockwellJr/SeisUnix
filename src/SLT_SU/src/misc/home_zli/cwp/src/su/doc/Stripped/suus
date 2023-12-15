@@ -1,9 +1,0 @@
-SUUS - under sample traces
-suus <stdin >stdout j=2 s=0 strict=0
-Required parameters:
-	none
-Optional parameters:
-	j=2	Select every jth time sample
-	s=0	First sample to select
-	strict=0  Subsample by averaging
-		  = 1 just take every jth

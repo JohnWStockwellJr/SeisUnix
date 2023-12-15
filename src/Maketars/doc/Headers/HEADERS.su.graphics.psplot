@@ -1,9 +1,0 @@
-SUPSCONTOUR - PostScript CONTOUR plot of a segy data set		
-SUPSCUBE - PostScript CUBE plot of a segy data set			
-SUPSCUBECONTOUR - PostScript CUBE plot of a segy data set		
-SUPSGRAPH - PostScript GRAPH plot of a segy data set			
-SUPSIMAGE - PostScript IMAGE plot of a segy data set			
-SUPSMAX - PostScript of the MAX, min, or absolute max value on each trace
-SUPSMOVIE - PostScript MOVIE plot of a segy data set			
-SUPSWIGB - PostScript Bit-mapped WIGgle plot of a segy data set	
-SUPSWIGP - PostScript Polygon-filled WIGgle plot of a segy data set	

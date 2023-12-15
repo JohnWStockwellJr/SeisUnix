@@ -1,6 +1,0 @@
-
-Discreet Wavelet Packet Transform-based seismic data compression.
-
-1d contains single trace or trace-by-trace compression.
-
-2d contains compression of a section

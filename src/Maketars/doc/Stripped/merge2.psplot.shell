@@ -1,7 +1,0 @@
- MERGE2 - put 2 standard size PostScript figures on one page
-
- Usage: merge2 fig1 fig2
-
- Notes: Translation values are hard-coded numbers that work well for 
-	standard size (8.5 x 11) figures. 
- See selfdoc of:   psmerge for details

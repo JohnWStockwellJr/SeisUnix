@@ -1,8 +1,0 @@
-* CTRLSTRIP - Strip non-graphic characters
-* DOWNFORT - change Fortran programs to lower case, preserving strings
-* FCAT - fast cat with 1 read per file 
-* ISATTY - pass on return from isatty(2)
-* MAXINTS - Compute maximum and minimum sizes for integer types 
-* PAUSE - prompt and wait for user signal to continue
-* T - time and date for non-military types
-* UPFORT - change Fortran programs to upper case, preserving strings

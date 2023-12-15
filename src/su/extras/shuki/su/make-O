@@ -1,4 +1,0 @@
-#!/bin/csh -v
-foreach i (include lCC lsu lvec lcplot pens plotprogs progs)
-	(cd $i; make "CFLAGS=-O" "FFLAGS=-O" "BIN=/usr/local/")
-end

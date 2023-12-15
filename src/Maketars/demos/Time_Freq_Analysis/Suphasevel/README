@@ -1,8 +1,0 @@
-type the name of the shell script to run the demo
-
-MakeData	to make the data
-PhaseVel	view phase velocity dispersion
-GroupVel	group frequency versus traveltime  movie
-
-Clean.sh	to remove temporary files
-

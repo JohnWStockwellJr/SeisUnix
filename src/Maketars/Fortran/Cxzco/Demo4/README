@@ -1,7 +1,0 @@
-In this directory, we supply the files to recreate Example 4 of the
-CXZCO release notes.			jkc (06/25/91)
-
-See the README in Demo1 for the details, the model file name
-is different here ("model" instead of "simple") and there are
-some extra files and calculations needed--see README.inversion
-in this directory.

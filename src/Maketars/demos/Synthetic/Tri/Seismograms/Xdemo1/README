@@ -1,8 +1,0 @@
-To run demo, type:
-
-Xdemo
-
-This demo creates a simple syncline model, shows the
-fan of rays reflected from a split spread common
-shot array, and shows the synthetic seismograms
-(generated via Gaussian Beams) that would be recorded.

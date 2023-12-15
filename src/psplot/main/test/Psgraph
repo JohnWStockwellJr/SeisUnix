@@ -1,8 +1,0 @@
-#! /bin/sh
-
-psgraph <sin4000 n=80 d1=1 nplot=10 \
-	linewidth=1 title="Test of psgraph" \
-	labelx="Sample" labely="Amplitude" \
-	hbox=4 \
->test.eps
-xpwin <test.eps

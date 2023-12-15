@@ -1,8 +1,0 @@
-dt=void
-dx=void
-dz=1
-fmin=0
-fmax=10
-amax=60
-amin=amax
-bwh=vavg

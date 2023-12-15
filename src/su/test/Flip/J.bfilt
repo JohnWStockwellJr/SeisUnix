@@ -1,5 +1,0 @@
-#! /bin/sh
-
-mktraces | suaddhead ns=64 | sushw key=dt a=4000 |
-subfilt |
-wig | tube

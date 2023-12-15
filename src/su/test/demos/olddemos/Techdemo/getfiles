@@ -1,5 +1,0 @@
-#! /bin/sh
-# get the files for the techdemo
-
-rm -f herefiles
-cp `cat files` .

@@ -1,4 +1,0 @@
-segywrite doesn't need BOTH idone and itr and the test
-could be simplified as in tapewrite.c
-
-11/07: traces.out had 4832 traces in it.

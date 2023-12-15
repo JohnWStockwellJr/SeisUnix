@@ -1,7 +1,0 @@
-This is an example of generating common-offset data.
-Note how the shots were specified in file geometry13 - fixed geometry
-with constant move-up.
-
-In PARAM2 we choose to sort on shots, but only build 1 trace from
-each record (Trace #1).
-

@@ -1,7 +1,0 @@
-apshft(nt,appd,aph,apq)
-{
-	vsmul(appd,1,aph,apq,1,nt);
-	appd = appd - 1;
-	aph  = aph + 1;
-	vsma(appd,1,aph,apq,1,apq,1,nt);
-}

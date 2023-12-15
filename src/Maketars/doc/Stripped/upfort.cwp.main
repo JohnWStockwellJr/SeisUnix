@@ -1,7 +1,0 @@
- UPFORT - change Fortran programs to upper case, preserving strings
-
- Usage:   upfort < infile.f > outfile.f
-
- Reverse of: downfort
-
-

@@ -1,8 +1,0 @@
-BASIC - Basic C function interface to PostScript
-PSAXESBOX - Functions to draw PostScript axes and estimate bounding box
-PSAXESBOX3 -  Functions draw an axes box via PostScript, estimate bounding box
-PSCAXESBOX - Draw an axes box for cube via PostScript
-PSCONTOUR - draw contour of a two-dimensional array via PostScript
-PSDRAWCURVE - Functions to draw a curve from a set of points
-PSLEGENDBOX - Functions to draw PostScript axes and estimate bounding box
-PSWIGGLE - draw wiggle-trace with (optional) area-fill via PostScript

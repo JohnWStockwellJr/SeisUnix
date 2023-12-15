@@ -1,5 +1,0 @@
-#!/bin/sh
-. vdir
-	su3d2par < $vdir'/sm_int_v_functions_nn.su' \
-		n2=119 n3=123 key2=fldr key3=tracf \
-		su=0 > $vdir'/sm_int_v_functions_nn.fnmo'

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-List=" dec_shots_g recv_g scd5_amp shots_g error tmp* "
-
-rm -fr $List

@@ -1,4 +1,0 @@
-128c128
-< 	ns = bh.hns;
----
-> 	if (!getparint("ns", &ns))  ns = bh.hns;

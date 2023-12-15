@@ -1,8 +1,0 @@
-psgraph takes different data formats.  See README.graph.  11/20/90 
-
-psmerge is the general tool hinted at in earlier READMEs;
-pswig2p and pswig2b have consequently been wiped.
-Not extensively tested.  11/11/90
-
-psmovie and pscube were added by Zhiming Li just before leaving
-for Western, so not thoroughly checked out.  10/03/90

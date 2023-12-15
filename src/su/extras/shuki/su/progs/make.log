@@ -1,7 +1,0 @@
-	cc -g -c getco.c
-	cc -g sudmo.o getco.o putco.o zpad2.o trigs.o ../lsu/libsu.a ../lvec/libvec.a -lm -o ../bin/sudmo
-	chmod 775 ../bin/sudmo
-	cc -g -c shw.c
-	cc -g mainseq.o shw.o ../lsu/libsu.a -lm -o ../bin/sushw
-
-***  ../bin/sushw removed.

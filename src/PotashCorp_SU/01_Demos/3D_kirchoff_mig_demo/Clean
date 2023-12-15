@@ -1,5 +1,0 @@
-#!/bin/bash
-
-List=" cdps kmig.su NMO_vel.su shots stack.su "
-
-rm -fr $List

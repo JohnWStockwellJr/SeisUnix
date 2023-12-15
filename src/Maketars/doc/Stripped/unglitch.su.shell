@@ -1,6 +1,0 @@
- UNGLITCH - zonk outliers in data
-
- Usage: unglitch < stdin
-
- Note: this shell just invokes:  sugain < stdin qclip=.99 > stdout
- See selfdoc of:   sugain   for further information

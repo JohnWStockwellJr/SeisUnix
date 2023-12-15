@@ -1,6 +1,0 @@
- STRIPTOTXT -  put files from $CWPROOT/src/doc/Stripped into a new
-               directory in the form $CWPROOT/src/TXT/NAME.txt
-
- Usage: striptotxt
-
- Author: John Stockwell,  Sept 2001

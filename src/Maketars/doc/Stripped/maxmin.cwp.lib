@@ -1,8 +1,0 @@
-maxmin - subroutines that pertain to maximum and minimum values
-min_index - find the value of the index where an array is a minimum
-
-function prototypes:
-int max_index(int n, float *a,int inc);
-int min_index(int n, float *a,int inc);
-
-Author: Balasz Nemeth: Potash Corporation, given to CWP in 2008

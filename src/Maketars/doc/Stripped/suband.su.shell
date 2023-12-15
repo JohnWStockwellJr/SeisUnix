@@ -1,6 +1,0 @@
- SUBAND - Trapezoid-like Sin squared tapered Bandpass filter via  SUFILTER
- 
- Usage:   suband < stdin > stdout 
- 
- Note: this shell mimmics the old program SUBAND, supersceded by SUFILTER
- See selfdoc of:   sufilter   for more information

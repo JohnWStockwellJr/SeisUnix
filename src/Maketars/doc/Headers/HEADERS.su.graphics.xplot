@@ -1,7 +1,0 @@
-SUXCONTOUR - X CONTOUR plot of Seismic UNIX tracefile via vector plot call
-SUXGRAPH - X-windows GRAPH plot of a segy data set			
-SUXIMAGE - X-windows IMAGE plot of a segy data set	                
-SUXMAX - X-windows graph of the MAX, min, or absolute max value on	
-SUXMOVIE - X MOVIE plot of a 2D or 3D segy data set 			
-SUXPICKER - X-windows  WIGgle plot PICKER of a segy data set		
-SUXWIGB - X-windows Bit-mapped WIGgle plot of a segy data set		

@@ -1,9 +1,0 @@
-
-This directory tree contains the odds and ends from the various
-places that Zhiming kept source code.  It is probably not useful,
-but I've included it just in case.  
-
-I've tried to move everything usable from these directories into
-the build directory, app_su.
-
-Reginald H. Beardsley                            rhb@acm.org

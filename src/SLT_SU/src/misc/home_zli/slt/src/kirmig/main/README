@@ -1,5 +1,0 @@
-INSTRUCTIONS FOR INSTALL kirmig:
-
-1. Look at Makefile in this directory, you may need to "setenv ..." first
-2. make kirmig
-3. make -f kirmigs_makefile

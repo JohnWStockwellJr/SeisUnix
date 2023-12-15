@@ -1,6 +1,0 @@
- SUDOC - get DOC listing for code
-
- Usage: sudoc name
-
- Note: Use this shell script to get selfdoc information for
- codes labeled with and asterisk (*) or pound sign (#) in suname list      

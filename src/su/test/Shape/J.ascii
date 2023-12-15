@@ -1,7 +1,0 @@
-#! /bin/sh
-# select wavelet using suascii
-
-suspike nspk=1 it1=31  |
-suwind min=8 max=8 |
-suwind itmin=30 itmax=30 |
-suascii bare=1 >wavelet.par

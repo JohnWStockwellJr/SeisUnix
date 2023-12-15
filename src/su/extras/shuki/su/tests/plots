@@ -1,5 +1,0 @@
-suplot -v <jstack.brute | pixpen
-suplot -v <jpsd         | pixpen
-suplot -v <jstack       | pixpen
-suplot -v <jstack.nmo   | pixpen
-suplot -v <jstack.dmo   | pixpen

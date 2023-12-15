@@ -1,5 +1,0 @@
-SUSPEC1 - Fourier SPECtrum (t -> w) of traces
-suspec1 <infile >outfile
-Note: To facilitate further processing, the sampling interval
-      in frequency and first frequency (0) are set in the
-	output header.

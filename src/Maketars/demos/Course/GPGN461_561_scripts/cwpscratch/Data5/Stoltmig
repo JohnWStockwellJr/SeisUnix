@@ -1,8 +1,0 @@
-#! /bin/sh
-
-sustolt < stack.nmo.myradon.gain.jon=1.su \
-par=stolt.par cdpmin=1 cdpmax=2142 taper=30 \
-dxcdp=12.5 > stolt.seis.su
-
-exit 0
-

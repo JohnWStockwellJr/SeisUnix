@@ -1,7 +1,0 @@
- NEWCASE - Changes the case of all the filenames in a directory, dir
-
- Usage: newcase -l dir  change all filenames to lower case 
-                -u dir  change all filenames to upper case
-
- Notes: Useful for files downloaded from VAX.
-

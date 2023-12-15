@@ -1,7 +1,0 @@
- ======= FXYMCAL ======= 
- ifmin_global=15 ifmax_global=184 ifend_global=92 nf_global=170 
-ijob=1 :  ifmin=15       ifmax=39       nf=25      fmin_i=4.882812 fmax_i=12.695312 
-ijob=2 :  ifmin=40       ifmax=64       nf=25      fmin_i=13.020834 fmax_i=20.833334 
-ijob=3 :  ifmin=65       ifmax=89       nf=25      fmin_i=21.158855 fmax_i=28.971355 
-ijob=4 :  ifmin=90       ifmax=119      nf=30      fmin_i=29.296875 fmax_i=38.736980 
-ijob=5 :  ifmin=120      ifmax=184      nf=65      fmin_i=39.062500 fmax_i=59.895836 

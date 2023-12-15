@@ -1,5 +1,0 @@
-WBUFFALLOC -  routines to allocate/initialize and free buffers in wavelet
-WPC1 - routines for compress a single seismic trace using wavelet packets 
-WPC1CODING - routines for encoding the integer symbols in 1D WPC 
-wpc1Quant - quantize
-WPC1TRANS - routines to perform a 1D wavelet packet transform 

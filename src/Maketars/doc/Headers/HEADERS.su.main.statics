@@ -1,6 +1,0 @@
-SUADDSTATICS - ADD random STATICS on seismic data			
-SURANDSTAT - Add RANDom time shifts STATIC errors to seismic traces	
-SURESSTAT - Surface consistent source and receiver statics calculation
-SUSTATIC - Elevation static corrections, apply corrections from	
-SUSTATICB - Elevation static corrections, apply corrections from	
-SUSTATICRRS - Elevation STATIC corrections, apply corrections from	

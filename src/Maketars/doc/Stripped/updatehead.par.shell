@@ -1,7 +1,0 @@
- UPDATEHEAD - update ../doc/Headers/Headers.all
-
- Usage: updatehead
-
- Notes:
-      
- This file builds the database used by  suname 

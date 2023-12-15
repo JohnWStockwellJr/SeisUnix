@@ -1,5 +1,0 @@
-#! /bin/sh
-# Clean up residue from runs
-demo=5
-rm -f demo${demo}traces reflect reflectcos record PTRACES CZ2DAT
-

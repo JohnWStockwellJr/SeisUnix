@@ -1,9 +1,0 @@
-MINFUNC - routines to MINimize FUNCtions
-
-bracket_minimum - bracket the minimum of a function with a golden search
-golden_bracket - bracket the minimum of a function to a user-specified
-		 tolerance using the golden search
-brent_bracket - bracket the minimum of a function using Brent's method
-powell_minimization - find the minimum of a multi-dimensional function
-			using Powell's method
-

@@ -1,7 +1,0 @@
- UPDATEDOCALL - put self-docs in ../doc/Stripped
-
- Usage: updatedocall  
-
- Note: this shell uses updatedoc to update the  database used by
-       suname and gendocs 
-

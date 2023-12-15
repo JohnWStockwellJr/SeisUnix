@@ -1,9 +1,0 @@
-#! /bin/sh
-
-Xmodel
-MakeData
-Xdata
-Xvelocity
-Xnmo
-
-exit
