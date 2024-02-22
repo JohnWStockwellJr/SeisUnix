@@ -1,7 +1,7 @@
 /* Copyright (c) Colorado School of Mines, 2011.*/
 /* All rights reserved.                       */
 
-/* SUBINQCSV: $Revision: 1.01 $ ; $Date: 2021/10/23 00:00:01 $		*/
+/* SUBINQCSV: $Revision: 1.02 $ ; $Date: 2024/01/25 00:00:01 $		*/
  
 #include "su.h"
 #include "segy.h" 
@@ -45,8 +45,10 @@ char *sdoc[] = {
 "      =1   cdp (default). Option 1 is required if no grid is input.         ",
 "      =2   cdpt (grid transposed cdp numbers).                              ",
 "      =3   igi,igc (grid index numbers).                                    ",
-"      =4   gx,gy (grid coordinates).                                        ",
-"      =5   sx,sy (world coordinates).                                       ",
+"      =4   gx,gy (grid coordinates).  Note option 6.                        ",
+"      =5   sx,sy (world coordinates). Note option 7.                        ",
+"      =6   gx,gy (world coordinates).                                       ",
+"      =7   sx,sy (grid coordinates).                                        ",
 "           You may want to use iecho=1 initially with these options since   ",
 "           the output q-records will contain the cell centre values         ",
 "           corresponding to your choice here (giving you a chance to        ",
@@ -149,22 +151,21 @@ char *sdoc[] = {
 "   The following parameters can only be specified if you                    ",
 "   do not specify an input q-file using parameter qin=.                     ",
 "									     ",
-" cdp=             The parameters to the left are all optional but at least  ",
-" cdpt=            one of them must be specified. These are the names which  ",
-" fldr=            contain single values at each location (also known as     ",
-" grnors=    	   the non-tuple names). Typically, cdp= is the most likely  ",
-" grnofr=    	   name to specify. Each name specified here must have the   ",
-" grnlof=    	   same amount of values (separated by commas).              ",
-" gaps=      	   For example: cdp=2,7,23,44 means that you must also       ",
-" igi=       	   list 4 values if you specify numa=.                       ",
-" igc=       	                                                             ",
-" gx=                                                                        ",
-" gy=                                                                        ",
-" sx=              Note the names specified must include the names needed    ",
-" sy=              for your inloc= option (by default inloc= requires cdp).  ",
-" numa=                                                                      ",
-" numb=                                                                      ",
-" vuma=            (See invp2= for why some names here start with v).        ",
+" cdp=             cdp is a likely parameter name to specify here but        ",
+"                  all seismic unix key names are allowed as parameter names.",
+"                  So, for instance, fldr= is also allowed to be specified.  ",
+"                  These parameters are all optional but at least one of     ",
+"                  them must be specified. These are the names which         ",
+"                  contain single values at each location (also known as     ",
+"            	   the non-tuple names). Each name specified here must have  ",
+"            	   the same amount of values (separated by commas).          ",
+"            	   For example: cdp=2,7,23,44 means that you must also       ",
+"            	   list 4 values if you specify tstat=.                      ",
+"              *** Note the names specified must include the names needed    ",
+"                  for your inloc= option (by default inloc= requires cdp).  ",
+" numa=        *** In addition to all seismic unix key names, the four names ",
+" numb=            to the left are ALSO allowed.                             ",
+" vuma=        *** See invp2= for why some names here start with v.          ",
 " vumb=                                                                      ",
 "									     ",
 " tupa=            The parameters to the left are all optional. These are    ",
@@ -192,8 +193,8 @@ char *sdoc[] = {
 "         tims=400,680,880,1140,2400,3800                                    ",
 "         vels=1300,1500,1730,2300,3700,4300                                 ",
 "									     ",
-"       And, if you have a static value at these 3 cdps, then also:          ",
-"         numa=5.30,17.44,12.63                                              ",
+"       And, if you have a floating datum static at these 3 cdps, then also: ",
+"         tstat=5.30,17.44,12.63                                             ",
 "									     ",
 "   ------------------------------------------------------------------       ",
 "									     ",
@@ -278,8 +279,8 @@ int main(int argc, char **argv) {
 
   double gvals[99];       /* more than enough to contain grid definition */
 
-  int knownnames = 26;         /* this set of variables is related to   */
-  int ltuple = 17;             /* handling of parameter and value names */
+  int knownnames = 93;         /* this set of variables is related to   */
+  int ltuple = 84;             /* handling of parameter and value names */
   cwp_String *zname = NULL;                                         
   cwp_String *pname = NULL;                                         
   cwp_String *ndims = NULL;                                                 
@@ -365,7 +366,7 @@ int main(int argc, char **argv) {
   if(mgtextr<0 || mgtextr>3) err ("error: extrapt= option not in range ");
 
   if (!getparint("inloc", &inloc)) inloc = 1;
-  if(inloc<1 || inloc>5) err ("error: inloc= option not in range ");
+  if(inloc<1 || inloc>7) err ("error: inloc= option not in range ");
   if(is3d==0 && inloc>1) err("**** Error: cannot specify inloc>1 with no input 3d grid.");
 
   cwp_String keyloc = NULL;  
@@ -570,6 +571,14 @@ int main(int argc, char **argv) {
 /* And we have set formats and various other things in preperation         */
 /* for making the output q-file (as far as possible).                      */
 /*     So, now start on actual read-in of values and interpolation.        */
+/*                                                                         */
+/* Note: There is nothing special about using key names as parameter names.*/
+/*       So, for instance, names numa,numb,vuma,vumb are also allowed.     */
+/*       But I need to scan for the names, so I must have some idea what   */
+/*       they are. This would be a lot easier if getparmnames existed.     */
+/*   *** Yes, these values are often used to update trace headers so it    */
+/*       is better for the USERs to use key names. But THIS program itself */
+/*       does not care whether they are key names are not.                 */
 /* ----------------------------------------------------------------------  */
 
   if(Pname == NULL) { /* no q-file, so readin via command line parameters */ 
@@ -578,8 +587,8 @@ int main(int argc, char **argv) {
     zname = ealloc1(knownnames,sizeof(cwp_String *));
     ihere = ealloc1int(knownnames);
     for(j=0; j<knownnames; j++) {
-      pname[j] = ealloc1(6,1);
-      zname[j] = ealloc1(6,1);
+      pname[j] = ealloc1(8,1);
+      zname[j] = ealloc1(8,1);
       strcpy(pname[j],"null");
       ihere[j] = 0;
     }
@@ -600,16 +609,83 @@ int main(int argc, char **argv) {
     strcpy(zname[14],"numb");
     strcpy(zname[15],"vuma");
     strcpy(zname[16],"vumb");
-    ltuple = 17; /* first tuple name is at 17 */
-    strcpy(zname[17],"tupa"); 
-    strcpy(zname[18],"offs");
-    strcpy(zname[19],"tims");
-    strcpy(zname[20],"tnmo");
-    strcpy(zname[21],"dpth");
-    strcpy(zname[22],"vels");
-    strcpy(zname[23],"vnmo");
-    strcpy(zname[24],"tupb");
-    strcpy(zname[25],"vupa");
+    strcpy(zname[17],"tracl");
+    strcpy(zname[18],"tracr");
+    strcpy(zname[19],"tracf");
+    strcpy(zname[20],"ep");
+    strcpy(zname[21],"trid");
+    strcpy(zname[22],"nvs");
+    strcpy(zname[23],"nhs");
+    strcpy(zname[24],"duse");
+    strcpy(zname[25],"offset"); 
+    strcpy(zname[26],"gelev");
+    strcpy(zname[27],"selev");
+    strcpy(zname[28],"sdepth");
+    strcpy(zname[29],"gdel");
+    strcpy(zname[30],"sdel");
+    strcpy(zname[31],"swdep");
+    strcpy(zname[32],"gwdep");
+    strcpy(zname[33],"scalel");
+    strcpy(zname[34],"scalco");
+    strcpy(zname[35],"counit");
+    strcpy(zname[36],"wevel");
+    strcpy(zname[37],"swevel");
+    strcpy(zname[38],"sut");
+    strcpy(zname[39],"gut");
+    strcpy(zname[40],"sstat");
+    strcpy(zname[41],"gstat");
+    strcpy(zname[42],"tstat");
+    strcpy(zname[43],"laga");
+    strcpy(zname[44],"lagb");
+    strcpy(zname[45],"delrt");
+    strcpy(zname[46],"muts");
+    strcpy(zname[47],"mute");
+    strcpy(zname[48],"ns");
+    strcpy(zname[49],"dt");
+    strcpy(zname[50],"gain");
+    strcpy(zname[51],"corr");
+    strcpy(zname[52],"sfs");
+    strcpy(zname[53],"sfe");
+    strcpy(zname[54],"slen");
+    strcpy(zname[55],"styp");
+    strcpy(zname[56],"stas");
+    strcpy(zname[57],"stae");
+    strcpy(zname[58],"tatyp");
+    strcpy(zname[59],"afilf");
+    strcpy(zname[60],"afils");
+    strcpy(zname[61],"nofilf");
+    strcpy(zname[62],"nofils");
+    strcpy(zname[63],"lcf");
+    strcpy(zname[64],"hcf");
+    strcpy(zname[65],"lcs");
+    strcpy(zname[66],"hcs");
+    strcpy(zname[67],"year");
+    strcpy(zname[68],"day");
+    strcpy(zname[69],"hour");
+    strcpy(zname[70],"minute");
+    strcpy(zname[71],"sec");
+    strcpy(zname[72],"timbas");
+    strcpy(zname[73],"trwf");
+    strcpy(zname[74],"otrav");
+    strcpy(zname[75],"d1");
+    strcpy(zname[76],"f1");
+    strcpy(zname[77],"d2");
+    strcpy(zname[78],"f2");
+    strcpy(zname[79],"ungpow");
+    strcpy(zname[80],"unscale");
+    strcpy(zname[81],"ntr");
+    strcpy(zname[82],"mark");
+    strcpy(zname[83],"shortpad");
+    ltuple = 84; /* first tuple name is at 84 */
+    strcpy(zname[84],"tupa"); 
+    strcpy(zname[85],"offs");
+    strcpy(zname[86],"tims");
+    strcpy(zname[87],"tnmo");
+    strcpy(zname[88],"dpth");
+    strcpy(zname[89],"vels");
+    strcpy(zname[90],"vnmo");
+    strcpy(zname[91],"tupb");
+    strcpy(zname[92],"vupa");
 
     ktuple = 0;
     numpname = 0;
@@ -695,7 +771,7 @@ int main(int argc, char **argv) {
         strcpy(pname[numpname],"igc"); 
         numpname++;
       }
-      if(inloc!=4) {
+      if(inloc!=4 && inloc!=6) {
         pname[numpname] = ealloc1(2,1);
         strcpy(pname[numpname],"gx");
         numpname++;
@@ -703,7 +779,7 @@ int main(int argc, char **argv) {
         strcpy(pname[numpname],"gy");
         numpname++;
       }
-      if(inloc!=5) {
+      if(inloc!=5 && inloc!=7) {
         pname[numpname] = ealloc1(2,1);
         strcpy(pname[numpname],"sx");
         numpname++;
@@ -924,6 +1000,55 @@ int main(int argc, char **argv) {
       gridrawxycdpic(gvals,xw,yw,RecInfo[icdp].kinf,RecInfo[icdp].kinf+1,RecInfo[icdp].kinf+2);
       if(RecInfo[icdp].kinf[0] < -2147483644) 
         err("error: for inloc=5, input sx,sy = %g,%g are not in grid",xw,yw);
+    }
+  }
+  else if(inloc==6) { /* gx,gy (world coordinates)   */            
+    for (i=0; i<iztuple; ++i) {
+      if(strcmp(pname[i],"gx")==0) {
+        jnloc1 = i;
+        break;
+      }
+    }
+    if(jnloc1<0) err("error: for inloc=6, input must have gx (among non-tuple names).");
+    for (i=0; i<iztuple; ++i) {
+      if(strcmp(pname[i],"gy")==0) {
+        jnloc2 = i;
+        break;
+      }
+    }
+    if(jnloc2<0) err("error: for inloc=6, input must have gy (among non-tuple names).");
+
+    for (icdp=0; icdp<ncdp; ++icdp) {
+      xw = RecInfo[icdp].dlots[jnloc1];
+      yw = RecInfo[icdp].dlots[jnloc2];
+      gridrawxycdpic(gvals,xw,yw,RecInfo[icdp].kinf,RecInfo[icdp].kinf+1,RecInfo[icdp].kinf+2);
+      if(RecInfo[icdp].kinf[0] < -2147483644) 
+        err("error: for inloc=6, input gx,gy = %g,%g are not in grid",xw,yw);
+    }
+  }
+  else if(inloc==7) { /* sx,sy (grid coordinates)    */            
+    for (i=0; i<iztuple; ++i) {
+      if(strcmp(pname[i],"sx")==0) {
+        jnloc1 = i;
+        break;
+      }
+    }
+    if(jnloc1<0) err("error: for inloc=7, input must have sx (among non-tuple names).");
+    for (i=0; i<iztuple; ++i) {
+      if(strcmp(pname[i],"sy")==0) {
+        jnloc2 = i;
+        break;
+      }
+    }
+    if(jnloc2<0) err("error: for inloc=7, input must have sy (among non-tuple names).");
+
+    for (icdp=0; icdp<ncdp; ++icdp) {
+      xg = RecInfo[icdp].dlots[jnloc1];
+      yg = RecInfo[icdp].dlots[jnloc2];
+      gridgridxyrawxy(gvals,xg,yg,&xw,&yw); /* convert to world xys, then cdp,igi,igc */
+      gridrawxycdpic(gvals,xw,yw,RecInfo[icdp].kinf,RecInfo[icdp].kinf+1,RecInfo[icdp].kinf+2);
+      if(RecInfo[icdp].kinf[0] < -2147483644) 
+        err("error: for inloc=7, input sx,sy = %g,%g are not in grid",xg,yg);
     }
   }
 
