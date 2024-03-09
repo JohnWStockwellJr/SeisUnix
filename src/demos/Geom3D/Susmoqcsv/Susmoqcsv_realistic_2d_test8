@@ -1,0 +1,14 @@
+#!/bin/sh
+# Susmoqcsv_realistic_2d_test8 - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is a test using stored realistic q-file for a 2d.                 "
+  echo "----------------------------------------------------------------------------"
+#
+  susmoqcsv qin=qvals2d.csv qout=fakeqvalsout2d08.csv \
+            sname=tstat navrg=1 nsmth=0 nback=3    
+#           sname=tstat navrg=1 nsmth=1 nback=3    
+#           sname=tstat navrg=1 nsmth=0 nback=8    
+#                       navrg=1 nsmth=0 nback=3 cname=vnmo    
+#

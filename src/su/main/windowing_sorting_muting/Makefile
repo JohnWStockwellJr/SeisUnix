@@ -19,6 +19,7 @@ PROGS =			\
 	$B/sumute	\
 	$B/sumutecsv   	\
 	$B/supad	\
+	$B/supadmissing \
 	$B/suputgthr	\
 	$B/susort	\
 	$B/susorty	\

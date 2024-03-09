@@ -1,0 +1,24 @@
+#!/bin/sh
+# Sugetqcsv_create1 - for program SUFARLDCSV
+# Author: Andre Latour, Nov 2023
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  Use sugeomcsv to create spiked traces with some header key values.     "
+  echo "---  See demos/Geom3D/Sugeomcsv for how this is done.                       "
+  echo "-  *** Also apply scalco and scalel in sugeomcsv ***                        "
+  echo "---  Show header values.                                                    "
+  echo "---  Apply filter to spikes.                                                "
+  echo "---  Shift the filtered traces.                                             "
+  echo "---  Display them.                                                          "
+  echo "----------------------------------------------------------------------------"
+#
+  sugeomcsv rfile=XYELEV.csv >fake1.su scalco=1000 scalel=100 create=all spikes=4,0.00,100,1000,200,0
+#
+  sugethw <fake1.su key=tracf,sx,sy,gx,gy,selev,gelev,sdepth,sdel,gdel,swdep,gwdep,fldr,grnlof,gaps,tstat
+#
+  subfilt <fake1.su >fake2.su fpasshi=20
+#
+  sustatic <fake2.su >fake3.su hdrs=1 
+#
+  suxwigb <fake3.su title="fake traces with header values (and shifted)" &
+#

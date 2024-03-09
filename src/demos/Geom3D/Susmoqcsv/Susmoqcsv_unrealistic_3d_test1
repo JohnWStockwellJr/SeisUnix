@@ -1,0 +1,42 @@
+#!/bin/sh
+# Susmoqcsv_unrealistic_3d_test1 - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is a test using stored unrealistic q-file and associated 3D Grid. "
+  echo "---  Find cdps 15,282,540 in the input qin file (qvalspikes.csv) where      "
+  echo "---  spike changes have been made (extra blanks have been inserted to those "
+  echo "---  records to find them easily just using vi or other text viewer).       "
+  echo "---  Results of changing sname,cname,navrg,nsmth should be pretty obvious.  "
+  echo "---  Looking at output cdp 282 is probably best for testing those parameters"
+  echo "---  since cdp 282 is near the middle of the 3D grid.                       "
+  echo "---                                                                         "
+  echo "---  But examine changing nback for cdps near the grid edges (cdps 15,540)  "
+  echo "---  This does not change the length of averaging or smoothing but it       "
+  echo "---  does change the results because the internal linear extrapolation      "
+  echo "---  at the edges is different. (For realistic situations, rapid changes    "
+  echo "---  are unlikely. But this is deliberately UNrealistic spike-changes       "
+  echo "---  to high-light the affects of the parameters).                          "
+  echo "----------------------------------------------------------------------------"
+#
+  susmoqcsv rfile=kEFGsmallerforspikes.csv qin=qvals3dspikes.csv qout=fakeqvalsout3d01.csv \
+            sname=tstat navrg=1,0 nsmth=0,0  
+#           sname=tstat navrg=1,1 nsmth=0,0               
+#                       navrg=1,1 nsmth=0,0 cname=vnmo    
+#           sname=tstat navrg=2,0 nsmth=0,0 nback=3,3  
+#                       navrg=2,0 nsmth=0,0 nback=3,3  
+#           sname=tstat navrg=2,1 nsmth=0,0 nback=3,3 
+#           sname=tstat navrg=2,1 nsmth=0,0 nback=3,3 
+#           sname=tstat navrg=2,1 nsmth=0,0 nback=3,3 
+#           sname=tstat navrg=0,5 nsmth=0,0 nback=0,7
+#           sname=tstat navrg=10,0 nsmth=0,0 nback=3,3
+#           sname=tstat navrg=10,0 nsmth=0,0 nback=7,3
+#           sname=tstat navrg=0,5 nsmth=0,0 nback=0,7
+#           sname=tstat navrg=0,0 nsmth=2,0 nback=3,3 
+#           sname=tstat navrg=0,0 nsmth=0,3 nback=3,3 
+#
+#    Sometimes easier to see in transposed direction (crossline) 
+#           sname=tstat navrg=0,0 nsmth=0,3 nback=3,3 cdpt=1  
+#
+#    One way to turn off all averaging and smoothing and just transpose input.
+#           cdpt=1 navrg=0,0                    

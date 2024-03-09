@@ -1,0 +1,31 @@
+#!/bin/sh
+# Susmoqcsv_unrealistic_3d_test3 - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This test uses unrealistic q-file with TUPLES and associated 3D Grid.  "
+  echo "---  Find cdps 15,282,540 in input q-file (qvals3dspikestuples.csv) where   "
+  echo "---  spike changes have been made (extra blanks have been inserted to those "
+  echo "---  records to find them easily just using vi or other text viewer).       "
+  echo "---                                                                         "
+  echo "---  The previous script (Susmoqcsv_unrealistic_3d_test2) mostly excersized "
+  echo "---  the sname,cname that control which names are averaged and smoothed.    "
+  echo "---                                                                         "
+  echo "---  This test excersizes the ename parameter which controls which names    "
+  echo "---  are eliminated from output.                                            "
+  echo "---                                                                         "
+  echo "---  Note names igc and sy in input qin are changed to testigc and testsy.  "
+  echo "---  And their input values are also changed at cdps 15,282,540             "
+  echo "---  This allows me to test that the lists can be out-of-sequence.          "
+  echo "---  Remember that for 3D, susmoqcsv ignores cdp,cdpt,igi,igc,gx,gy,sx,sy   "
+  echo "---  unless specified as inloc parameter (default is cdp). Those values     "
+  echo "---  are regenerated on output. This means that input testigc,testsy are    "
+  echo "---  moved to after the cdp,cdpt,igi,igc,gx,gy,sx,sy IF THEY ARE output.    "
+  echo "----------------------------------------------------------------------------"
+#
+  susmoqcsv rfile=kEFGsmallerforspikes.csv qin=qvals3dspikestuples.csv qout=fakeqvalsout3d03.csv \
+            ename=vnmo,gelev cname=dpth sname=selev,testigc    navrg=1,0 nsmth=0,0 
+#           ename=vnmo cname=dpth sname=selev,testigc          navrg=1,0 nsmth=0,0 
+#           sname=tstat,testigc,gelev,selev,sstat,gstat,testsy navrg=1,0 nsmth=0,0  
+#           sname=tstat,testigc,selev,gstat                    navrg=1,0 nsmth=0,0  
+#           cname=vnmo,dpth  

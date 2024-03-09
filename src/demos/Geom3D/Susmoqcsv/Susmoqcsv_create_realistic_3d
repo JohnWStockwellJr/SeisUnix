@@ -1,0 +1,48 @@
+#!/bin/sh
+# Susmoqcsv_create_realistic_3d - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is a realistic example. The input time and velocity parameters    "
+  echo "---  are SIMILAR as used in demos/Geom3D/Sunmocsv/Sunmocsv_realistic1R      "
+  echo "---  and demos/Geom3D/Subinqcsv/Subinqcsv_example1_command                  "
+  echo "----------------------------------------------------------------------------"
+#
+# Note that output times are 0 to 1000 in intervals of 100. 
+# If you output at intervals of 4 (a usual sampling interval for seismic traces),
+# you get big records in the output q-file.
+#
+# Note that the input tnmo and vnmo have varying amounts of values at some cdps.
+# This is typical for velans (time-velocity pairs derived from semblance-scans).
+#
+# Note tstat below. This shows how floating datum static MIGHT be used.
+# Delete that line if you want to run tests without it.                        
+#
+  subinqcsv rfile=kEFG.csv qout=fakeqvals3d.csv outind=0,1000,100 \
+        cdp=21,41,81,101,1473,1493,1533,1553,2683,2703,2743,2763 \
+        tstat=2.1,4.1,8.1,10.1,147.3,149.3,153.3,155.3,268.3,270.3,274.3,276.3 \
+        tnmo=0,190,450,800 \
+        vnmo=1200,2000,4000,5000 \
+        tnmo=0,190,450,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,190,450,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,190,450 \
+        vnmo=2200,3300,6000 \
+        tnmo=0,190,450,800 \
+        vnmo=2200,3300,5000,6000 \
+        tnmo=0,250,400,1000 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,190,450,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,190,450,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,290,550,900 \
+        vnmo=1200,2000,4000,5000 \
+        tnmo=0,190,450,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,190,450,800,900 \
+        vnmo=1800,3500,3800,5000,5500 \
+        tnmo=0,190,450,800 \
+        vnmo=2800,5500,6000,8000 \
+#

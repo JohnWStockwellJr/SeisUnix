@@ -1,0 +1,32 @@
+#!/bin/sh
+# Susmoqcsv_unrealistic_2d_test7 - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is a test using stored unrealistic 2d q-file.                     "
+  echo "---  Find cdps 20,60,91 in the input qin file (qvals2dspikes.csv) where     "
+  echo "---  spike changes have been made (extra blanks have been inserted to those "
+  echo "---  records to find them easily just using vi or other text viewer).       "
+  echo "---  Results of changing sname,cname,navrg,nsmth should be pretty obvious.  "
+  echo "---                                                                         "
+  echo "---  But examine changing nback for cdps near the survey ends (cdp 91).     "
+  echo "---  This does not change the length of averaging or smoothing but it       "
+  echo "---  does change the results because the internal linear extrapolation      "
+  echo "---  at the edges is different. (For realistic situations, rapid changes    "
+  echo "---  are unlikely. But this is deliberately UNrealistic spike-changes       "
+  echo "---  to high-light the affects of the parameters).                          "
+  echo "----------------------------------------------------------------------------"
+#
+  susmoqcsv qin=qvals2dspikes.csv qout=fakeqvalsout2d07.csv \
+            sname=tstat             navrg=1 nsmth=0 nback=3
+#           sname=tstat             navrg=1 nsmth=0 nback=7
+#                                   navrg=1 nsmth=0 nback=3
+#                        cname=vnmo navrg=1 nsmth=0 nback=3
+#           sname=tstat             navrg=1 nsmth=0 nback=3
+#           sname=tstat             navrg=0 nsmth=1 nback=3
+#
+# Cascading susmoqcsv with same navrg value gives a triangular averaging result.
+#
+# susmoqcsv qin=fakeqvalsout2d07.csv qout=fakeqvalsout2d07repeat.csv \
+#           sname=tstat             navrg=1 nsmth=0 nback=3
+#

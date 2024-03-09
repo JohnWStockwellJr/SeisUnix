@@ -1,0 +1,49 @@
+
+SUSMOQCSV - Input Q-records, alter and spatially smooth, output Q-records.
+
+------------------------------------------------------------------------------
+
+  See q-file standards in demos/Geom3D/Subinqcsv/Q_FILE_STANDARDS.
+                                         ****                       
+
+
+------------------------------------------------------------------------------
+ The unrealistic input q-files contain constant values at all cdps - EXCEPT
+ for a few cdps which have large differences in values (effectively, spikes).     
+ It is much easier to see the affects of changing parameters/options when         
+ most of the cdps contain the same values.                                        
+
+ I suggest running the scripts in the following order.
+------------------------------------------------------------------------------
+
+sh ./Susmoqcsv_unrealistic_3d_test1                                               
+
+sh ./Susmoqcsv_unrealistic_3d_test2                                               
+
+sh ./Susmoqcsv_unrealistic_3d_test3                                               
+
+sh ./Susmoqcsv_realistic_3d_test4                                               
+
+
+sh ./Susmoqcsv_unrealistic_2d_test7
+
+sh ./Susmoqcsv_realistic_2d_test8
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+ The following 4 scripts were used in creation of the input q-files for the
+ tests herein. The output from the 2 realistic scripts were just stored in git.
+ The output from the 2 unrealistic scripts contain CONSTANT values at all cdps
+ but values were then HAND EDITED AT SPECIFIC cdps before storage in git.
+ I included these scripts in case YOU want to create different input q-files.
+ (They contain some instructions).                                 
+
+sh ./Susmoqcsv_create_realistic_2d
+sh ./Susmoqcsv_create_realistic_3d
+sh ./Susmoqcsv_create_unrealistic_2d
+sh ./Susmoqcsv_create_unrealistic_3d
+
+------------------------------------------------------------------------------
+
+---

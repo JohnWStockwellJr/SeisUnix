@@ -1,0 +1,19 @@
+#!/bin/sh
+# Sugetqcsv_test1 - for program SUFARLDCSV
+# Author: Andre Latour, Nov 2023
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  Input fake traces.                                                     "
+  echo "---  Write various key and sample values to q-file.                         "
+  echo "---  Note that scalco and scalel scalars are honoured.                      "
+  echo "---  Note that (shifted) sample values are accessed correctly.              "
+  echo "---  Note that the mx,my,mg options work.                                   "
+  echo "----------------------------------------------------------------------------"
+#
+# sugetqcsv <fake3.su qout=qhed3.csv formxy=%.15g formsv=%.5g  fsamp=21 lsamp=29     \
+# sugetqcsv <fake3.su qout=qhed3.csv formxy=%.15g formsv=%.5g  fsamp=21 lsamp=29     \
+  sugetqcsv <fake3.su qout=qhed3.csv formxy=%.15g                                    \
+  keys=tracf,sx,sy,gx,gy,selev,gelev,grnlof,gaps,mx,my,mg
+# keys=tracf,sx,sy,gx,gy,selev,gelev,grnlof,gaps,mx,my,mg
+# keys=tracf,sx,sy,gx,gy,selev,gelev,sdepth,sdel,gdel,swdep,gwdep,fldr,grnlof,gaps,tstat,mx,my,mg
+#

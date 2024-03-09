@@ -825,7 +825,7 @@ int main(int argc, char **argv) {
     ckey[0] = ealloc1(2,1);
     strcpy(ckey[0],"gx");
     ckey[1] = ealloc1(2,1);
-    strcpy(ckey[0],"gy");
+    strcpy(ckey[1],"gy");
   }
   else {
     if(ctree_numd>2) err("**** Error for cin parameters: Only 1 or 2 cloc names can be specified.");

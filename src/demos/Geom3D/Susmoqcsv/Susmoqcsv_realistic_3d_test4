@@ -1,0 +1,29 @@
+#!/bin/sh
+# Susmoqcsv_realistic_3d_test4 - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is a test using stored realistic q-file and associated 3D Grid.   "
+  echo "----------------------------------------------------------------------------"
+#
+  susmoqcsv rfile=kEFG.csv qin=qvals3d.csv qout=fakeqvalsout3d04.csv \
+            sname=tstat navrg=1,1 nsmth=0,0  
+#           sname=tstat navrg=1,1 nsmth=0,0               
+#                       navrg=1,1 nsmth=0,0 cname=vnmo    
+#           sname=tstat navrg=2,0 nsmth=0,0 nback=3,3  
+#                       navrg=2,0 nsmth=0,0 nback=3,3  
+#           sname=tstat navrg=2,1 nsmth=0,0 nback=3,3 
+#           sname=tstat navrg=2,1 nsmth=0,0 nback=3,3 
+#           sname=tstat navrg=2,1 nsmth=0,0 nback=3,3 
+#           sname=tstat navrg=0,5 nsmth=0,0 nback=0,7
+#           sname=tstat navrg=10,0 nsmth=0,0 nback=3,3
+#           sname=tstat navrg=10,0 nsmth=0,0 nback=7,3
+#           sname=tstat navrg=0,5 nsmth=0,0 nback=0,7
+#           sname=tstat navrg=0,0 nsmth=2,0 nback=3,3 
+#           sname=tstat navrg=0,0 nsmth=0,3 nback=3,3 
+#
+#    Sometimes easier to see in transposed direction (crossline) 
+#           sname=tstat navrg=0,0 nsmth=0,3 nback=3,3 cdpt=1  
+#
+#    One way to turn off all averaging and smoothing and just transpose input.
+#           cdpt=1 navrg=0,0                    

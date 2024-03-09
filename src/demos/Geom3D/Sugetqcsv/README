@@ -1,0 +1,19 @@
+
+SUGETQCSV - Write Trace Header Key Values and Sample Values to a Q-file
+ 
+ 
+------------------------------------------------------------------------------
+
+sh ./Sugetqcsv_create1             Need to run this before the test below.     
+
+------------------------------------------------------------------------------
+In general you should vary the sugetqcsv parameters in the following script 
+and look at the resulting qhed.csv file.                                    
+But you should also vary the scalco and scalel parameters in Sugetqcsv_create1.
+------------------------------------------------------------------------------
+
+sh ./Sugetqcsv_test1        
+
+------------------------------------------------------------------------------
+Note: In Geom3D/demos/Sufarldcsv you can find scripts that plot from q-files.     
+------------------------------------------------------------------------------
