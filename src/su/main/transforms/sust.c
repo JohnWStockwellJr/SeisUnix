@@ -26,11 +26,11 @@ char *sdoc[] = {
 "	fmax=NYQUIST 		maximum frequency of filter array (hz)	",
 "	verbose=0		=1 supply additional info		",
 "									",
-" Notes: The S transform provide a time dependend frequency distribution ",
+" Notes: The S transform provide a time dependent frequency distribution ",
 " of the signal. It is similar to the Gabor transform which which utilizes" 
 " a Gaussian window for for spectral location. In the S transform the    ",
 " Gaussian window is scalable whith the frequency which provides a better",
-"  time freqyency resolution    			                ",
+"  time freqency resolution    			                ",
 "									",
 " Examples:								",
 "    suvibro | sust | suximage					",

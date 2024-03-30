@@ -1,0 +1,240 @@
+ SUFARLDCSV - Floating Approximate Robust Local Datum From Q-files.         
+
+              The Approximate Robust Local (ARL) algorithm is intended      
+              to produce a reasonable smooth floating datum for the         
+              typical spatial distributions of shots and receivers that     
+              exist in many 2D and 3D surveys.                              
+
+              This documentation uses the familiar words shot, receiver,    
+              cdp, coordinates, and statics. And this program defaults to   
+              Seismic Unix key names for various parameters. But nothing    
+              in this program behaves differently if other words or names   
+              are used. To this program all input values are just numbers.  
+              For example, the same values are output whether the input     
+              values are named statics, or elevations.                      
+
+     Caution: When using the output of this program you should use          
+              cdp or igi,igc in the SUSHIFTCSV program to find the          
+              cdp of the traces. Using nearest COORDINATES to find the      
+              cdp does not produce cdp-consistent results because cdps      
+              only contain one-half of their coordinate boundaries.         
+
+
+  sufarldcsv [parameters]. (No traces in or out).                           
+
+ Parameters:	         						     
+
+ sin=sstat.csv  Input csv Q-file (usually containing Source information).   
+    =none       No sin file. Value 0 is used for all sin statics.           
+
+ sloc=sx,sy     List of sin file location Names.                            
+                For 2D surveys, 1 or 2 names are allowed.                   
+                For 3D surveys, there must be 2 names and the first name    
+                must have the x value and the second name must have the y.  
+
+ sstat=sstat    This is the default source static name.                     
+
+ smult=1.0      Sin file Static Multiplier. Statics in Q-files should be    
+                milliseconds, if not, you can scale them before use here.   
+          Note: Also, to reverse static sign, specify negative here.        
+
+ rin=rstat.csv  Input csv Q-file (usually containing Receiver information). 
+    =none       No rin file. Value 0 is used for all receiver statics.      
+          Note: Both sin and rin can be none since it might be usefull to   
+                get a dout file formatted with 2D values or 3D Grid values. 
+
+ rloc=gx,gy     List of rin file location Names.                            
+                For 2D surveys, 1 or 2 names are allowed.                   
+                For 3D surveys, there must be 2 names and the first name    
+                must have the x value and the second name must have the y.  
+
+ rstat=gstat    This is the default rin file static name.                   
+
+ rmult=1.0      Rin File Static Multiplier. Statics in Q-files should be    
+                milliseconds, if not, you can scale them before use here.   
+          Note: Also, to reverse static sign, specify negative here.        
+
+  rfile=        If specified, read the 3D Grid defined in the K-record.     ", 
+           ***  MUST be specified for 3D and must NOT be specified for 2D.  
+           ***  3D Grid must have at least 5 cells in the corresponding     
+                direction if navrg>0,0 or nsmth>0,0                         
+                See subincsv for 3D Grid documentation.                     
+                If not a 3D survey, specify the next parameter (cin file).  ", 
+
+ cin=none       Input csv Q-file containing CDP Information.                
+    =none       Default. No cin file. An rfile with a 3D Grid must be input.
+           ***  MUST be specified for 2D and must NOT be specified for 3D.  
+           ***  At least 5 Q-records must exist if nsmth>0 or navrg>0.      
+
+ cloc=gx,gy     List of cin file Location Names. Only 1 or 2 names allowed. 
+           ***  Can only be specified for 2D.                               
+          Note: The default is receiver coordinate key names because the    
+                cin file is often created from receiver locations.          
+
+ cseq=cdp       This is the cin Q-file record sequencing name.              
+           ***  Can only be specified for 2D.                               
+     =asis      Means use cin Q-records in the order they are input.        
+          Note: The input cin Q-record are sorted by these values and that  
+                sequence is used by navrg, nsmth, and nback parameters.     
+                The averaging and smoothing controlled by those parameters  
+                just uses these sequential numbers. That is, those options  
+                do not care if cseq actually contains a cdp number, and     
+                they do not care whether gaps exist in input cseq numbers.  
+
+ cstat=tstat    This is the default output static name. Typically it is the 
+                sum of the (averaged, smoothed) output shot static and the  
+                (averaged, smoothed) output receiver static divided by 2,   
+                but if either sin or rin files are not input then it is     
+                just a copy of the other (averaged, smoothed) static.       
+
+ avrad=1000.0   Radius to Average Shot statics and Average Receiver statics.
+                Statics are averaged separately for shots and receivers.    
+          =-1.  Do not average any statics. Just use nearest shot static    
+                and nearest receiver static. You must also set nedge=0.     
+          Note: Specify this parameter in units of sloc, rloc, and cloc.    
+                By default those are coordinate names so this parameter     
+                is a true distance. But for 2D surveys sloc, rloc, and cloc 
+                can be single values such as point numbers in which case    
+                this value is the difference in point numbers.              
+
+ nedge=2        Minimum Number of Points To Perform Edge Compensation.      
+                Edge compensation is done by a relatively complicated       
+                method based on the difference between each shot location   
+                and the average location of all shots within avrad distance 
+                of that shot (the centroid location). The larger the        
+                distance to the centroid, the larger the compensation.      
+                The same method is used independently for the receivers.    
+                Must be greater than 1.                                     
+           ***  Cannot specify if avrad is -1.                              
+          Note: For 2D surveys this compensation mostly affects points near 
+                line ends, but will also be larger for gaps within the line.
+                For 3D surveys this compensation mostly affects points near 
+                the edges of the areas of coverage, but compensation will   
+                also be larger for gaps within the areas of coverage.       
+      =0        Do not perform Edge Compensation. Typically, for surveys    
+                with slants in the statics near edges or gaps, this results 
+                in values curving in the opposite direction as the slant.   
+
+ cedge=avrad/10 Minimum Distance to Centroid to Perform Edge Compensation.  
+                (See previous parameter). If the centroid location is       
+                within this distance of the shot or receiver location,      
+                do not perform edge compensation for this shot or receiver. 
+           ***  Cannot specify if avrad is -1. Cannot be greater than avrad.
+          Note: Specify this parameter in units of sloc, rloc, and cloc.    
+                By default those are coordinate names so this parameter     
+                is a true distance. But for 2D surveys sloc, rloc, and cloc 
+                can be single values such as point numbers in which case    
+                this value is the difference in point numbers.              
+
+ navrg=10       CDP Averaging Operator Size.                                
+                The averaging is symmetrical and extends navrg on each side 
+                of the location being averaged.                             
+                For 2D surveys, this is number of cin Q-records to average  
+                symmetrically with its neighbours (navrg on each side).     
+                For 3D surveys, two values can be listed. The first value   
+                is for the inline direction and the second is for the       
+                crossline direction. If no second value is specified, the   
+                same value is used for both directions.                     
+            =0  means no averaging is done.                                 
+            =-1 means average the values of all locations in this direction.
+                You also MUST set nsmth to 0 for this direction.            
+                Typically this option is used for 3D surveys where the      
+                number of inline or crossline cells is less than 5 or one   
+                of the directions has little change (or you want to produce 
+                a constant value in that direction).                        
+           ***  You must use 0 or -1 if number of locations is less than 5. 
+
+ nsmth=navrg    CDP Smoothing Operator Size.                                
+                This smoothing uses a technique which leaves the values     
+                approximately centred with their initial values.            
+                The smoothing affect is symmetrical and extends 2*nsmth on  
+                each side of the location being smoothed.                   
+                For 3D surveys, two values can be listed. The first value   
+                is for the inline direction and the second is for the       
+                crossline direction. If no second value is specified, the   
+                same value is used for both directions.                     
+             =0 means no smoothing is done.                                 
+           ***  You must use 0 if number of locations is <5 or navrg=-1     
+
+ nback=3        Linear Extrapolation Location.                              
+                For 2D surveys, this is the number of cin Q-records inwards 
+                from the ends of the survey used to linearly extrapolate    
+                some padding outside the ends of the survey. These          
+                extrapolated values affect the averaging and smoothing of   
+                the navrg and nsmth parameters (at both ends of the survey).
+                This value determines which cin records inside the survey   
+                are used to determine extrapolation points.                 
+                Must be less than the number of Q-records in the cin file.  
+            =1  means use the first and first+1 records to extrapolate into 
+                the padding at the beginning of the survey -and- use the    
+                last and last-1 records to extrapolate into the end padding.
+            =n  means use the first and first+n records to extrapolate into 
+                the padding at the beginning of the survey -and- use the    
+                last and last-n records to extrapolate into the end padding.
+            =0  means duplicate the values of first record into the padding 
+                at the beginning of the survey -and- duplicate the values   
+                of the last record into the padding at the end of survey.   
+           ***  For 3D surveys, two values can be listed. The first value   
+                indicates how many cells inwards in the inline direction    
+                and the second value indicates how many cells inwards in    
+                the crossline direction. If no second value is specified,   
+                the same value is used for both directions.                 
+                Must be less than the number of 3D Grid cells defined       
+                in the same direction.                                      
+         Note:  The AMOUNT of added padding is NOT set by this parameter,   
+                it is actually set as needed for navrg and nsmth parameters.
+
+ --------------                                                             
+
+ formxy=%.20g  The C format code for printing all values to the q-records.  
+              Note that the default format prints up to 20 digits           
+              (but not trailing zeroes to the right of the decimal point).  
+         Note: This default is used because all values in input q-files     
+               can have full double precision and this program computes in  
+               double precision. In particular, 2D cdp profile coordinates  
+               and 3D cdp cell centre coordinates often need to be output   
+               in full double precision (which is approximately 16 digits). 
+               In some situations this makes it hard to easily check the    
+               output values so you might use %.10g here during testing.    
+
+ dout=tstat.csv  Output csv Q-file name.                                    
+                 For 2D this file contains:                                 
+                    cseq,cloc1,cloc2,sstat,gstat,tstat                      
+                     - where cseq,cloc1,cloc2 are the names specified in    
+                       those parameters (with names set to numb1 and numb2  
+                       and values of 0.0 if they are not being used).       
+                     - and sstat,rstat,cstat are the statics associated     
+                       with the names specified in those parameters.        
+                 For 3D this file contains:                                 
+                    cdp,cdpt,igi,igc,sx,sy,gx,gy,sstat,rstat,cstat          
+                     - where cdp,cdpt,igi,igc are cell and transposed cell  
+                       number and inline and crossline index computed from  
+                       the 3D Grid defined in K-record of the input rfile.  
+                     - and sx,sy,gx,gy are real-world and grid-relative     
+                       cell centre coordinates computed from the 3D Grid.   
+                     - and sstat,rstat,cstat are the statics associated     
+                       with the names specified in those parameters.        
+
+ --------------                                                             
+
+ The following 2 parameters affect cpu time, but not results. The search    
+ for the nearest shot and/or the nearest receiver is done using kdtrees.    
+
+ kdist=5   Initial search distance. If positive, this value is added to     
+           the distance between the previous 2D cin file sorted Q-record    
+           or 3D cell and its nearest shot and nearest receiver and used as 
+           the initial search distance to find the nearest shot and nearest 
+           receiver for the next 2D cin file sorted Q-record or 3D cell.    
+           If negative, the initial search distance for all locations       
+           is set to this absolute value.                                   
+ kmult=2   Search multiplier.                                               
+           If the nearest shot or receiver is not found after searching with
+           the initial search distance, the search distance is multiplied   
+           by this value, and the searches are performed again.             
+           This repeats until finding the nearest shot and receiver.        
+
+
+ Created: Oct  2023: Andre Latour                                          
+  1. To compute a floating datum this program uses an algoithm             
+     which I call Approximate Robust Local, which just happens             
+     to also match my initials (Andre Roger Latour).                       

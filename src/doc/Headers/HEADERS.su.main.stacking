@@ -3,3 +3,4 @@ SUDIVSTACK -  Diversity Stacking using either average power or peak
 SUPWS - Phase stack or phase-weighted stack (PWS) of adjacent traces	
 SURECIP - sum opposing offsets in prepared data (see below)	
 SUSTACK - stack adjacent traces having the same key header word
+SUSTACKUP - Input Any Trace Order and Stack To Any Key Combination.   ",

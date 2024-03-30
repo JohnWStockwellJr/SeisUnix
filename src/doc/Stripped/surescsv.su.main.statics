@@ -1,0 +1,147 @@
+ SURESCSV - Surface Consistent Residual Statics Determination.         ",
+
+ Notes:                                                                ",
+ Derives surface-consistent residual statics for sources and receivers.",
+ There is one static value estimated for each identified source and    ",
+ one static value estimated for each identified receiver.              ",
+ The method here is based on stack-power maximization as described by: ",
+ Ronen, J. and Claerbout, J., 1985, Geophysics, vol. 50, 2759-2767.    ",
+
+ ----------------------------------------------------------------------",
+ Conceptually, the basic methodology herein is:                        ",
+    - store all (nmo-corrected) input traces.                          ",
+    - stack those traces into cdps.                                    ",
+    - cross-correlate each trace of a source with the stacked trace    ",
+      that has the same cdp number.                                    ",
+    - sum those cross-correlations for each source.                    ",
+    - find time of maximum of sum of cross-correlation for each source.",
+    - perform a 3-point interpolation around that time using the       ",
+      neighbouring values (yielding a fractional sample shift).        ",
+
+    - (by default) reduce long spatial wavelengths in source shifts.   ",
+
+    - restack the cdps with the derived source time shifts applied by  ",
+      the ints8r routine (which is able to perform fractional shifts). ",
+
+    - repeat the procedure above, but for receivers. That is,          ",
+      cross-correlate each trace of a receiver with the stacked trace  ",
+      that has the same cdp number, and so on...                       ",
+
+    - repeat everything above for the amount of iterations you choose. ",
+
+    - output the source and receiver statics in csv files formatted    ",
+      for use by multiple SU programs (and spreadsheet programs).      ",
+ ----------------------------------------------------------------------",
+
+ surescsv  <stdin                                                      ",
+
+ skeyloc=fldr    List of keys that identify source locations.          ",
+
+ rkeyloc=gaps    List of keys that identify receiver locations.        ",
+
+ ckeyloc=cdp     List of keys that identify cdp locations.             ",
+           Note: For 3D surveys, you may wish to use igi,igc keys here ",
+                 rather than cdp key. See next parameter (cdivider).   ",  
+
+ cdivider=4.0    List of dividers for ckeyloc values. This parameter   ",
+                 makes multiple input cdps into 1 larger cdp.          ",
+                 For complicated reasons, typical survey geometry may  ",
+                 cause this program to produce statics with repeating  ",
+                 larger-smaller values (a sawtooth or zigzag pattern). ",
+                 This is known as decoupling and is more likely to     ",
+                 occur when neighbouring cdps contain traces with      ",
+                 unique sets of offsets or receivers or sources.       ",
+                 This parameter effectively bundles multiple input     ",
+                 cdps together during static derivation.               ",
+
+ maxsources=10000 Maximum Amount of Sources. This is also the          ",
+                  maximum unique combinations of skeyloc values.       ",
+
+ maxreceivers=20000 Maximum Amount of Receivers. This is also the      ",
+                    maximum unique combinations of rkeyloc values.     ",
+
+ maxcdps=40000 Maximum Amount of CDPs (divided by cdivider). This is   ",
+               also maximum unique combinations of ckeyloc / cdivider. ",
+
+ maxtraces=1000000 Maximum Amount of Traces. Note that most memory for ",
+                   the traces is only allocated for the actual amount  ",
+                   of traces read-in.                                  ",
+
+ maxshift=40.     Maximum Time Shift Per Iteration (milliseconds).     ",
+                  (The output statics can be larger than this).        ",
+
+ numiter=5        Number of Iterations to Perform.                     ",
+
+ useoff=          Maximum offset to include traces while deriving the  ",
+                  time shifts. Rapid changes in NMO velocity, dip,     ",
+                  structure, or spread layout may result in some bad   ",
+                  static values. These issues may be reduced by only   ",
+                  using traces with smaller offsets.                   ",
+             ***  If not specified, this parameter value defaults to   ",
+                  the average offset of all traces multipled by 1.5    ",
+
+ iuseoff=0        Iteration number to start only using offsets less or ",
+                  equal to parameter useoff while deriving shifts.     ",
+                  All iterations less than this value use all offsets. ",
+                  Example: If this value is 2 then iterations 0,1,2    ",
+                           use all offsets, but iterations 3,4,5,..    ",
+                           only use offsets less or equal to useoff.   ",
+                           The default (0) therefor means that offsets ",
+                           are limited to less than parameter useoff   ",
+                           for all iterations.                         ",
+
+ longwave=        For complicated reasons, inaccurate NMO correction,  ",
+                  changes in dip, or changes in geometry layouts may   ",
+                  cause the statics to contain errors in long (spatial)",
+                  wavelengths (roughly the spread length). For every   ",
+                  iteration the time shifts for all sources within this",
+                  radius of each individual source are averaged and    ",
+                  subtracted from the shift of that individual source. ",
+                  This reduces the longer spatial wavelengths in the   ",
+                  output shifts. This is also done for the receivers.  ",
+             ***  This parameter uses the sx,sy and gx,gy key values   ",
+                  of the first trace input for each source location    ",
+                  and each receiver location.                          ",
+             ***  If not specified, this parameter value defaults to   ",
+                  the average offset of all traces.                    ",
+            =-1.0 Do not reduce the longer spatial wavelengths.        ",
+            Note: A large value here acts similarly to option -1.      ",
+
+ srderive=0       Derive time shifts for both sources and receivers.   ",
+              =-1 Sources only.                                        ",
+              =1  Receivers only.                                      ",
+            Note: This is not the same as just applying one set of     ",
+                  statics since all time differences are resolved as   ",
+                  far as possible into whichever points are chosen.    ",
+
+ sout=sstat.csv   Output source statics file name.                     ",
+                  This is a comma-separated-values q-file useable by   ",
+                  multiple SU programs, and spreadsheet programs.      ",
+                  It contains skeyloc values, source coordinates,      ",
+                  input source statics (named numb1_sstat),            ",
+                  source fold after useoff (named numb2_sfold), and    ",
+                  surface consistent residual source static sstat.     ",
+            Note: The input source statics are copied to numb1_sstat   ",
+                  but NOT APPLIED OR USED IN ANY WAY by this program.  ",
+                  They are output because they may have some benefits  ",
+                  (including computation of simple CDP floating datum).",
+
+ rout=rstat.csv   Output receiver statics file name.                   ",
+                  This is a comma-separated-values q-file useable by   ",
+                  multiple SU programs, and spreadsheet programs.      ",
+                  It contains rkeyloc values, receiver coordinates,    ",
+                  input receiver statics (named numb1_gstat),          ",
+                  receiver fold after useoff (named numb2_gfold), and  ",
+                  surface consistent residual receiver static gstat.   ",
+            Note: The input receiver statics are copied to numb1_gstat ",
+                  but NOT APPLIED OR USED IN ANY WAY by this program.  ",
+                  They are output because they may have some benefits  ",
+                  (including computation of simple CDP floating datum).",
+
+
+ Author:
+  Andre Latour. June 2023
+  1. Looked at suresstat.c but no code from that program survives herein.                                                  
+  2. Copied the unique-identifier-keys code from sustackup.c                
+  3. Copied (the needed part of) the kdtree code from sunearcsv.c                 
+

@@ -1,0 +1,124 @@
+ SUSHIFTCSV - Apply Static Shifts From Nearest Q-file Records.              
+
+  sushiftcsv [parameters].                                                  
+
+ Parameters:	         						     
+
+ sin=sstat.csv  Input csv Q-file containing Source Information.             
+    =none       No sin file. Value 0 is used for all source statics.        
+
+ skeyloc=fldr   List of Source Location Key Names. At least 1 is needed.    
+                Must be a key name and exist in the sin Q-file.             
+
+ sstat=sstat    This is the default source static name. This name must be   
+                in the sin Q-file, but does not have to be a key name.      
+
+ smult=1.0      Source Static Multiplier. Statics in Q-files should be      
+                milliseconds, if not, you can scale them before use here.   
+          Note: Also, to reverse static application, specify negative here. 
+
+ slimit=        Source Location Limit. This is the maximum Pythagorean      
+                difference between skeyloc values from trace and nearest    
+                sin Q-file point for trace to use source static, otherwise  
+                a source static of zero is used for this trace.             
+           ***  If not specified, there is no limit, so the source static   
+                value comes from whichever sin Q-file point is nearest.     
+           ***  If you wish to only use the static at exact locations then  
+                a value such as 0.1 is recommended here because trace keys  
+                are integer but Q-file values are double precision float.   
+                (Float values may not be exact whole numbers).              
+
+
+ rin=rstat.csv  Input csv Q-file containing Receiver Information.           
+    =none       No rin file. Value 0 is used for all receiver statics.      
+
+ rkeyloc=gaps   List of Receiver Location Key Names. At least 1 is needed.  
+                Must be a key name and exist in the rin Q-file.             
+
+ rstat=gstat    This is the default receiver static name. This name must be 
+                in the rin Q-file, but does not have to be a key name.      
+
+ rmult=1.0      Receiver Static Multiplier. Statics in Q-files should be    
+                milliseconds, if not, you can scale them before use here.   
+          Note: Also, to reverse static application, specify negative here. 
+
+ rlimit=        Receiver Location Limit. This is the maximum Pythagorean    
+                difference between rkeyloc values from trace and nearest    
+                rin Q-file point for trace to use receiver static, otherwise
+                a receiver static of zero is used for this trace.           
+           ***  If not specified, there is no limit, so the receiver static 
+                value comes from whichever rin Q-file point is nearest.     
+
+
+ cin=none       Input csv Q-file containing CDP Information.                
+    =none       Default. No cin file. Value 0 is used for all CDP statics.  
+
+ ckeyloc=cdp    List of CDP Location Key Names. At least 1 is needed.       
+                Must be a key name and exist in the cin Q-file.             
+
+ cstat=tstat    This is the default CDP static name. This name must be      
+                in the cin Q-file, but does not have to be a key name.      
+
+ cmult=-2.0     CDP Static Multiplier.                                      
+           ***  The default here is negative 2. ***                         
+                By default, using all 3 files means the applied static is:  
+                    sstat + rstat - 2*cstat                                 
+                This corresponds to a common situation when CDP datum       
+                statics are used (full statics in sin and rin Q-files and   
+                smoothed and/or averaged statics in cin Q-file).            
+
+ climit=        CDP Location Limit. This is the maximum Pythagorean         
+                difference between ckeyloc values from trace and nearest    
+                cin Q-file point for trace to use CDP static, otherwise     
+                a CDP static of zero is used for this trace.                
+           ***  If not specified, there is no limit, so the CDP static      
+                value comes from whichever cin Q-file point is nearest.     
+
+
+ SIGN CONVENTION:                                                           
+      ***       A negative static value results in shifting seismic values  
+                towards the beginning of traces.                            
+                For example -18.3 will shift a peak at 1000 to 981.7        
+
+ OTHER INFORMATION:                                                         
+                This program uses the static values FROM NEAREST LOCATIONS. 
+                This is the Pythagorean nearest record in the Q-files       
+                considering skeyloc,rkeyloc,ckeyloc values just as numbers. 
+                It is deliberately coded to be the nearest location rather  
+                than the exact location. This is done to simplify certain   
+                static situations (beyond the scope of this document).      
+         ***    In usual useage, the sin,rin,cin files contain all locations
+                and therefor nearest location is also the exact location.   
+         ***    If you specify x,y keys for any locations the scalco flag   
+                in the trace header is used to scale the trace x,y but      
+                Q-file standards require they contain unscaled values.      
+                Similary, trace scalel is applied to elevations and related 
+                values from the trace header, but not to the Q-file values. 
+
+         ***    This program does not use the input header statics at all.  
+         ***    This program does not change output header statics at all.  
+
+   - - - - - - - - - -                                                      
+
+ The following 2 parameters affect cpu time, but not results. The search    
+ for the nearest source and/or receiver and/or cdp is done using kdtrees    
+ built for skeyloc,rkeyloc,ckeyloc values from the sin,rin,cin records.     
+
+ kdist=5   Initial search distance. If positive, this value is added to the 
+           distance between the previous trace locations and their nearest  
+           kdtree locations and used as the initial search distance to find 
+           the kdtree locations of the current trace locations.             
+           If negative, the initial search distance for all trace locations 
+           is set to this absolute value.                                   
+ kmult=2   Search multiplier.                                               
+           If the nearest kdtree location is not found after searching with 
+           the initial search distance, the search distance is multiplied   
+           by this value, and the kdtree searches are performed again.      
+           This repeats until finding the nearest locations in the kdtrees. 
+
+   ------------------------------------------------------------------       
+   ------------------------------------------------------------------       
+
+
+ Created: July 2023: Andre Latour                                          
+ This program started from sunearcsv.                                      

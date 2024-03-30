@@ -1,0 +1,112 @@
+ SUSTACKUP - Input Any Trace Order and Stack To Any Key Combination.   ",
+
+ sustackup <stdin >stdout keyloc=cdp                                   ",
+
+ By default this program inputs any trace order and makes a cdp stack  ",
+ using all input traces. But this program can also make other stacks.  ",
+ Stacks can be made for any user-specified combination of key values.  ",
+ All input traces with the same set of key values are stacked together.",
+ In particular, 2D and 3D shot or receiver stacks can be made.         ",
+ Additionally, two range limits can be specified to exclude traces     ",
+ from stacking. For instance, the offset range can be limited. Range   ",
+ limiting can also be done by suwind, of course. But an important      ",
+ difference here is that, by default, this program outputs a zero      ",
+ amplitude trace with full header values even when the range limits    ",
+ exclude all traces for that shot or receiver.                         ",
+
+ keyloc=cdp List of keys that define output stack trace locations.     ",
+          A different stacked trace is output for each unique          ",
+          combination of these key values. The output traces have the  ",
+          header values of the first trace with lowest absolute offset ",
+          encountered for each keyloc unique value combination.        ",
+          Except the nhs key is reset to the number of traces within   ",
+          the range limits (i.e. the stack fold).                      ",
+    Note: Output header is copied from lowest absolute offset trace    ",
+          even if it is not within the range limits (specified below). ",
+      *** Offset is always absolute valued on output (non-negative).   ",
+
+
+ keyabs=  Key name for absolute value range limit. If specified then   ",
+          traces are included in stack if within the range limit(s).   ",
+          Often, the offset key name is used here.                     ",
+
+ keyabs2= If specified, this is subtracted from keyabs and the result  ",
+          absolute valued before applying minabs,maxabs range.         ",
+
+ minabs=  Default is no minimum limit. See range specification note.   ",
+ maxabs=  Default is no maximum limit. See range specification note.   ",
+
+  Note RANGE SPECIFICATION:                                            ",
+          If minabs is less than maxabs then the range to be included  ",
+          in stack is GREATER OR EQUAL to minabs and LESS than maxabs. ",
+     ***  But if minabs is greater or equal to maxabs then the range   ",
+          is GREATER OR EQUAL to minabs -or- LESS than maxabs.         ",
+          This backwards specification is intended for some situations ",
+          where the key contains an azimuth or an angle. For instance, ",
+          if minabs=340 and maxabs=20 then traces >=340 or <20 degrees ",
+          are in stack range.                                          ",
+
+
+ keysign= Key name for signed value range limit. If specified then     ",
+          traces are included in stack if in the minsign,maxsign range.",
+    Note: If you specify both keyabs and keysign, traces must be in    ",
+          both ranges to be included in stack.                         ",
+
+ keysign2= If specified, this is subtracted from keysign before        ",
+           applying the minsign,maxsign range.                         ",
+
+ minsign= Default is no minimum limit. See range specification note.   ",
+ maxsign= Default is no maximum limit. See range specification note.   ",
+
+  Note RANGE SPECIFICATION:                                            ",
+          If minsign is less than maxsign then range to be included in ",
+          stack is GREATER OR EQUAL to minsign and LESS than maxsign.  ",
+     ***  But if minsign is greater or equal to maxsign then the range ",
+          is GREATER OR EQUAL to minsign -or- LESS than maxsign.       ",
+          This backwards specification is intended for some situations ",
+          where the key contains an azimuth or angle. For instance, if ",
+          minsign=340 and maxsign=20 then traces >=340 or <20 degrees  ",
+          are in stack range.                                          ",
+
+
+ keep=1   Make stacked output traces for all unique keyloc combinations",
+          even if the range limits eliminates all input traces. These  ",
+          stacked output traces have the same header values as output  ",
+          for other traces (but key nhs=0 and all amplitudes are 0.)   ",
+     =0   Only output stacked traces if at least one trace is in range.",
+    Note: keep=1 makes it easier to compare the result of different    ",
+          ranges since the same amount of stacked traces are output.   ",
+
+ maxstack=100000 Maximum Amount of Stacked Output Traces. This is also ",
+                 the maximum unique combinations of keyloc values.     ",
+           Note: Initial memory obtained is about 24*maxstack bytes.   ",
+                 Then main memory for stacked traces is only obtained  ",
+                 as each unique keyloc combination is encountered      ",
+                 (about 12*trace_samples bytes per unique combination).",
+
+
+  Note On Output Headers:                                              ",
+          Key nhs is set to the number of traces within the ranges of  ",
+          the unique combination of keyloc values that identify the    ",
+          stacked output trace (i.e. the stack fold).                  ",
+          All other keys are set to the values of the first trace      ",
+          encountered with the smallest absolute offset for the        ",
+          unique combination of keyloc values that identify the        ",
+          traces to stack together.                                    ",
+          The reason to output the header from smallest offset trace   ",
+          is it means shot-stacks and receiver-stacks have cdp numbers ",
+          that correspond approximately to their cdp-stack locations.  ",
+          It also means cdp-stacks from this program have shot and     ",
+          receiver coordinates and elevations (etc) of near locations. ",
+
+
+ Author:
+	Andre Latour. March 2023
+	1. This program sums amplitudes into double precision buffers,
+	   then divides them by the non-zero fold of each sample, and    
+	   copies them to output tr.data (which is single precison).
+	   Since double precision has about 16 significant digits,    
+	   it does not matter very much what trace order is input.        
+	   (Whereas stacking different trace order into float            
+	    buffers does produce noticable differences).                                       
+

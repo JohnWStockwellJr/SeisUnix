@@ -43,7 +43,7 @@ char *sdoc[] = {
 " Notes:								",
 " This program performs complex trace attribute analysis. The first three",
 " attributes, amp,phase,freq are the classical Taner, Kohler, and	",
-" Sheriff, 1979.							",
+" Sheriff, 1979 attributes.						",
 " 									",
 " 									",
 " The unwrap parameter is active only for mode=freq and mode=phase. The	",
