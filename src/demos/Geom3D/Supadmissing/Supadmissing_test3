@@ -1,0 +1,42 @@
+#!/bin/sh
+# Supadmissing_test3 - for program SUPADMISSING
+# Author: Andre Latour, Feb 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This test is very similar to test1 and test2.                          "
+  echo "---  This test creates traces with simple cdp numbers (using sugeomcsv).    "
+  echo "---  And a spike on all traces, which is filtered so it becomes a wavelet.  "
+  echo "---  Those wavelets are shifted in time by an amount corresponding to cdp.  "
+  echo "---  Those traces are then displayed.                                       "
+  echo "---  Some of those traces are then deleted by suwind.                       "
+  echo "---  Then supadmissing is run to (re)create the deleted traces.             "
+  echo "---  Then header values and trace plot are displayed after supadmissing.    "
+  echo "---                                                                         "
+  echo "---  Specific tests here:                                                   "
+  echo "---  Change the lockey value from its default of cdp to gstat               "
+  echo "---  (gstat is same as cdp except multiplied by 4).                         "
+  echo "---  Change the incval increment from its default of 1 to 4.                "
+  echo "----------------------------------------------------------------------------"
+#
+  sugeomcsv rfile=CDPS.csv >tfake31.su create=all spikes=4,0.00,200,1000,500,0
+#
+  subfilt <tfake31.su >tfake32.su fpasshi=20
+#
+  suchw <tfake32.su >tfake33.su key1=gstat key2=cdp b=4
+#
+# sugethw <tfake33.su key=cdp,tracf,nhs,gstat,sx
+#
+  sustatic <tfake33.su >tfake34.su hdrs=1 sign=-1
+#
+  suxwigb <tfake34.su key=gstat title="input (plot by gstat key)" &
+#
+  suwind <tfake34.su >tfake35.su key=gstat reject=56,64,108
+#
+# So now you can run a bunch of tests similar to what you see next.
+#
+  supadmissing <tfake35.su >tfake36.su keyloc=gstat incval=4 minval=20 maxval=140
+#
+  sugethw <tfake36.su key=cdp,tracf,nhs,gstat,sx
+#
+  suxwigb <tfake36.su key=gstat title="padded output (plot by gstat key)" &
+#

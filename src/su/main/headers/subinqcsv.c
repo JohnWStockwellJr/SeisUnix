@@ -49,8 +49,8 @@ char *sdoc[] = {
 "      =5   sx,sy (world coordinates). Note option 7.                        ",
 "      =6   gx,gy (world coordinates).                                       ",
 "      =7   sx,sy (grid coordinates).                                        ",
-"           You may want to use iecho=1 initially with these options since   ",
-"           the output q-records will contain the cell centre values         ",
+"           You may want to use iecho=1 or 2 initially with these options    ",
+"           since the output q-records will contain the cell centre values   ",
 "           corresponding to your choice here (giving you a chance to        ",
 "           adjust your input values before going through the error-check    ",
 "           that forces the input locations to be in aligned rectangles).    ",
@@ -125,12 +125,27 @@ char *sdoc[] = {
 "            rid of names in input tuples in order to reduce the complexity  ",
 "            of output q-records (in case certain programs cannot handle it).",
 "            But you can also get rid of non-tuple names here.               ",
+"       ***  Note this option can be used to eliminate values even if you    ",
+"            choose to input values via the parameters below rather than     ",
+"            via a q-file in qin=. This reduces manual editing of input      ",
+"            values in certain situations.                                   ",
 "									     ",
 " iecho=0    Full spatial output (do not just output at the input locations).",
 "      =1    Just output at the same locations as input.                     ",
 "            This still performs interpolation in the independent dimension  ",
 "            as specified by outind or outlist. (This option bypasses the    ",
 "            error check that input locations must form aligned rectangles). ",
+"              Parameters igiout= and igcout= cannot be specified.           ",
+"      =2    Just output at the same locations as input. This option         ",
+"            does NOT perform interpolation in the independent dimension,    ",
+"            BUT IT DOES output q-files with varying numbers of tuples.      ",
+"            For instance if your input parameters have varying amounts of   ",
+"            velocity picks, it outputs them as a varying tuples q-file.     ",
+"       ***  Note this option allows you to input values via parameters      ",
+"            below and then output a varying tuples q-file. A q-file is much ",
+"            easier to input into spreadsheet programs in order to perform   ",
+"            computations (such as Dix equation velocity transforms).        ",
+"              Parameters outind and outlist cannot be specified.            ",
 "              Parameters igiout= and igcout= cannot be specified.           ",
 "                                                                            ",
 " formtv=%.2f The C format code for printing all values in the q-records     ",
@@ -289,6 +304,7 @@ int main(int argc, char **argv) {
   cwp_String *qform = NULL;   
   int *ihere = NULL;
   int numpname = 0;
+  int numename = 0;
   int numstandard = 0;
 
   double *outind = NULL;  /* this set of variables is related to   */
@@ -395,7 +411,10 @@ int main(int argc, char **argv) {
 /* Read iecho and check igiout and igcout, (but do not read them until defaults available). */
 
   if (!getparint("iecho", &iecho)) iecho = 0;
-  if(iecho<0 || iecho>1) err ("error: iecho= option not in range ");
+  if(iecho<0 || iecho>2) err ("error: iecho= option not in range ");
+  if(iecho>1 && (countparval("outind")>0 || countparval("outlist")>0)) {
+    err("error: iecho=2 cannot be specified with outind= or outlist=");
+  }
   if(iecho>0 && (countparval("igiout")>0 || countparval("igcout")>0)) {
     err("error: iecho>0 cannot be specified with igiout= or igcout=");
   }
@@ -822,29 +841,34 @@ int main(int argc, char **argv) {
 /* These errors are things that subinqcsv decided to call errors even   */
 /* though we could choose to ignore the tuples or outind= or outlist=   */
 
-  if(numdind==0 && ifixd!=2) {
-    err("error: input has tuples so outind= or outlist= must be specified.");
+  if(iecho==2) { 
+    if(ifixd==1) err("error: for iecho=2 input must have varying number of tuples."); 
   }
-  else if(numdind>0 && ifixd==2) {
-    err("error: input does not have tuples so outind= and outlist= cannot be specified.");
+  else {
+    if(numdind==0 && ifixd!=2) {
+      err("error: input has tuples so outind= or outlist= must be specified.");
+    }
+    else if(numdind>0 && ifixd==2) {
+      err("error: input does not have tuples so outind= and outlist= cannot be specified.");
+    }
   }
 
 /* Note that the ifixd flag indicates what is going on with the INPUT      */
-/* q-records or parameter sets. The output q-records from this program are */
+/* q-records or parameter sets. If iecho<2 the output q-records  are       */
 /* always fixed (the values in dind are never put on output q-records,     */
 /* they are put on the single output C_SU_NDIMS record).                   */
 /*                                                                         */
 /* The indepenent dimension name may be on pname list (if ifixd=0 the      */
 /* independent values are actually in the input q-records or parameters).  */
 /* For example: time,velocity pairs from velocity analysis (velans).       */
-/* But, the output values are going to be at dind values, which are        */
-/* not varying from record to record, so remove that name.                 */
+/* But, if iecho<2 the output values are going to be at dind values,       */
+/* which are not varying from record to record, so remove that name.       */
 /* In other words: on input the tims values are often part of tuples whose */
-/* number varies from record to record. But on output tims is definitely   */
+/* number varies from record to record. But on output if iecho<2 tims is   */
 /* not going to be in the output q-records (the single set of tims values  */
 /* specified via outind or outlist will end up on the C_SU_NDIMS record).  */
 
-  if(ifixd==0) { 
+  if(ifixd==0 && iecho<2) { 
     ndims[0] = pname[iztuple]; /* save it for print in C_SU_NDIMS.         */
     for(k=iztuple; k<iztuple+ktuple-1; k++) pname[k] = pname[k+1];
   }
@@ -1097,13 +1121,123 @@ int main(int argc, char **argv) {
   }
   if(igcout[0]>igcout[1]) err("error: igcout= first is greater than last. ");
 
-/*--------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------- */
+/* Does user just want to echo the input locations, but in varying tuples q-file format?   */
+/* This is substantially different from iecho=0 or 1 so it will be handled separately here */
+/* and then end program with return.                                                       */
+
+  if(iecho==2) { 
+
+/* Why allow ename to remove values that are specified via parameters?    */
+/* Why not just require users to remove those parameters?                 */
+/*  - because parameters can be constructed by various methods and can    */
+/*    have extensive amounts of values and it is easier for users to      */
+/*    ignore them via ename rather than delete them from specification.   */
+/* So why not remove them from pnames before getviacommand?               */
+/*  - because checkpars objects to parameters that are not read (yes this */
+/*    means values are stored unnecessarily (although it also means that  */
+/*    getviacommand reads them and checks their format is acceptable).    */
+
+    if(countparval("ename")>0) {
+      numename = countparval("ename");
+      ename = ealloc1(numename,sizeof(cwp_String *));
+      getparstringarray("ename", ename);
+    }
+
+    checkpars(); 
+
+    ksize = ealloc1int(iztuple+ktuple);   
+
+    for(j=0; j<iztuple+ktuple; j++) { 
+      ksize[j] = 1;
+      k = 0;
+      for(i=0; i<numename; i++) { 
+        if(strcmp(ename[i],pname[j])==0) {
+          k = 1;
+          break;
+        }
+      }
+
+/* Also ignore the values of the standard names.                          */
+
+      for(i=0; i<numstandard; i++) { 
+        if(strcmp(qname[i],pname[j])==0) {
+          k = 1;
+          break;
+        }
+      }
+      if(k==1) ksize[j] = -1;
+    }
+
+/* Write the q-file header records. The information put onto those header    */
+/* records is what allows OTHER programs to know that varying tuples exist.  */
+
+    fprintf(fpQ,"C_SU_SETID,Q\nC_SU_FORMS\nC_SU_ID");
+    for(i=0; i<numstandard; i++) fprintf(fpQ,",%s",qform[i]); 
+    for(i=0; i<iztuple; i++) { 
+      if(ksize[i] > 0) fprintf(fpQ,",%s",formtv); 
+    }
+    if(ifixd != 2) {
+      for(i=0; i<2; i++) { /* just need to duplicate these formats once */
+        for(k=0; k<ktuple; k++) {
+          if(ksize[k+iztuple] > 0) fprintf(fpQ,",%s",formtv); 
+        }
+      } 
+    } 
+
+    fprintf(fpQ,"\nC_SU_NAMES\nC_SU_ID");
+    for(i=0; i<numstandard; i++) fprintf(fpQ,",%s",qname[i]);  
+    for(i=0; i<iztuple; i++) { 
+      if(ksize[i] > 0) fprintf(fpQ,",%s",pname[i]);
+    }
+    if(ifixd != 2) {
+      for(i=0; i<2; i++) { /* just need to duplicate tuple names once   */ 
+        for(k=0; k<ktuple; k++) {
+          if(ksize[k+iztuple] > 0) fprintf(fpQ,",%s",pname[k+iztuple]);
+        }
+      }  
+    }  
+
+    fprintf(fpQ,"\n");
+
+    for(jcdp=0; jcdp<ncdp; jcdp++) {
+
+      if(is3d>0) {
+        gridiccdp90(gvals,RecInfo[jcdp].kinf[1],RecInfo[jcdp].kinf[2],&icdpt);
+        gridicgridxy(gvals,RecInfo[jcdp].kinf[1],RecInfo[jcdp].kinf[2],&xg,&yg);
+        gridicrawxy(gvals,RecInfo[jcdp].kinf[1],RecInfo[jcdp].kinf[2],&xw,&yw);
+        fprintf(fpQ,formxylong,RecInfo[jcdp].kinf[0],icdpt,
+                RecInfo[jcdp].kinf[1],RecInfo[jcdp].kinf[2],xg,yg,xw,yw);
+      }
+      else {
+        fprintf(fpQ,"Q,%d,1",RecInfo[jcdp].kinf[0]);
+      }
+
+/* Print out */
+
+      for(j=0; j<iztuple; j++) {
+        if(ksize[j] > 0) fprintf(fpQ,formtvlong,RecInfo[jcdp].dlots[j]);
+      }
+
+      for(i=0; i<RecInfo[jcdp].nto; i++) {  
+        for(k=ktuple-1; k>=0; k--) { 
+          if(ksize[k+iztuple] > 0) fprintf(fpQ,formtvlong,RecInfo[jcdp].dlots[iztuple+k*RecInfo[jcdp].nto+i]);
+        } 
+      } 
+
+      fprintf(fpQ,"\n");
+
+    } /* end of  for(jcdp=0; jcdp<ncdp; jcdp++)  */
+
+    return(CWP_Exit()); 
+  } /* end of  if(iecho==2)  */
+/*---------------------------------------------------------------------------------------- */
 
   checkpars(); 
 
-/* Does user just want to echo the input locations? If so, do not sort. And do not check to make */
-/* sure user has not input the same location twice. And do not check to see if input locations   */
-/* form aligned rectangles as required by bilinear interpolation.                                */
+/* Does user just want to echo the input locations, but at outind or outlist (usually times)?    */
+/* If so, do not sort. And do not check to make sure user has not input the same location twice. */
+/* And do not check if input locations form aligned rectangles as required for bilinear interp.  */
 
   if(iecho==0) { 
 

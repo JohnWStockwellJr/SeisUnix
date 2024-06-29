@@ -1,0 +1,6 @@
+C_SU_SETID,K
+C_SU_FORMS
+C_SU_ID,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g
+C_SU_NAMES
+C_SU_ID,bintype,grid_lf,grid_xa,grid_ya,grid_xb,grid_yb,grid_xc,grid_yc,grid_xd,grid_yd,grid_wb,grid_wc,grid_nb,grid_nc,grid_fp,grid_lp,grid_sb,grid_cb
+K,30,1,338800,5540700,340299.16736046870938,5538101.4432418541983,339752.80414465343347,5541249.6946988385171,341251.97150512214284,5538651.1379406927153,25,50,121,23,1,2783,-0.86618558604860051986,0.4997224534895697845

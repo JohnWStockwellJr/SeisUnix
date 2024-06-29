@@ -361,11 +361,37 @@ void getviaqfile(FILE *fpP, cwp_String **pnameA, int *numpnameA, int *iztupleA,
       } 
     } 
     if(k!=-1 && n!=-1 && n-k>1) {
-      for(j=0; j<n-k-1; j++) {
-        aname[i][j] = aname[i][j+k+1];
+
+/* Make sure they are actually lead/trail digits (NOT like zw_no_hole)        */
+
+      for(j=0; j<k; j++) {
+        if(aname[i][j]!='0' && aname[i][j]!='1' && aname[i][j]!='2' && aname[i][j]!='3' &&
+           aname[i][j]!='4' && aname[i][j]!='5' && aname[i][j]!='6' && aname[i][j]!='7' &&
+           aname[i][j]!='8' && aname[i][j]!='9') {
+          n = -1;
+          break;
+        }
       }
-      aname[i][n-k-1] = '\0';
-    }
+      if(n>-1) {
+        for(j=n+1; j<strlen(aname[i]); j++) {
+          if(aname[i][j]!='0' && aname[i][j]!='1' && aname[i][j]!='2' && aname[i][j]!='3' &&
+             aname[i][j]!='4' && aname[i][j]!='5' && aname[i][j]!='6' && aname[i][j]!='7' &&
+             aname[i][j]!='8' && aname[i][j]!='9') {
+            k = -1;
+            break;
+          }
+        }
+      }
+
+      if(k!=-1 && n!=-1) {
+        for(j=0; j<n-k-1; j++) {
+          aname[i][j] = aname[i][j+k+1];
+        }
+        aname[i][n-k-1] = '\0';
+      } /* end of  if(k!=-1 && n!=-1) { */
+
+    } /* end of  if(k!=-1 && n!=-1 && n-k>1) { */
+
   } 
 
   for(i=0; i<janames; i++) { 

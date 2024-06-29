@@ -1,4 +1,4 @@
-
+     
 The subinqcsv program and its new library routines are part of a general idea
 to make it easier for SU programs to use Spreadsheets for dealing with 
 large amounts of input data values. 
@@ -71,6 +71,8 @@ Then review and run:
 
  sh ./Subinqcsv_tuples_qinput
 
+ sh ./Subinqcsv_tuples_command_iecho2
+
 The remaining tests have more complicated input data and situations.
 For instance, beyond time-velocity pairs, triplets of values are input. 
 They also have values which are intended to make it easier to check    
@@ -83,3 +85,4 @@ that Subinqcsv is performing correctly.
  sh ./Subinqcsv_artificial1_command
 
  sh ./Subinqcsv_artificial1_command_makeqinput
+

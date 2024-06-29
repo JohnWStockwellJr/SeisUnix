@@ -43,6 +43,7 @@ PROGS =			\
 	$B/surandhw	\
 	$B/susehw	\
 	$B/sushw	\
+	$B/susmoqcsv	\
 	$B/sustrip	\
 	$B/sutoolcsv	\
 	$B/sutrcount	\

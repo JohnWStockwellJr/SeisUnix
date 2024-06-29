@@ -1,0 +1,30 @@
+#!/bin/sh
+# Susmoqcsv_create_realistic_2d - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is a realistic example for 2d surveys.                            "
+  echo "----------------------------------------------------------------------------"
+#
+# Note that output times are 0 to 1000 in intervals of 100. 
+# If you output at intervals of 4 (a usual sampling interval for seismic traces),
+# you get big records in the output q-file.
+#
+# Note that the input tnmo and vnmo have varying amounts of values at some cdps.
+# This is typical for velans (time-velocity pairs derived from semblance-scans).
+#
+# Note tstat below. This shows how floating datum static MIGHT be used.
+# Delete that line if you want to run tests without it.                        
+#
+  subinqcsv  qout=fakeqvals2d.csv outind=0,1000,100 \
+        cdp=11,31,51,91 \
+        tstat=10,20,33,22 \
+        tnmo=0,190,450 \
+        vnmo=1200,2000,4000 \
+        tnmo=0,190,450,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,190,450,900 \
+        vnmo=1800,3500,4500,5000 \
+        tnmo=0,190,450 \
+        vnmo=2200,3300,6000 \
+#

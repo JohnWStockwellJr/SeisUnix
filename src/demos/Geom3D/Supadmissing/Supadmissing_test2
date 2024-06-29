@@ -1,0 +1,40 @@
+#!/bin/sh
+# Supadmissing_test2 - for program SUPADMISSING
+# Author: Andre Latour, Feb 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This test is very similar to test1.                                    "
+  echo "---  This test creates traces with simple cdp numbers (using sugeomcsv).    "
+  echo "---  And a spike on all traces, which is filtered so it becomes a wavelet.  "
+  echo "---  Those wavelets are shifted in time by an amount corresponding to cdp.  "
+  echo "---  Those traces are then displayed.                                       "
+  echo "---  Some of those traces are then deleted by suwind.                       "
+  echo "---  Then supadmissing is run to (re)create the deleted traces.             "
+  echo "---  Then header values and trace plot are displayed after supadmissing.    "
+  echo "---                                                                         "
+  echo "---  Specific tests here:                                                   "
+  echo "---  Change the lockey value from its default of cdp to tracf.              "
+  echo "----------------------------------------------------------------------------"
+#
+  sugeomcsv rfile=CDPS.csv >tfake21.su create=all spikes=4,0.00,200,1000,500,0
+#
+  subfilt <tfake21.su >tfake22.su fpasshi=20
+#
+  suchw <tfake22.su >tfake23.su key1=gstat key2=cdp b=4
+#
+# sugethw <tfake23.su key=cdp,tracf,nhs,gstat,sx
+#
+  sustatic <tfake23.su >tfake24.su hdrs=1 sign=-1
+#
+  suxwigb <tfake24.su key=tracf title="input (plot by tracf key)" &
+#
+  suwind <tfake24.su >tfake25.su key=tracf reject=14,16,27
+#
+# So now you can run a bunch of tests similar to what you see next.
+#
+  supadmissing <tfake25.su >tfake26.su keyloc=tracf minval=05 maxval=35
+#
+  sugethw <tfake26.su key=cdp,tracf,nhs,gstat,sx
+#
+  suxwigb <tfake26.su key=tracf title="padded output (plot by tracf key)" &
+#

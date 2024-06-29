@@ -1,0 +1,33 @@
+#!/bin/sh
+# Susmoqcsv_create_unrealistic_2d - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is not a realistic example.                                       "
+  echo "---  Run this script.                                                       "
+  echo "---                                                                         "
+  echo "---  THEN GO INTO OUTPUT FILE AND EDIT IT TO CHANGE VALUES AT SPECIFIC CDPS "
+  echo "---                                                                         "
+  echo "---  Those changes make it easy to see affects of susmoqcsv options.        "
+  echo "---  That is how the stored q-file qvals2dspikes.csv was created.           "
+  echo "---  (I added some blanks where I changed values within qvals2dspikes.csv   "
+  echo "---  so you can find the changes easily using vi.                           "
+  echo "----------------------------------------------------------------------------"
+
+  echo "----------------------------------------------------------------------------"
+#
+# Note that output times are 0 to 1000 in intervals of 100. 
+# If you output at intervals of 4 (a usual sampling interval for seismic traces),
+# you get big records in the output q-file.
+#
+# Note tstat below. This shows how floating datum static MIGHT be used.
+# Delete that line if you want to run tests without it.                        
+#
+  subinqcsv  qout=fakeqvals2dspikes.csv outind=0,800,100 \
+        cdp=11,91 \
+        tstat=10,10 \
+        tnmo=0,200,500,800 \
+        vnmo=1800,3500,4000,5000 \
+        tnmo=0,200,500,800 \
+        vnmo=1800,3500,4000,5000 \
+#

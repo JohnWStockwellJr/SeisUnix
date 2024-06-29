@@ -1,1 +1,36 @@
+<<<<<<< master
+
+SUPADMISSING - Add Dead Traces For Missing Key Values.            
+
+------------------------------------------------------------------------------
+  The tests below creates a fake cdp-stack with just a few cdps.
+  Then suwind is used to delete some selected cdps.            
+  Then supadmissing is used to pad (add back) those missing cdps.    
+  The padded traces have the missing cdp numbers.          
+  The padded traces have zero amplitude and key nhs=0      
+  The padded traces have all other key values copied from the 
+  next higher input trace (or the last input trace). No interpolation.
+
+  The header prints and trace plots allow easier checking.        
+  For best testing, alter the suwind parameters to delete various cdps.
+
+  In particular, test random small gaps with small amounts of input cdps 
+  between the gaps. Also put those random gaps near the beginning and ending
+  of the input cdp range.
+
+------------------------------------------------------------------------------
+
+sh ./Supadmissing_test1
+
+sh ./Supadmissing_test2
+
+sh ./Supadmissing_test3
+
+sh ./Supadmissing_test4
+
+sh ./Supadmissing_test5
+
+---
+=======
 Create.
+>>>>>>> master

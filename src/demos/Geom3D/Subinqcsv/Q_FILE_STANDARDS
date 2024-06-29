@@ -124,6 +124,4 @@ Things that are not Q-file standards:
   d. It may be tempting to think of q-files containing C_SU_NDIMS records as 
      output q-files, and not containing C_SU_NDIMS records as input q-files.
      But this is not true, it is just the usual situation for subinqcsv. 
-     (Currently, subinqcsv can input both types, but will only output q-files
-      containing C_SU_NDIMS records).
 

@@ -1,0 +1,42 @@
+#!/bin/sh
+# Susmoqcsv_create_unrealistic_3d - for program SUSMOQCSV
+# Author: Andre Latour, March 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This is not a realistic example.                                       "
+  echo "---  The grid is changed by subinxxcsv (vary this for more testing).        "
+  echo "---  Then subinqcsv creates all grid cdps with constant tstat and vnmo.     "
+  echo "---                                                                         "
+  echo "---  THEN GO INTO OUTPUT FILE AND EDIT IT TO CHANGE VALUES AT SPECIFIC CDPS "
+  echo "---                                                                         "
+  echo "---  Those changes make it easy to see affects of susmoqcsv options.        "
+  echo "---  That is how the stored q-file qvalspikes.csv was created.              "
+  echo "---  (I added some blanks where I changed values within qvalspikes.csv so   "
+  echo "---  you can find the changes easily using vi.                              "
+  echo "----------------------------------------------------------------------------"
+#
+  subinxxcsv rfile=kEFG.csv wfile=fakekEFGsmallerforspikes.csv \
+             check=1 igilow=-45 igihigh=-46 igclow=-2 igchigh=-1
+#
+# Note that output times are 0 to 1000 in intervals of 100. 
+# If you output at intervals of 4 (a usual sampling interval for seismic traces),
+# you get big records in the output q-file.
+#
+  subinqcsv rfile=fakekEFGsmallerforspikes.csv qout=fakeqvals3dspikes.csv outind=0,500,100 \
+        cdp=1 \
+        tstat=-10.0 \
+        tnmo=0,100,400 \
+        vnmo=0,1000,4000 \
+#
+  subinqcsv rfile=fakekEFGsmallerforspikes.csv qout=fakeqvals3dspikestuples.csv outind=0,500,100 \
+        cdp=1 \
+        tstat=-10.0 \
+        sstat=-20.0 \
+        selev=30.0 \
+        gstat=-40.0 \
+        gelev=50.0 \
+        tnmo=0,100,400 \
+        vnmo=0,1000,4000 \
+        dpth=0,200,800 \
+        tupa=70,700,7000  
+#

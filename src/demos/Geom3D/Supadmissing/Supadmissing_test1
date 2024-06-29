@@ -1,0 +1,52 @@
+#!/bin/sh
+# Supadmissing_test1 - for program SUPADMISSING
+# Author: Andre Latour, Feb 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  This test creates traces with simple cdp numbers (using sugeomcsv).    "
+  echo "---  And a spike on all traces, which is filtered so it becomes a wavelet.  "
+  echo "---  Those wavelets are shifted in time by an amount corresponding to cdp.  "
+  echo "---  Those traces are then displayed.                                       "
+  echo "---  Some of those traces are then deleted by suwind.                       "
+  echo "---  Then supadmissing is run to (re)create the deleted traces.             "
+  echo "---  Then header values and trace plot are displayed after supadmissing.    "
+  echo "---  This makes it easy to tell that traces have been padded correctly.     "
+  echo "---   *** Next, rerun this test with various suwind delete of cdps.         "
+  echo "---   *** Notably test small random gaps near each other, such as:          "
+  echo "---   ***       1 missing, 1 existing, 1 missing                            "
+  echo "---   ***       2 missing, 1 existing, 2 missing                            "
+  echo "---   ***       1 missing, 2 existing, 1 missing                            "
+  echo "---   ***       2 missing, 2 existing, 2 missing                            "
+  echo "---   *** Repeat similar gaps near beginning and ending of input range.     "
+  echo "---                                                                         "
+  echo "---  Note that the nhs value should come out as 0 for padded traces.        "
+  echo "---  And tracf and gstat are printed in order to make sure that             "
+  echo "---  you are outputing the trace headers you think you are.                 "
+  echo "---  Also the reason this test has shifted wavelets is that you want to     "
+  echo "---  make sure that the output headers are attached to the correct samples. "
+  echo "---  *** Those kinds of nasty errors can happen when creating traces.       "
+  echo "----------------------------------------------------------------------------"
+#
+  sugeomcsv rfile=CDPS.csv >tfake11.su create=all spikes=4,0.00,200,1000,500,0
+#
+  subfilt <tfake11.su >tfake12.su fpasshi=20
+#
+  suchw <tfake12.su >tfake13.su key1=gstat key2=cdp b=4
+#
+# sugethw <tfake13.su key=cdp,tracf,nhs,gstat,sx
+#
+  sustatic <tfake13.su >tfake14.su hdrs=1 sign=-1
+#
+  suxwigb <tfake14.su key=cdp title="input (plot by cdp key)" &
+#
+  suwind <tfake14.su >tfake15.su key=cdp reject=14,16,27
+#
+# So now you can run a bunch of tests similar to what you see next.
+#
+# supadmissing <tfake15.su >tfake16.su keyloc=cdp                   
+  supadmissing <tfake15.su >tfake16.su              minval=05 maxval=35
+#
+  sugethw <tfake16.su key=cdp,tracf,nhs,gstat,sx
+#
+  suxwigb <tfake16.su key=cdp title="padded output (plot by cdp key)" &
+#

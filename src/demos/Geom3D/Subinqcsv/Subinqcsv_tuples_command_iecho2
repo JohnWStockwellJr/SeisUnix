@@ -1,0 +1,150 @@
+#!/bin/sh
+# Subinqcsv_tuples_command_iecho2 - for program SUBINQCSV
+# Author: Andre Latour, May 2024
+#
+  echo "----------------------------------------------------------------------"
+  echo " Convert tuple values from input parameters to output q-file with     "
+  echo " a varying number of tuples. The initial setup inputs triplets and    "
+  echo " outputs triplets. The second setup inputs triplets but uses the      "
+  echo " ename parameter to reduce them to pairs before output. The third     "
+  echo " setup actually reduces setup from triplets to pairs. The second      "
+  echo " and third setups should produce identical output (and do).           "
+  echo " The fourth setup tests the no-tuple case with iecho=2.               "
+  echo " Then, in order to test, use those output q-files as input to make    "
+  echo " sure the varying tuples q-files have been constructed properly.      "
+  echo "----------------------------------------------------------------------"
+#
+# Note that there are a varying number of triplets (tuples) at the cdps.  
+# There is a limited list of these names recognized by subinqcsv when  
+# using command line parameter input (but not when using q-file input).
+# Since vnmo starts with a v, the default behavior is to use           
+# inverse-squared-VALUE-weighting (not inverse-squared-distance).      
+# The iecho option is 2 here, which just outputs at the input locations.  
+# But outind= still causes the independent dimension (tims for this example)     
+# to output vels at 20,220,420,620,820,1020 for each cdp.                    
+#
+  subinqcsv rfile=kEFG.csv qout=qvalsout101.csv iecho=2            \
+        cdp=21,41,81,101,1473,1493,1533,1553,2683,2703,2743,2763 \
+        numa=121,141,181,201,1573,1593,1633,1653,2783,2803,2843,2863 \
+        tims=0,190,850,1800 \
+        dpth=1,191,851,1801 \
+        vnmo=1200,2000,4000,5000 \
+        tims=0,200,900,1800 \
+        dpth=1,201,901,1801 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,200,700,1600 \
+        dpth=1,201,701,1601 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,100,750,1700 \
+        dpth=1,101,751,1701 \
+        vnmo=2800,5500,6000,8000 \
+        tims=0,200,500 \
+        dpth=1,201,501 \
+        vnmo=3333,5555,6666 \
+        tims=0,190,454,1200 \
+        dpth=1,191,455,1201 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,190,855,1800 \
+        dpth=1,191,856,1801 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,190,888,1680 \
+        dpth=1,191,889,1681 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,290,777,1400 \
+        dpth=1,291,778,1401 \
+        vnmo=1200,2000,4000,5000 \
+        tims=0,190,453,1100 \
+        dpth=1,191,454,1101 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,290,454,1200,1900 \
+        dpth=1,291,455,1201,1901 \
+        vnmo=1800,3500,4000,5000,5500 \
+        tims=0,190,755,1800 \
+        dpth=1,191,756,1801 \
+        vnmo=2800,5500,6000,8000 \
+#
+  subinqcsv rfile=kEFG.csv qin=qvalsout101.csv qout=qvalsout102.csv outind=0,2000,100
+#
+#
+#
+# subinqcsv rfile=kEFG.csv qout=qvalsout103.csv iecho=2 ename=dpth,numa \
+  subinqcsv rfile=kEFG.csv qout=qvalsout103.csv iecho=2 ename=dpth      \
+        cdp=21,41,81,101,1473,1493,1533,1553,2683,2703,2743,2763 \
+        numa=121,141,181,201,1573,1593,1633,1653,2783,2803,2843,2863 \
+        tims=0,190,850,1800 \
+        dpth=1,191,851,1801 \
+        vnmo=1200,2000,4000,5000 \
+        tims=0,200,900,1800 \
+        dpth=1,201,901,1801 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,200,700,1600 \
+        dpth=1,201,701,1601 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,100,750,1700 \
+        dpth=1,101,751,1701 \
+        vnmo=2800,5500,6000,8000 \
+        tims=0,200,500 \
+        dpth=1,201,501 \
+        vnmo=3333,5555,6666 \
+        tims=0,190,454,1200 \
+        dpth=1,191,455,1201 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,190,855,1800 \
+        dpth=1,191,856,1801 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,190,888,1680 \
+        dpth=1,191,889,1681 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,290,777,1400 \
+        dpth=1,291,778,1401 \
+        vnmo=1200,2000,4000,5000 \
+        tims=0,190,453,1100 \
+        dpth=1,191,454,1101 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,290,454,1200,1900 \
+        dpth=1,291,455,1201,1901 \
+        vnmo=1800,3500,4000,5000,5500 \
+        tims=0,190,755,1800 \
+        dpth=1,191,756,1801 \
+        vnmo=2800,5500,6000,8000 \
+#
+  subinqcsv rfile=kEFG.csv qin=qvalsout103.csv qout=qvalsout104.csv outind=0,2000,100
+#
+#
+  subinqcsv rfile=kEFG.csv qout=qvalsout105.csv iecho=2            \
+        cdp=21,41,81,101,1473,1493,1533,1553,2683,2703,2743,2763 \
+        numa=121,141,181,201,1573,1593,1633,1653,2783,2803,2843,2863 \
+        tims=0,190,850,1800 \
+        vnmo=1200,2000,4000,5000 \
+        tims=0,200,900,1800 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,200,700,1600 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,100,750,1700 \
+        vnmo=2800,5500,6000,8000 \
+        tims=0,200,500 \
+        vnmo=3333,5555,6666 \
+        tims=0,190,454,1200 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,190,855,1800 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,190,888,1680 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,290,777,1400 \
+        vnmo=1200,2000,4000,5000 \
+        tims=0,190,453,1100 \
+        vnmo=1800,3500,4000,5000 \
+        tims=0,290,454,1200,1900 \
+        vnmo=1800,3500,4000,5000,5500 \
+        tims=0,190,755,1800 \
+        vnmo=2800,5500,6000,8000 \
+#
+  subinqcsv rfile=kEFG.csv qin=qvalsout105.csv qout=qvalsout106.csv outind=0,2000,100
+#
+# subinqcsv rfile=kEFG.csv qout=qvalsout107.csv iecho=1             \
+  subinqcsv rfile=kEFG.csv qout=qvalsout107.csv iecho=2             \
+        cdp=21,41,81,101,1473,1493,1533,1553,2683,2703,2743,2763 \
+        numa=121,141,181,201,1573,1593,1633,1653,2783,2803,2843,2863 
+#
+  subinqcsv rfile=kEFG.csv qin=qvalsout107.csv qout=qvalsout108.csv   
+#
