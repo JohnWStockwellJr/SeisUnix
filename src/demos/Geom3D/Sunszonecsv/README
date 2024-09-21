@@ -4,13 +4,13 @@ SUNSZONECSV - Near Surface Zone Extract and Shift.
  The scripts in this directory are designed to test the parameters.
  They are not realistic tests.                                                   
  Notice that the input fake seismic is just 1 flat horizon.
- For 4 refraction layers, actual seismic should contain up to 4 refraction
- wavelets which cross-over each other at various offset distances, times.
+ For 3 refraction layers, actual seismic should contain up to 3 wavelets  
+ which cross-over each other at various offset distances, times.
 
  The SUNSZONECSV program can be used either to help check simple near surface
  models, or for checking geometry update (are XYs correct, have traces been 
  assigned to the correct points/stations). 
- Sometime near the end of 2024 I will produce a YouTube video about all this.
+ Sometime near the end of 2024 I will produce a YouTube video about this.
  
 ------------------------------------------------------------------------------
   I advise running the scripts in the following order:
@@ -25,6 +25,10 @@ sh ./Sunszonecsv_test2
 sh ./Sunszonecsv_test3
 
 sh ./Sunszonecsv_test4
+
+sh ./Sunszonecsv_test5
+
+sh ./Sunszonecsv_test6
 
 ---
 ---

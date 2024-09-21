@@ -1,10 +1,11 @@
 #!/bin/sh
-# Sushiftcsv_test1 - for program SUSHIFTCSV
-# Author: Andre Latour, Aug 2023
+# Sunszonecsv_test1 - for program SUNSZONECSV
+# Author: Andre Latour, Sept 2024
 #
   echo "----------------------------------------------------------------------------"
   echo "---  Input fake traces, apply shifts.                                       "
   echo "---  Basic test of computing/applying shifts (reverse and then forward).    "
+  echo "---  Note the forward sunszonecsv also tests defaults for some parameters.  "
   echo "----------------------------------------------------------------------------"
 #
   suxwigb <fake04.su title=" before shifts " &
@@ -12,11 +13,11 @@
   sunszonecsv <fake04.su >fake11.su              locs=0 tpath=0 tapp=1 apply=1  \
               qin=l2scrookred.csv
 #
-  sugethw <fake11.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec
+  sugethw <fake11.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec >fake11.txt
 #
   suxwigb <fake11.su title=" after apply=1 shift " &
 #
-  sunszonecsv <fake11.su >fake12.su              locs=0 tpath=0 tapp=1 apply=-1   \
+  sunszonecsv <fake11.su >fake12.su                                             \
               qin=l2scrookred.csv
 #
   suxwigb <fake12.su title=" after apply=1 and apply=-1 shifts " &

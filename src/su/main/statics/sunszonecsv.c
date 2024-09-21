@@ -1,7 +1,7 @@
-/* Copyright (c) Colorado School of Mines, 2022.*/
+/* Copyright (c) Colorado School of Mines, 2024.*/
 /* All rights reserved.                       */
 
-/* SUNSZONECSV: $Revision: 1.01 $ ; $Date: 2024/06/25 00:00:01 $		*/
+/* SUNSZONECSV: $Revision: 1.02 $ ; $Date: 2024/09/06 00:00:01 $		*/
  
 #include "su.h"
 #include "segy.h" 
@@ -19,32 +19,25 @@ char *sdoc[] = {
 "									     ",
 " Parameters:	         						     ",
 "                                                                            ",
-" qin=      Input file containing q-records. This parameter is required.     ",
+" qin=          Input file containing q-records. If this parameter is        ",
+"               not specified, all parameters down to thickadd are ignored.  ",
+"               And then both thickadd and veladd must be specified.         ",
 "									     ",
-" qx=sx         Name of X coordinate at points in the q-file.                ",
+" xys=sx,sy     Names of 2 coordinate values in the q-file.                  ",
+"         Note: Default names match an example simple statics spreadsheet.   ",
 "									     ",
-" qy=sy         Name of Y coordinate at points in the q-file.                ",
+" thicks=zw_true,zb_true    Names of thickness values in the q-file.         ",
+"               You can specify as many names as exist in the q-file but you ",
+"               do not have to specify all of them.                          ",
+"         Note: Default names match the example simple statics spreadsheet.  ",
 "									     ",
-" qvw=vw        Name of top layer velocity at points in the q-file.          ",
-"									     ",
-" qzw=zw_true   Name of top layer thickness at points in the q-file.         ",
-"									     ",
-" qvb=vb        Name of second layer velocity at points in the q-file.       ",
-"									     ",
-" qzb=zb_true   Name of second layer thickness at points in the q-file.      ",
-"    =unknown   Second layer has unknown thickness.                          ",
-"   ***   Note: Once unknown is specified (or defaults) for a thickness,     ",
-"               parameters for deeper layers are not used.                   ",
-"									     ",
-" qvc=vc        Name of third layer velocity at points in the q-file.        ",
-"									     ",
-" qzc=zc_true   Name of third layer thickness at points in the q-file.       ",
-"    =unknown   Third layer has unknown thickness.                           ",
-"                                                                            ",
-" qvd=vd        Name of fourth layer velocity at points in the q-file.       ",
+" vels=vw,vb,vc             Names of velocity values in the q-file.          ",
+"               This list must have one more name than the thicks list.      ",
+"         Note: Default names match the example simple statics spreadsheet.  ",
 "									     ",
 " locs=0        Use near surface model from shot and receiver ends of traces.",
 "     =1        Use near surface model from shot end only.                   ",
+"         Note: If qin has widely spaced points, usually best to use 1 here. ",
 "     =-1       Use near surface model from receiver end only.               ",
 "         Note: The model is assumed to be flat at both ends, and raypaths   ",
 "               are assumed to be straight with a linear change in layer     ",
@@ -58,15 +51,52 @@ char *sdoc[] = {
 "               for both ends of the raypaths. Option -1 simply uses the     ",
 "               velocities and thicknesses of the receiver location for      ",
 "               both ends of the raypaths.                                   ",
+"         ***   Due to the approximations used herein, traveltimes for layers", 
+"               ABOVE the shot hole depth will be too large. Traveltimes for ",
+"               layers CONTAINING or BELOW the shot hole depth should have   ",
+"               similar accuracy as for surface shots.                       ",
+"									     ",
+" thickadd=0.0  List of values to add to thicknesses at both ends.           ",
+"               If qin file is specified, default is 0.0 for all layers.     ",
+"               If the result for a layer is less than 0.0, it is reset      ",
+"               to 0.0 at the shot or receiver end (or both ends).           ",
+"               Values listed for more than qin layers will be ignored.      ",
+"         Note: If qin file is not specified, this list must be specified    ",
+"               and are the thicknesses at both shot and receiver ends.      ",
+"                                                                            ",
+" veladd=0.0    List of values to add to velocities at both ends.            ",
+"               If qin file is specified, default is 0.0 for all layers.     ",
+"               If the result for a layer is less than 1.0, it is reset      ",
+"               to 1.0 at the shot or receiver end (or both ends).           ",
+"               Values listed for more than qin layers+1 will be ignored.    ",
+"         Note: If qin file is not specified, this list must be specified    ",
+"               and are the velocities at both shot and receiver ends.       ",
+"               Must be one more value listed than in the thickadd list.     ",
+"                                                                            ",
+" offsub=0.0    Value to subtract from all distances from shot to receiver.  ",
+"         Note: This program computes the offset distance using sx,sy,gx,gy  ",
+"               (it does not use offset key value at all). The value here is ",
+"               subtracted from that distance. For 2d surveys this can be    ",
+"               used to adjust the distance from the centre of the geophone  ",
+"               array to the geophone nearest the shot.                      ",
+"                                                                            ",
+" laymax=       Maximum layers to use. When qin file is input, the default   ",
+"               is number of values in vels list. When qin is not input,     ",
+"               default is number of values in veladd list.                  ",
+"       =1      Set to top layer (direct arrival layer).                     ",
+"       =2      Set to second layer (first refracted arrival layer).         ",
+"       =n      Set to nth layer (n-1th refracted arrival layer).            ",
+"         Note: This parameter exists simply to allow you to fully specify   ",
+"               the thicks, vels, thickadd, veladd lists without having to   ",
+"               change them to test results using fewer layer(s).            ",
 "									     ",
 " tpath=0       Travel path shift value.                                     ",
 "               The default (0) is to set the shift to the minimum time of   ",
 "               the raypaths computed for all layers and the direct arrival  ",
 "               path (also known as the first arrival or first break time).  ",
-"      =1       Set shift to top-of-first layer direct arrival time.         ",
-"      =2       Set shift to top-of-second layer refraction arrival time.    ",
-"      =3       Set shift to top-of-third layer refraction arrival time.     ",
-"      =4       Set shift to top-of-fourth layer refraction arrival time.    ",
+"      =1       Set to top layer (direct arrival time).                      ",
+"      =2       Set to second layer (first refracted arrival time).          ",
+"      =n       Set to nth layer (n-1th refracted arrival time).             ",
 "									     ",
 " tapp=1        Apply the total time shift determined by the tpath option    ",
 "               and also set the sstat,gstat,tstat,sec key values.           ",
@@ -180,8 +210,10 @@ int main(int argc, char **argv) {
 
   cwp_String *pname = NULL;                                         
   cwp_String *ndims = NULL;                                                 
+  cwp_String *temps = NULL;                                                 
   int numpname = 9;
   int nlayer   = 1;
+  int laymax   = 3;
 
   double *pindepa = NULL;                                               
   int numdind = 0;
@@ -231,20 +263,29 @@ int main(int argc, char **argv) {
   float *oneshift=NULL;
   float sampi=0.0;
   double tshift = 0.0;
-  double ptm[4]; /* Note current max nlayer is 3. But +1 needed here.         */
-  double stm[4];
-  double gtm[4];
-  double eps[4];
-  double zps[4];
-  double vls[4];
-  double epg[4];
-  double zpg[4];
-  double vlg[4];
+  double *ptm=NULL;
+  double *stm=NULL;
+  double *gtm=NULL;
+  double *eps=NULL;
+  double *zps=NULL;
+  double *vls=NULL;
+  double *epg=NULL;
+  double *zpg=NULL;
+  double *vlg=NULL;
+  double *tad=NULL;
+  double *vad=NULL;
+
+  int nadthicks=0;
+  int nadvels=0;
+  double *thickadd=NULL;
+  double *veladd=NULL;
   double shole = 0.0;
+  double ehole = 0.0;
+  double offsub=0.0;
 
   cwp_String *iname = NULL;                                         
   int numiname = 9;
-  int locn[9];
+  int *locn=NULL;
 
 /* hook up getpar */
   initargs(argc, argv);
@@ -264,9 +305,6 @@ int main(int argc, char **argv) {
     extent_max[i] =  DBL_MAX;
     tree_nt[i] = 1; 
   }
-
-  if(!getparint("locs",&locs)) locs = 0;
-  if(locs<-1 || locs>1)  err("**** Error: locs parameter out-of-range."); 
 
   if(!getparint("apply",&iapply)) iapply = -1;
   if(iapply!=-1 && iapply!=1)  err("**** Error: apply parameter out-of-range."); 
@@ -292,101 +330,177 @@ int main(int argc, char **argv) {
 
 /*--------------------------------------------------------------------------  */
 
-  getparstring("qin", &Pname);
+  locs = -2; /* set this flag to -2 when no qin file is input. */
 
-  fpP = fopen(Pname, "r");
-  if(fpP==NULL) err("error: input Q-file did not open correctly.");
+  if(countparval("qin") > 0) {
+
+    getparstring("qin", &Pname);
+
+    fpP = fopen(Pname, "r");
+    if(fpP==NULL) err("error: input Q-file did not open correctly.");
     
 /* Set input numpname,pname to store everything in q-file.                    */
 /* numpname>0 is a flag to ONLY store values if they are on pname list.       */
 /* numpname<1 is a flag to NOT store values if they are on pname list.        */
 
-  pname = ealloc1(9,sizeof(cwp_String *));
+    if((countparval("thicks")>0 && countparval("vels") < 1) ||
+       (countparval("thicks")<1 && countparval("vels") > 0)) 
+    err("error: vels list and thicks list must both default or both be specified.");
 
-  if(countparval("qx") > 0) {
-    getparstring("qx",pname);
-  }
-  else {
-    pname[0] = ealloc1(2,1);
-    strcpy(pname[0],"sx");
-  }
-  
-  if(countparval("qy") > 0) {
-    getparstring("qy",pname+1);
-  }
-  else {
-    pname[1] = ealloc1(2,1);
-    strcpy(pname[1],"sy");
-  }
-  
-  if(countparval("qvw") > 0) {
-    getparstring("qvw",pname+2);
-  }
-  else {
-    pname[2] = ealloc1(2,1);
-    strcpy(pname[2],"vw");
-  }
-  
-  if(countparval("qzw") > 0) {
-    getparstring("qzw",pname+3);
-  }
-  else {
-    pname[3] = ealloc1(7,1);
-    strcpy(pname[3],"zw_true");
-  }
-  
-  if(countparval("qvb") > 0) {
-    getparstring("qvb",pname+4);
-  }
-  else {
-    pname[4] = ealloc1(2,1);
-    strcpy(pname[4],"vb");
-  }
-  
-  if(countparval("qzb") > 0) {
-    getparstring("qzb",pname+5);
-  }
-  else {
-    pname[5] = ealloc1(7,1);
-    strcpy(pname[5],"zb_true");
-  }
-  
-  if(countparval("qvc") > 0) {
-    getparstring("qvc",pname+6);
-  }
-  else {
-    pname[6] = ealloc1(2,1);
-    strcpy(pname[6],"vc");
-  }
-  
-  if(countparval("qzc") > 0) {
-    getparstring("qzc",pname+7);
-  }
-  else {
-    pname[7] = ealloc1(7,1);
-    strcpy(pname[7],"zc_true");
-  }
-  
-  if(countparval("qvd") > 0) {
-    getparstring("qvd",pname+8);
-  }
-  else {
-    pname[8] = ealloc1(2,1);
-    strcpy(pname[8],"vd");
-  }
-  
-/* Note nlayer is last FULL layer. But nlayer+1 has velocity and traveltimes. */
+    if(countparval("thicks")==0) {
+      nlayer = 2;
+    }
+    else {
+      nlayer = countparval("thicks");
+      if(countparval("vels") != nlayer+1) err("error: vels list must have one more than thicks list.");
+    }
+    
+    if(!getparint("laymax",&laymax)) laymax = nlayer+1;
+    if(laymax<1 || laymax>nlayer+1)  err("**** Error: laymax parameter out-of-range."); 
+    nlayer = laymax-1;
+    
+    pname = ealloc1(nlayer+3+nlayer,sizeof(cwp_String *)); /* 2 for XYs, and 1 for extra vel */
 
-  nlayer = 3;
-  numpname = 9;
-  if(strcmp(pname[7],"unknown")==0) {
-    nlayer = 2;
-    numpname = 7;
+    temps = ealloc1(nlayer+3,sizeof(cwp_String *)); 
+
+    if(countparval("xys") > 0) {
+      if(countparval("xys") != 2) err("error: xys list must have 2 names.");
+      getparstringarray("xys", temps);
+      for(i=0; i<2; i++) {
+        pname[i] = ealloc1(strlen(temps[i]),1);
+        strcpy(pname[i],temps[i]);
+      }
+    }
+    else {
+      pname[0] = ealloc1(2,1);
+      strcpy(pname[0],"sx");
+      pname[1] = ealloc1(2,1);
+      strcpy(pname[1],"sy");
+    }
+
+    if(countparval("vels") > 0) {
+      getparstringarray("vels", temps);
+      for(i=2; i<nlayer+3; i++) {
+        pname[i] = ealloc1(strlen(temps[i-2]),1);
+        strcpy(pname[i],temps[i-2]);
+      }
+    }
+    else {
+      for(i=2; i<nlayer+3; i++) {
+        pname[i] = ealloc1(2,1);
+        if(i==2) strcpy(pname[i],"vw");
+        else if(i==3) strcpy(pname[i],"vb");
+        else if(i==4) strcpy(pname[i],"vc");
+      }
+    }
+
+    if(countparval("thicks") > 0) {
+      getparstringarray("thicks", temps);
+      for(i=nlayer+3;i<nlayer+3+nlayer; i++) {
+        pname[i] = ealloc1(strlen(temps[i-nlayer-3]),1);
+        strcpy(pname[i],temps[i-nlayer-3]);
+      }
+    }
+    else {
+      for(i=nlayer+3;i<nlayer+3+nlayer; i++) {
+        pname[i] = ealloc1(7,1);
+        if(i==nlayer+3) strcpy(pname[i],"zw_true");
+        else if(i==nlayer+4) strcpy(pname[i],"zb_true");
+      }
+    }
+
+    numpname = nlayer+3+nlayer;
+
+    if(!getparint("locs",&locs)) locs = 0;
+    if(locs<-1 || locs>1)  err("**** Error: locs parameter out-of-range."); 
+
+    if(countparval("thickadd")>0) {
+      nadthicks = countparval("thickadd");
+      thickadd = ealloc1double(nadthicks);
+      getpardouble("thickadd",thickadd);
+      if(nadthicks>nlayer) nadthicks = nlayer;
+    }
+
+    if(countparval("veladd")>0) {
+      nadvels = countparval("veladd");
+      veladd = ealloc1double(nadvels);
+      getpardouble("veladd",veladd);
+      if(nadvels>nlayer+1) nadvels = nlayer+1;
+    }
+
+  } /* end of  if(countparval("qin") > 0) { */
+  else {
+
+    nadthicks = countparval("thickadd");
+    thickadd = ealloc1double(nadthicks);
+    getpardouble("thickadd",thickadd);
+    if(nadthicks<1) err("**** Error: When no qin file, the thickadd list must contain some values.");
+
+    nlayer = nadthicks;
+    if(!getparint("laymax",&laymax)) laymax = nlayer+1;
+    if(laymax<1 || laymax>nlayer+1)  err("**** Error: laymax parameter out-of-range."); 
+    nlayer = laymax-1;
+    
+    if(nadthicks>nlayer) nadthicks = nlayer;
+    for(i=0; i<nadthicks; i++) {
+      if(thickadd[i] < 0.0) err("**** Error: thickadd values cannot be negative when qin file is not input.");
+    }
+
+    nadvels = countparval("veladd");
+    veladd = ealloc1double(nadvels);
+    getpardouble("veladd",veladd);
+    if(nadvels>nlayer+1) nadvels = nlayer+1;
+    if(nadvels<=nadthicks) err("**** Error: when no qin file input, veladd list must have one more than thickadd.");
+    for(i=0; i<nadvels; i++) {
+      if(veladd[i] <= 0.0) err("**** Error: veladd values must be positive when qin file is not input.");
+    }
+
   }
-  if(strcmp(pname[5],"unknown")==0) {
-    nlayer = 1;
-    numpname = 5;
+
+  ptm = ealloc1double(nlayer+1);
+  stm = ealloc1double(nlayer+1);
+  gtm = ealloc1double(nlayer+1);
+  eps = ealloc1double(nlayer+1);
+  zps = ealloc1double(nlayer+1);
+  vls = ealloc1double(nlayer+1);
+  epg = ealloc1double(nlayer+1);
+  zpg = ealloc1double(nlayer+1);
+  vlg = ealloc1double(nlayer+1);
+  tad = ealloc1double(nlayer+1);
+  vad = ealloc1double(nlayer+1);
+
+/* Some of these really do require initializing to 0.0                        */
+
+  for(i=0; i<nlayer+1; i++) {
+    ptm[i] = 0.0;
+    stm[i] = 0.0;
+    gtm[i] = 0.0;
+    eps[i] = 0.0;
+    zps[i] = 0.0;
+    vls[i] = 0.0;
+    epg[i] = 0.0;
+    zpg[i] = 0.0;
+    vlg[i] = 0.0;
+    tad[i] = 0.0;
+    vad[i] = 0.0;
   }
+
+  if(locs==-2) { 
+    for(i=0; i<nadthicks; i++) {
+      zps[i] = thickadd[i];
+      zpg[i] = thickadd[i];
+    }
+    for(i=0; i<nadvels; i++) {
+      vls[i] = veladd[i];
+      vlg[i] = veladd[i];
+    }
+  }
+  else {
+    for(i=0; i<nadthicks; i++) tad[i] = thickadd[i];
+    for(i=0; i<nadvels;   i++) vad[i] = veladd[i];
+  }
+
+  if(!getpardouble("offsub",&offsub)) offsub = 0.0;
 
   if(!getparint("tpath",&tpath)) tpath = 0;
   if(tpath<0 || tpath>nlayer+1)  err("**** Error: tpath parameter out-of-range."); 
@@ -396,62 +510,69 @@ int main(int argc, char **argv) {
 
   if(!getpardouble("tbulk",&tbulk)) tbulk = 200.0;
 
+/* Read-in qin file?                                                          */
+
+  if(locs!=-2) { 
+
 /* Note: positive numpname does not mean values come back in pname order.     */
 /* Note: and returned numpname is something else, so set numiname.            */
 
-  iname = ealloc1(numpname,sizeof(cwp_String *));
-  numiname= numpname;
-  for(i=0; i<numpname; i++) {
-    iname[i] = ealloc1(strlen(pname[i]),1);
-    strcpy(iname[i],pname[i]);
-  }
-
-  getviaqfile(fpP, &pname, &numpname, &iztuple, numdind,   
-              &ktuple, &ifixd, &RecInfo, &ncdp, 
-              &pindepa,  &ndims, &errwarn) ;
-
-  if(errwarn==1) err("getqinfo error: extra C_SU_NAMES record in q-file");
-  else if(errwarn==2) err("getqinfo error: extra C_SU_NDIMS record in q-file");
-  else if(errwarn==3) err("getqinfo error: C_SU_ID record not found immediately after C_SU_NAMES record.");
-  else if(errwarn==11) 
-    err("readqhead error: if C_SU_NDIMS not vary, its numbers must align with C_SU_NAMES");
-  else if(errwarn==12) 
-    err("readqhead error: C_SU_ID record not found immediately after C_SU_NAMES record.");
-  else if(errwarn==22) err("getviaqfile error: C_SU_NDIMS record not same length as C_SU_NAMES record.");
-  else if(errwarn==23) err("getviaqfile error: C_SU_NAMES tupled names out-of-order, or accidental duplicate name");
-  else if(errwarn==24) err("getviaqfile error: C_SU_NDIMS blank where valid number expected");
-  else if(errwarn==25) err("getviaqfile error: C_SU_NDIMS non-number where valid number expected");
-  else if(errwarn==26) err("getviaqfile error: C_SU_NDIMS value must be same for all members of tuple");
-  else if(errwarn==27) err("getviaqfile error: C_SU_NAMES record followed by C_SU_ID record not found.");
-  else if(errwarn>100) 
-    err("getviaqfile error: record %d (wrong comma count, damaged, non-numbers, ...)",errwarn-99);
-  else if(errwarn>0) err("getviaqfile error: unrecognized error code %d",errwarn);
-
-
-  checkpars(); 
-
-  if(ifixd==0) err("error: input with varying number of tuples is not allowed.");
-
-  for(i=0; i<numiname; i++) {
-    locn[i] = -1;
-    for(j=0; j<iztuple; j++) {
-      if(strcmp(pname[j],iname[i])==0) locn[i] = j;
+    iname = ealloc1(numpname,sizeof(cwp_String *));
+    numiname= numpname;
+    for(i=0; i<numpname; i++) {
+      iname[i] = ealloc1(strlen(pname[i]),1);
+      strcpy(iname[i],pname[i]);
     }
-    if(locn[i] < 0) err("qin file error: name %s not found in non-tuple part of qin Q-file.",iname[i]);
-  }
+
+    getviaqfile(fpP, &pname, &numpname, &iztuple, numdind,   
+                &ktuple, &ifixd, &RecInfo, &ncdp, 
+                &pindepa,  &ndims, &errwarn) ;
+
+    if(errwarn==1) err("getqinfo error: extra C_SU_NAMES record in q-file");
+    else if(errwarn==2) err("getqinfo error: extra C_SU_NDIMS record in q-file");
+    else if(errwarn==3) err("getqinfo error: C_SU_ID record not found immediately after C_SU_NAMES record.");
+    else if(errwarn==11) 
+      err("readqhead error: if C_SU_NDIMS not vary, its numbers must align with C_SU_NAMES");
+    else if(errwarn==12) 
+      err("readqhead error: C_SU_ID record not found immediately after C_SU_NAMES record.");
+    else if(errwarn==22) err("getviaqfile error: C_SU_NDIMS record not same length as C_SU_NAMES record.");
+    else if(errwarn==23) err("getviaqfile error: C_SU_NAMES tupled names out-of-order, or accidental duplicate name");
+    else if(errwarn==24) err("getviaqfile error: C_SU_NDIMS blank where valid number expected");
+    else if(errwarn==25) err("getviaqfile error: C_SU_NDIMS non-number where valid number expected");
+    else if(errwarn==26) err("getviaqfile error: C_SU_NDIMS value must be same for all members of tuple");
+    else if(errwarn==27) err("getviaqfile error: C_SU_NAMES record followed by C_SU_ID record not found.");
+    else if(errwarn>100) 
+      err("getviaqfile error: record %d (wrong comma count, damaged, non-numbers, ...)",errwarn-99);
+    else if(errwarn>0) err("getviaqfile error: unrecognized error code %d",errwarn);
+
+    if(ifixd==0) err("error: input with varying number of tuples is not allowed.");
+
+    locn = ealloc1int(numiname);
+
+    for(i=0; i<numiname; i++) {
+      locn[i] = -1;
+      for(j=0; j<iztuple; j++) {
+        if(strcmp(pname[j],iname[i])==0) locn[i] = j;
+      }
+      if(locn[i] < 0) err("qin file error: name %s not found in non-tuple part of qin Q-file.",iname[i]);
+    }
 
 /*--------------------------------------------------------------------------  */
 
-  tree_ncdp = ncdp;
-  tree_nodes = ealloc1(tree_ncdp,sizeof(node));
+    tree_ncdp = ncdp;
+    tree_nodes = ealloc1(tree_ncdp,sizeof(node));
 
-  tree_dl[0] = ealloc1double(tree_ncdp);
-  for(j=0; j<tree_ncdp; j++) tree_dl[0][j] = RecInfo[j].dlots[locn[0]];
-  tree_dl[1] = ealloc1double(tree_ncdp);
-  for(j=0; j<tree_ncdp; j++) tree_dl[1][j] = RecInfo[j].dlots[locn[1]];
+    tree_dl[0] = ealloc1double(tree_ncdp);
+    for(j=0; j<tree_ncdp; j++) tree_dl[0][j] = RecInfo[j].dlots[locn[0]];
+    tree_dl[1] = ealloc1double(tree_ncdp);
+    for(j=0; j<tree_ncdp; j++) tree_dl[1][j] = RecInfo[j].dlots[locn[1]];
 
-  ihop = 1;
-  connect_nodes (tree_nodes, tree_ncdp, tree_dl, tree_numd, ihop);
+    ihop = 1;
+    connect_nodes (tree_nodes, tree_ncdp, tree_dl, tree_numd, ihop);
+
+  } /*  end of   if(locs!=-2) { */ 
+
+  checkpars(); 
 
 /*--------------------------------------------------------------------------  */
 
@@ -499,9 +620,15 @@ int main(int argc, char **argv) {
       epg[0] /= -tr.scalel;
     }
 
+    if(locs==-2) {
+      for(i=0; i<nadthicks; i++) zps[i] = thickadd[i]; /* reset due to shole  */
+      for(i=1; i<nlayer+1; i++) eps[i] = eps[i-1] - zps[i-1];
+      for(i=1; i<nlayer+1; i++) epg[i] = epg[i-1] - zpg[i-1];
+    }
+
 /* Use shot XYs in tars[0], tars[1] to find nearest model location.           */
 
-    if(locs>=0) {
+    if(locs==0 || locs==1) {
       if(sdadd==1) sdist2 = sdist + sqrt(near_dist_s);
        cycle_for_near(tree_nodes,tree_dl,tree_nt,tree_numd,
                      extent_min, extent_max, tars,
@@ -511,14 +638,20 @@ int main(int argc, char **argv) {
 /* Note that nlayer is the number of thicknesses. There is an extra velocity. */
 /* The shot point elevation eps[0] is from trace header.                      */
 
-      for(i=0; i<nlayer+1; i++) vls[i] = RecInfo[near_s].dlots[locn[2+i*2]];
-      for(i=0; i<nlayer;   i++) zps[i] = RecInfo[near_s].dlots[locn[3+i*2]];
+      for(i=0; i<nlayer+1; i++) {
+        vls[i] = RecInfo[near_s].dlots[locn[2+i]] + vad[i];
+        if(vls[i] < 1.0) vls[i] = 1.0;
+      }
+      for(i=0; i<nlayer;   i++) {
+        zps[i] = RecInfo[near_s].dlots[locn[3+nlayer+i]] + tad[i];
+        if(zps[i] < 0.0) zps[i] = 0.0;
+      }
       for(i=1; i<nlayer+1; i++) eps[i] = eps[i-1] - zps[i-1];
     }
 
 /* Use receiver XYs in targ[0], targ[1] to find nearest model location?       */
 
-    if(locs<=0) {
+    if(locs==0 || locs ==-1) {
 
       if(gdadd==1) gdist2 = gdist + sqrt(near_dist_g);
       cycle_for_near(tree_nodes,tree_dl,tree_nt,tree_numd,
@@ -526,8 +659,14 @@ int main(int argc, char **argv) {
                      gdist2, gmult,
                      &near_g, &near_dist_g, &num_found, &ncycles);
 
-      for(i=0; i<nlayer+1; i++) vlg[i] = RecInfo[near_g].dlots[locn[2+i*2]];
-      for(i=0; i<nlayer  ; i++) zpg[i] = RecInfo[near_g].dlots[locn[3+i*2]];
+      for(i=0; i<nlayer+1; i++) {
+        vlg[i] = RecInfo[near_g].dlots[locn[2+i]] + vad[i];
+        if(vlg[i] < 1.0) vlg[i] = 1.0;
+      }
+      for(i=0; i<nlayer  ; i++) {
+        zpg[i] = RecInfo[near_g].dlots[locn[3+nlayer+i]] + tad[i];
+        if(zpg[i] < 0.0) zpg[i] = 0.0;
+      }
       for(i=1; i<nlayer+1; i++) epg[i] = epg[i-1] - zpg[i-1];
     } 
 
@@ -547,18 +686,10 @@ int main(int argc, char **argv) {
       for(i=1; i<nlayer+1; i++) eps[i] = eps[i-1] - zpg[i-1];
     }
 
-/* Compute the time between the paths ends. This is distance between shot and */
-/* receiver considering differences in X,Y, and top-of-layer depths divided   */
-/* by the average velocity of each top-of-layer at the shot and the receiver. */
-/* (Averaging these two is same as linear velocity change from one to other). */
-
-    poff = (tars[0]-targ[0])*(tars[0]-targ[0]) + (tars[1]-targ[1])*(tars[1]-targ[1]); 
-
-    for(i=0; i<nlayer+1; i++) ptm[i] = sqrt(poff + (eps[i]-epg[i])*(eps[i]-epg[i])) / ((vls[i]+vlg[i])/2.0);
-
 /* Adjust thicknesses for shot-end-time-computation considering hole depth.   */
 
     if(shole>0.0) {
+      ehole = eps[0] - shole;
       for(i=0; i<nlayer; i++) {                                                   
         if(shole>=zps[i]) {
           shole -= zps[i];
@@ -569,7 +700,29 @@ int main(int argc, char **argv) {
           break;
         }
       }
-    }
+
+/* Computing times between path ends for layers ABOVE the hole bottom is      */
+/* complicated. Here, just set the layer top elevation to the hole bottom if  */
+/* higher. So layers above that should produce times that are too slow.       */
+/* So the first arrival time (tpath=0) should be usually be correct, and the  */
+/* time for the layer CONTAINING the hole bottom should be correct. And also, */
+/* if the hole bottom is within the top layer, the direct arrival time will   */
+/* be computed using true distance from the hole bottom to receiver elevation.*/
+
+      for(i=0; i<nlayer+1; i++) {                                                   
+        if(eps[i]>ehole) eps[i] = ehole;
+      }
+    } /* end of  if(shole>0.0) {  */
+
+/* Compute the time between the paths ends. This is distance between shot and */
+/* receiver considering differences in X,Y, and top-of-layer depths divided   */
+/* by the average velocity of each top-of-layer at the shot and the receiver. */
+/* (Averaging these two is same as linear velocity change from one to other). */
+
+    poff = sqrt((tars[0]-targ[0])*(tars[0]-targ[0]) + (tars[1]-targ[1])*(tars[1]-targ[1])) - offsub; 
+    if(poff<0.0) poff = 0.0;
+
+    for(i=0; i<nlayer+1; i++) ptm[i] = sqrt(poff*poff + (eps[i]-epg[i])*(eps[i]-epg[i])) / ((vls[i]+vlg[i])/2.0);
 
 /* Compute the shot-end-time and receiver-end-time.                           */
 

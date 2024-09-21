@@ -1,0 +1,23 @@
+#!/bin/sh
+# Sunszonecsv_test5 - for program SUNSZONECSV
+# Author: Andre Latour, Sept 2024
+#
+  echo "----------------------------------------------------------------------------"
+  echo "---  Input fake traces, apply shifts.                                       "
+  echo "---  Basic test of using tkickadd,veladd,offsub WITHOUT qin file.           "
+  echo "----------------------------------------------------------------------------"
+#
+  suxwigb <fake04.su title=" before shifts " &
+#
+  sunszonecsv <fake04.su >fake51.su                     tpath=0 tapp=1 apply=1  \
+              thickadd=15,100,200 veladd=610,1200,2200,3000 offsub=100
+#
+  sugethw <fake51.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec >fake51.txt
+#
+  suxwigb <fake51.su title=" after apply=1 shift " &
+#
+  sunszonecsv <fake51.su >fake52.su                     tpath=0 tapp=1 apply=-1   \
+              thickadd=15,100,200 veladd=610,1200,2200,3000 offsub=100
+#
+  suxwigb <fake52.su title=" after apply=1 and apply=-1 shifts " &
+#
