@@ -1,10 +1,11 @@
 #!/bin/sh
-# Sushiftcsv_test1 - for program SUSHIFTCSV
-# Author: Andre Latour, Aug 2023
+# Sunszonecsv_test1 - for program SUNSZONECSV
+# Author: Andre Latour, Sept 2024
 #
   echo "----------------------------------------------------------------------------"
   echo "---  Input fake traces, apply shift.                                        "
   echo "---  The l2scrookred4 file has different names for the columns.             "
+  echo "---  This test also uses layer 4 in the qin file (names 3 thicks, 4 vels)   "
   echo "---  This allows testing of the parameters which specify the names.         "
   echo "----------------------------------------------------------------------------"
 #
@@ -13,11 +14,11 @@
   suchw <fake04.su >fake41.su key1=gelev,sdepth key2=selev,sdepth key3=selev,sdepth a=0,120
 #
   sunszonecsv <fake41.su >fake42.su              locs=0 tpath=0 tapp=1 apply=1 \
-              qx=skkx qy=sandrey qvw=vaw qzw=zbbw_true qvb=vnnnb qzb=zbbw_true \
-              qvc=vwwwc qzc=zccc_true qvd=vddd \
+              xys=skkx,sandrey thicks=zbbw_true,zkkb_true,yyzc_true \
+              vels=vaw,vnqb,vwwwc,vddd \
               qin=l2scrookred4.csv
 #
-  sugethw <fake42.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec
+  sugethw <fake42.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec >fake42.txt
 #
   suxwigb <fake42.su title=" after shift " &
 #

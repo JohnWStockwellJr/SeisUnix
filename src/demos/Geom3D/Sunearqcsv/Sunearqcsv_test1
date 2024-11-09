@@ -1,0 +1,30 @@
+#!/bin/sh
+# Sunearqcsv_test1 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- If you look at base1 you can easily see that the numbers are unique    "
+  echo "--- and you can tell what columns and rows they come from.                 "
+  echo "--- Base2 has exactly the same numbers but the rows have been rearranged   "
+  echo "--- and so have the columns INCLUDING THEIR NAMES.                         "
+  echo "--- The sunearqcsv program code is doing a lot of indexing to match names  "
+  echo "--- between qin and tin q-files. Using the same options, base1 and base2   "
+  echo "--- should produce the same output - thus confirming that the indexing     "
+  echo "--- has matched the same names despite the rearranged base2 rows/columns.  "
+  echo "---  Note that target1 is the same as base1 except all numbers have an     "
+  echo "---  extra 1 added to them (except column g which has an extra 5 added).   "
+  echo "---  This makes it easy to see that oreps=d,c,m causes columns d,c,m       "
+  echo "---  in target1 to be replaced with nearest from base1 or base2.           "
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=base1.csv     dimx=b dimy=e \
+            tin=target1.csv   timx=b timy=e \
+            qout=qout001.csv  oreps=d,c,m 
+#
+ sunearqcsv qin=base2.csv     dimx=b dimy=e \
+            tin=target1.csv   timx=b timy=e \
+            qout=qout001a.csv oreps=d,c,m 
+#
+  echo "---  Note, there should NOT be a difference next...                        "
+ diff qout001.csv qout001a.csv
+#

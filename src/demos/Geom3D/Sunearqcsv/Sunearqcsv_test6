@@ -1,0 +1,27 @@
+#!/bin/sh
+# Sunearqcsv_test6 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- This is a test of varying-tuples with otuples options.                 "
+  echo "--- This copies the tuples from the tin file, nearest qin, or neither.     "
+  echo "--- Note the vuma values are added to the output BEFORE the tuples.        "
+  echo "--- Note the 4th setup, which inputs the same file and just deletes tuples."
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=vary6.csv     dimx=cdp \
+            tin=varytin6.csv  timx=cdp \
+            qout=qout006.csv  otuples=1 oreps=vuma  formxy=%.15g
+#
+ sunearqcsv qin=vary6.csv     dimx=cdp \
+            tin=varytin6.csv  timx=cdp \
+            qout=qout006a.csv otuples=2 oreps=vuma  formxy=%.15g
+#
+ sunearqcsv qin=vary6.csv     dimx=cdp \
+            tin=varytin6.csv  timx=cdp \
+            qout=qout006b.csv otuples=0 oreps=vuma  formxy=%.15g
+#
+ sunearqcsv qin=varytin6.csv  dimx=cdp \
+            tin=varytin6.csv  timx=cdp \
+            qout=qout006c.csv otuples=0             formxy=%.15g
+#

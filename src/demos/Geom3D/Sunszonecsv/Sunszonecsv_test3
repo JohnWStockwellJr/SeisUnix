@@ -1,6 +1,6 @@
 #!/bin/sh
-# Sushiftcsv_test1 - for program SUSHIFTCSV
-# Author: Andre Latour, Aug 2023
+# Sunszonecsv_test1 - for program SUNSZONECSV
+# Author: Andre Latour, Sept 2024
 #
   echo "----------------------------------------------------------------------------"
   echo "---  Input fake traces, apply shift.                                        "
@@ -16,7 +16,7 @@
   sunszonecsv <fake31.su >fake32.su              locs=0 tpath=0 tapp=1 apply=1   \
               qin=l2scrookred3.csv
 #
-  sugethw <fake32.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec
+  sugethw <fake32.su key=sx,sy,selev,sdepth,gx,gy,gelev,offset,sstat,gstat,tstat,sec >fake32.txt
 #
   suxwigb <fake32.su title=" after shifts " &
 #

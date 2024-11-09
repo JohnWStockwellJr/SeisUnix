@@ -1,0 +1,33 @@
+#!/bin/sh
+# Sunearqcsv_test3 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- Using base1,base2 and target2.                                         "
+  echo "--- Target2 is rearranged/missing rows and renamed/missing some columns.   "
+  echo "--- Remember, when oreps name exists in target it is REPLACED in output.   "
+  echo "--- But if oreps name is missing from target, it is ADDED to output.       "
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=base1.csv     dimx=f \
+            tin=target2.csv   timx=f \
+            qout=qout003.csv  oreps=e,m,d,el,c,eye      
+#
+ sunearqcsv qin=base2.csv     dimx=f \
+            tin=target2.csv   timx=f \
+            qout=qout003a.csv oreps=e,m,d,el,c,eye  
+#
+  echo "  Note, there should NOT be a difference next....                          "
+ diff qout003.csv qout003a.csv
+#
+ sunearqcsv qin=base1.csv     dimx=f \
+            tin=target2.csv   timx=f \
+            qout=qout003b.csv  oreps=c      
+#
+ sunearqcsv qin=base2.csv     dimx=f \
+            tin=target2.csv   timx=f \
+            qout=qout003c.csv oreps=c      
+#
+  echo "  Note, there should NOT be a difference next....                          "
+ diff qout003b.csv qout003c.csv
+#

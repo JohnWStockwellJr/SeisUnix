@@ -1,0 +1,25 @@
+#!/bin/sh
+# Sunearqcsv_test2 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- Using base1 and target1 like test 1.                                   "
+  echo "--- But finding nearest using just 1 dimension (name g).                   "
+  echo "--- Note that target g values end in 5. Which means they are exactly       "
+  echo "--- half-way between the g values in base1.                                "
+  echo "--- For half-way, by default, the nearest is from higher numbered row.     "
+  echo "--- But ordp=j option causes rows to be sorted internally by j resulting   "
+  echo "--- in reversing this because j is high-to-low. Note columns c,d,m change. "
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=base1.csv     dimx=g \
+            tin=target1.csv   timx=g \
+            qout=qout002.csv  oreps=m,d,c      
+#
+ sunearqcsv qin=base1.csv     dimx=g \
+            tin=target1.csv   timx=g \
+            qout=qout002a.csv oreps=m,d,c      ordp=j 
+#
+  echo "--- Note, should be differences next (but easier to compare this way)  "
+ diff qout002.csv qout002a.csv
+#

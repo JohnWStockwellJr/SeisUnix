@@ -1,0 +1,27 @@
+#!/bin/sh
+# Sunearqcsv_test7 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- This is a test of fixed-tuples with otuples options.                   "
+  echo "--- This copies the tuples from the tin file, nearest qin, or neither.     "
+  echo "--- Note that cdpt is replaced. And xxigi,xxigc are added before tuples.   "
+  echo "--- Note the 4th setup, which inputs the same file and just deletes tuples."
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=fixed7.csv     dimx=cdp \
+            tin=fixedtin7.csv  timx=cdp \
+            qout=qout007.csv   otuples=1 oreps=cdpt,xxigi,xxigc  formxy=%.15g
+#
+ sunearqcsv qin=fixed7.csv     dimx=cdp \
+            tin=fixedtin7.csv  timx=cdp \
+            qout=qout007a.csv  otuples=2 oreps=cdpt,xxigi,xxigc  formxy=%.15g
+#
+ sunearqcsv qin=fixed7.csv     dimx=cdp \
+            tin=fixedtin7.csv  timx=cdp \
+            qout=qout007b.csv  otuples=0 oreps=cdpt,xxigi,xxigc  formxy=%.15g
+#
+ sunearqcsv qin=fixedtin7.csv  dimx=cdp \
+            tin=fixedtin7.csv  timx=cdp \
+            qout=qout007c.csv  otuples=0                          formxy=%.15g
+#

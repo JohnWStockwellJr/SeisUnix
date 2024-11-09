@@ -1,0 +1,23 @@
+#!/bin/sh
+# Sunearqcsv_test4 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- Using base1 and target3.                                               "
+  echo "--- Testing 3 dimensions with third dimension NOT used for nearest,        "
+  echo "--- but used for relative-range-limit. Note that nopoint=0 means that      "
+  echo "--- values for k are -9999 when there is no base point within range AND    "
+  echo "--- several other names will retain their values.                          "
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=base1.csv     dimx=h   dimy=e   dimr=c   typer=-2 minr=-10 maxr=10 \
+            tin=target3.csv   timx=xxh timy=xxe timr=xxc                           \
+            qout=qout004.csv  nopoint=0 oreps=eye,f,g,k    
+#
+ sunearqcsv qin=base1.csv     dimx=h   dimy=e   dimr=c   typer=-2 minr=-200 maxr=200 \
+            tin=target3.csv   timx=xxh timy=xxe timr=xxc                             \
+            qout=qout004a.csv  nopoint=0 oreps=eye,f,g,k    
+#
+  echo " Note, there should be differences, just easier to check this way...       "
+   diff qout004.csv qout004a.csv
+#

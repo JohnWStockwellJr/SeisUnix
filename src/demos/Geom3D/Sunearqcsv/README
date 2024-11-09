@@ -1,0 +1,30 @@
+
+SUNEARQCSV - Assign Values To Target Q-file From Nearest In Another Q-file. 
+
+This program is similar to sunearcsv.c which 
+assigns values to trace header keys from nearest records in a q-file.                                           
+ 
+ 
+------------------------------------------------------------------------------
+  I advise running the scripts in the following order.
+------------------------------------------------------------------------------
+
+sh ./Sunearqcsv_test1      
+
+sh ./Sunearqcsv_test2      
+
+sh ./Sunearqcsv_test3      
+
+sh ./Sunearqcsv_test4      
+
+
+--- More realistic tests follow..
+
+sh ./Sunearqcsv_test6      
+
+sh ./Sunearqcsv_test7      
+
+sh ./Sunearqcsv_test8      
+
+sh ./Sunearqcsv_test9      
+

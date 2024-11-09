@@ -1,0 +1,29 @@
+#!/bin/sh
+# Sunearqcsv_test9 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- This test uses q-files of velocity stuff from the Sunmocsv tests.      "
+  echo "--- It removes the varying tuples and then puts them back on again.        "
+  echo "--- It removes the  fixed  tuples and then puts them back on again.        "
+  echo "--- The resulting q-files should have the same values as the originals.    "
+  echo "---   (You can replace qx1 with qoutqx1a and qx5 with qoutqx5a in the      "
+  echo "---    tests within Sunmocsv to confirm they work the same).               "
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=qx1.csv        dimx=cdp \
+            tin=qx1.csv        timx=cdp \
+            qout=qoutqx1.csv   otuples=0             formxy=%.15g
+#
+ sunearqcsv qin=qx5.csv        dimx=cdp \
+            tin=qx5.csv        timx=cdp \
+            qout=qoutqx5.csv   otuples=0             formxy=%.15g
+#
+ sunearqcsv qin=qx1.csv        dimx=cdp \
+            tin=qoutqx1.csv    timx=cdp \
+            qout=qoutqx1a.csv  otuples=2             formxy=%.15g
+#
+ sunearqcsv qin=qx5.csv        dimx=cdp \
+            tin=qoutqx5.csv    timx=cdp \
+            qout=qoutqx5a.csv  otuples=2             formxy=%.15g
+#

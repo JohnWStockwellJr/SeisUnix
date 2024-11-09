@@ -1,0 +1,32 @@
+#!/bin/sh
+# Sunearqcsv_test8 - for program SUNEARQCSV
+# Author: Andre Latour, Nov  2024
+#
+  echo "---------------------------------------------------------------------------"
+  echo "--- This tests combinations of varying-tuples, fixed-tuples, and no-tuples."
+  echo "---------------------------------------------------------------------------"
+#
+ sunearqcsv qin=fixed7.csv     dimx=cdp \
+            tin=vary6.csv      timx=cdp \
+            qout=qout008.csv   otuples=2             formxy=%.15g
+#
+ sunearqcsv qin=vary6.csv      dimx=cdp \
+            tin=fixed7.csv     timx=cdp \
+            qout=qout008a.csv  otuples=2             formxy=%.15g
+#
+ sunearqcsv qin=notuple8.csv   dimx=cdp \
+            tin=vary6.csv      timx=cdp \
+            qout=qout008b.csv  otuples=1             formxy=%.15g
+#
+ sunearqcsv qin=notuple8.csv   dimx=cdp \
+            tin=fixed7.csv     timx=cdp \
+            qout=qout008c.csv  otuples=1             formxy=%.15g
+#
+ sunearqcsv qin=vary6.csv      dimx=cdp \
+            tin=notuple8.csv   timx=cdp \
+            qout=qout008d.csv  otuples=2             formxy=%.15g
+#
+ sunearqcsv qin=fixed7.csv     dimx=cdp \
+            tin=notuple8.csv   timx=cdp \
+            qout=qout008e.csv  otuples=2             formxy=%.15g
+#
