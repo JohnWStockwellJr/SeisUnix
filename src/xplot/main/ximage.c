@@ -129,18 +129,18 @@ NULL};
  * Berend Scheffers, Delft, colorbar (legend)
  *
  * Brian K. Macy, Phillips Petroleum, 11/27/98, added curve plotting option
- * 
+ *
  * G.Klein, GEOMAR Kiel, 2004-03-12, added cursor scrolling and
  *                                   interactive change of zoom and clipping.
- * 
+ *
  * Zhaobo Meng, ConocoPhillips, 12/02/04, added amplitude display
- * 
+ *
  * Garry Perratt, Geocon, 08/04/05, modified perc handling to center colorbar if balance==1.
  */
 /**************** end self doc ********************************/
 
 /* functions defined and used internally */
-static void zoomBox (int x, int y, int w, int h, 
+static void zoomBox (int x, int y, int w, int h,
 	int xb, int yb, int wb, int hb,
 	int nx, int ix, float x1, float x2,
 	int ny, int iy, float y1, float y2,
@@ -151,7 +151,7 @@ static unsigned char *newInterpBytes (int n1in, int n2in, unsigned char *bin,
 void xMouseLoc(Display *dpy, Window win, XEvent event, int style, Bool show,
 	int x, int y, int width, int height,
 	float x1begb, float x1endb, float x2begb, float x2endb,
-        float *z, float f1, float d1, int n1,float f2, float d2, 
+        float *z, float f1, float d1, int n1,float f2, float d2,
         int n2, int verbose);
 void xMousePrint(XEvent event, int style, FILE *mpicksfp,
 	int x, int y, int width, int height,
@@ -162,6 +162,7 @@ void intl2b_block(int nxin, float dxin, float fxin,
 				  int nxout, float dxout, float fxout,
 				  int nyout, float dyout, float fyout, unsigned char *zout);
 /* .... JG */
+
 
 int
 main (int argc,char **argv)
@@ -216,12 +217,12 @@ main (int argc,char **argv)
         int curve,*npair=NULL,ncurvecolor=0,ncurvewidth=0,*curvewidth=NULL;
         char **curvefile,**curvecolor=NULL;
         FILE *curvefp;
-	
+
 	char *plotfile;         /* filename of plotfile GK */
 	int lock=0;		/* lock/unlock zoom while scrolling */
 	float mve;		/* distance for scrolling */
-	float mvefac=8.;	/* window factor for scrolldistance 
-	                         * 2=half window size; 
+	float mvefac=8.;	/* window factor for scrolldistance
+	                         * 2=half window size;
 				 * 8=one eighths of the window size */
 	char  *msg="";		/* message on screen */
 
@@ -230,7 +231,7 @@ main (int argc,char **argv)
 	requestdoc(1);
 
 	/* get parameters describing 1st dimension sampling */
-	if (!getparint("n1",&n1))
+	if (!getparint("n1", &n1))
 		err("Must specify number of samples in 1st dimension!\n");
 	d1 = 1.0;  getparfloat("d1",&d1);
 	f1 = 0.0;  getparfloat("f1",&f1);
@@ -328,7 +329,7 @@ main (int argc,char **argv)
 		if (balance==0)
 			for (iz=0; iz<nz; ++iz) {
 				temp[iz] = z[iz];
-			} else { 
+			} else {
 				for (iz=0; iz<nz; ++iz) temp[iz] = abs(z[iz]);
 				perc=100.0;
 			}
@@ -363,7 +364,7 @@ main (int argc,char **argv)
 		cmap = (char *)alloc1(5,1);
 		sprintf(cmap,"%s","gray");
 	}
-	
+
 	/* get interpolation style JG */
 	if (!(getparint("blockinterp", &blockinterp))) blockinterp=0;
 
@@ -470,7 +471,7 @@ main (int argc,char **argv)
 		}
 	}
 /*	free1float(z);      keep data for plotting GK */
-	
+
 	/* initialize zoom box parameters */
 	dx = (style==NORMAL ? d1 : d2);
 	dy = (style==NORMAL ? d2 : d1);
@@ -482,14 +483,19 @@ main (int argc,char **argv)
 	x2begb = x2beg;	 x2endb = x2end;
 
 	/* connect to X server */
-	if ((dpy=XOpenDisplay(NULL))==NULL)
+	dpy = XOpenDisplay(NULL);
+	if (dpy==NULL)
 		err("Cannot connect to display %s!\n",XDisplayName(NULL));
 	scr = DefaultScreen(dpy);
 	black = BlackPixel(dpy,scr);
 	white = WhitePixel(dpy,scr);
-	
+
 	/* create window */
 	win = xNewWindow(dpy,xbox,ybox,wbox,hbox,(int) black,(int) white,windowtitle);
+
+	/* exit event protocol */
+	Atom wm_delete_window = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
+	XSetWMProtocols(dpy, win, &wm_delete_window, 1);
 
 	/* backwards compatibility */
 	if (STREQ(cmap,"gray")) {
@@ -506,8 +512,7 @@ main (int argc,char **argv)
 			/* free1(cmap); */
 			cmap = (char *)alloc1(5,1);
        			sprintf (cmap, "%s", "rgb0");
-	} 
-	
+	}
 
 	/* here are the new colormaps				*/
 	if (strncmp(cmap, "rgb", 3) == 0)
@@ -516,7 +521,7 @@ main (int argc,char **argv)
 	else if (strncmp (cmap, "hsv", 3) == 0)
 		XSetWindowColormap(dpy,win,
 			xCreateHSVColormap(dpy,win, cmap, verbose));
-	
+
 	/* determine min and max pixels from standard colormap */
 	pmin = xGetFirstPixel(dpy);
 	pmax = xGetLastPixel(dpy);
@@ -536,15 +541,15 @@ main (int argc,char **argv)
         ptr = data_legend;
 	for (i=0; i<lheight; i++){
            for( j=0; j<lwidth; j++ ){
-	      *ptr++ = (unsigned char) 
+	      *ptr++ = (unsigned char)
                             (base + (fact*i)/lheight);
            }
            /* fprintf(stderr," %d ",*(ptr-1) ); */
 	}
-		
+
 	/* make GC for image */
 	gci = XCreateGC(dpy,win,0,NULL);
-	
+
 	/* set normal event mask */
 	XSelectInput(dpy,win,
 		StructureNotifyMask |
@@ -555,18 +560,18 @@ main (int argc,char **argv)
 		ButtonReleaseMask |
 		Button1MotionMask |
 		Button2MotionMask);
-	
+
 	/* map window */
 	XMapWindow(dpy,win);
-					
+
 	/* determine good size for axes box */
 	xSizeAxesBox(dpy,win,
 		labelfont,titlefont,style,
 		&x,&y,&width,&height);
-	
+
 	/* clear the window */
 	XClearWindow(dpy,win);
-	
+
 	/* note that image is out of date */
 	imageOutOfDate = 1;
 
@@ -580,24 +585,24 @@ main (int argc,char **argv)
 			 event.xconfigure.height!=winheight)) {
 			winwidth = event.xconfigure.width;
 			winheight = event.xconfigure.height;
-							
+
 			/* determine good size for axes box */
 			xSizeAxesBox(dpy,win,
 				labelfont,titlefont,style,
 				&x,&y,&width,&height);
-			
+
 			/* clear the window */
 			XClearWindow(dpy,win);
-			
+
 			/* note that image is out of date */
 			imageOutOfDate = 1;
 
 		/* else if window exposed */
 		} else if (event.type==Expose) {
-			
+
 			/* clear all expose events from queue */
 			while (XCheckTypedEvent(dpy,Expose,&event));
-			
+
 			/* if necessary, make new image */
 			if (imageOutOfDate) {
 				 czbi = newInterpBytes(nxb,nyb,czb,
@@ -615,7 +620,7 @@ main (int argc,char **argv)
 
 				imageOutOfDate = 0;
 			}
-	
+
 			/* draw image (before axes so grid lines visible) */
 			XPutImage(dpy,win,gci,image,0,0,x,y,
 				image->width,image->height);
@@ -666,58 +671,58 @@ main (int argc,char **argv)
 					    x1begb,x1endb,x2begb,x2endb);
 
 			} else if (keysym==XK_l ) {
-				/* set lock */		  
+				/* set lock */
 			     lock = 1 ;
 			  if (verbose) warn("zoom lock set  %d\n",lock);
 
  			} else if (keysym==XK_u ) {
-				/* unset lock */		  
+				/* unset lock */
 			     lock = 0 ;
 			  if (verbose) warn("zoom lock released %d\n",lock);
 
- 			} else if (keysym==XK_Shift_L ) { 
-			     /* if (verbose) 
+ 			} else if (keysym==XK_Shift_L ) {
+			     /* if (verbose)
 			     fprintf(stderr,"Shift Left pressed \n");*/
-			} else if (keysym==XK_KP_1 || keysym==XK_1 ) { 
+			} else if (keysym==XK_KP_1 || keysym==XK_1 ) {
 			     mvefac=1.;
 			     fprintf(stderr,"Zoom/Move factor = 1 \n");
-			} else if (keysym==XK_KP_2 || keysym==XK_2 ) { 
+			} else if (keysym==XK_KP_2 || keysym==XK_2 ) {
 			     mvefac=2.;
 			     fprintf(stderr,"Zoom/Move factor = 2 \n");
-			} else if (keysym==XK_KP_3 || keysym==XK_3 ) { 
+			} else if (keysym==XK_KP_3 || keysym==XK_3 ) {
 			     mvefac=3.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 3 \n");
-			} else if (keysym==XK_KP_4 || keysym==XK_4 ) { 
+			} else if (keysym==XK_KP_4 || keysym==XK_4 ) {
 			     mvefac=4.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 4 \n");
-			} else if (keysym==XK_KP_5 || keysym==XK_5 ) { 
+			} else if (keysym==XK_KP_5 || keysym==XK_5 ) {
 			     mvefac=5.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 5 \n");
-			} else if (keysym==XK_KP_6 || keysym==XK_6 ) { 
+			} else if (keysym==XK_KP_6 || keysym==XK_6 ) {
 			     mvefac=6.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 6 \n");
-			} else if (keysym==XK_KP_7 || keysym==XK_7 ) { 
+			} else if (keysym==XK_KP_7 || keysym==XK_7 ) {
 			     mvefac=7.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 7 \n");
-			} else if (keysym==XK_KP_8 || keysym==XK_8 ) { 
+			} else if (keysym==XK_KP_8 || keysym==XK_8 ) {
 			     mvefac=8.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 8\n");
-			} else if (keysym==XK_KP_9 || keysym==XK_9 ) { 
+			} else if (keysym==XK_KP_9 || keysym==XK_9 ) {
 			     mvefac=9.;
-			     if (verbose) 
+			     if (verbose)
 			     fprintf(stderr,"Zoom/Move factor = 9\n");
 			} else if (keysym==XK_Left ) {
  			  /* move zoom box to left by half window width */
 			  mve = (x2endb - x2begb)/mvefac ;
 			  x2begb = x2begb - mve ;
 			  x2endb = x2endb - mve ;
-			  msg="move "; 
+			  msg="move ";
 			  /* check for bounds of full window */
 			  if (x2begb < x2beg){
 			    if ( lock ) { x2begb = x2begb + mve ;
@@ -732,9 +737,9 @@ main (int argc,char **argv)
 			  if (verbose) fprintf(stderr,"%s %g\n",msg,mve);
 
 			   ixb+=-(int)(mve/dx);
-			   if ( (ixb<0) || 
-			        ((ixb+nxb)>nx) || 
-			        (nxb<2) || 
+			   if ( (ixb<0) ||
+			        ((ixb+nxb)>nx) ||
+			        (nxb<2) ||
 			        (nxb>nx)) {ixb=0;nxb=nx;
 				           x2begb=x2beg;
 					   x2endb=x2end;}
@@ -745,20 +750,20 @@ main (int argc,char **argv)
 			   for (i=0,czbp=czb; i<nyb; i++) {
 			       czp = cz+(iyb+i)*nx+ixb;
 			       for (j=0; j<nxb; j++)
-				    *czbp++ = *czp++; 
-			   }						
-			  
+				    *czbp++ = *czp++;
+			   }
+
 			  /* clear area and force an expose event */
 			  XClearArea(dpy,win,0,0,0,0,True);
 			  /* note that image is out of date */
 			  imageOutOfDate = 1;
-								
+
 			} else if (keysym==XK_Right ) {
 			  /* move zoom box to right by half window width*/
 			  mve = (x2endb - x2begb)/mvefac ;
 			  x2begb = x2begb + mve ;
 			  x2endb = x2endb + mve ;
-			  msg="move "; 
+			  msg="move ";
 			  /* check for bounds of full window */
 			  if (x2endb > x2end){
 			    if ( lock ) { x2begb = x2begb - mve ;
@@ -770,15 +775,15 @@ main (int argc,char **argv)
 				   }
 			  }
 			  if (verbose) fprintf(stderr,"%s %g\n",msg,mve);
-			  
-			  /* for replot require 
+
+			  /* for replot require
 			   * ixb,iyb   start samples of image
 			   * nxb,nyb   number of samples of image */
-			   
+
 			   ixb+=(int)(mve/dx);
-			   if ( (ixb<0) || 
-			        ((ixb+nxb)>nx) || 
-			        (nxb<2) || 
+			   if ( (ixb<0) ||
+			        ((ixb+nxb)>nx) ||
+			        (nxb<2) ||
 			        (nxb>nx)) {ixb=0;nxb=nx;
 				           x2begb=x2beg;
 					   x2endb=x2end;}
@@ -790,21 +795,21 @@ main (int argc,char **argv)
 			   for (i=0,czbp=czb; i<nyb; i++) {
 			       czp = cz+(iyb+i)*nx+ixb;
 			       for (j=0; j<nxb; j++)
-				    *czbp++ = *czp++; 
-			   }						
-			  
-	
+				    *czbp++ = *czp++;
+			   }
+
+
 			  /* clear area and force an expose event */
 			  XClearArea(dpy,win,0,0,0,0,True);
 			  /* note that image is out of date */
 			  imageOutOfDate = 1;
-								
+
 			} else if (keysym==XK_Down ) {
 			  /* move zoom box down by half window height */
 			  mve = (x1endb - x1begb)/mvefac ;
 			  x1begb = x1begb + mve ;
 			  x1endb = x1endb + mve ;
-			  msg="move "; 
+			  msg="move ";
 			  /* check for bounds of full window */
 			  if (x1endb > x1end){
 			    if ( lock ) { x1begb = x1begb - mve ;
@@ -818,11 +823,11 @@ main (int argc,char **argv)
 			  if (verbose) fprintf(stderr,"%s %g\n",msg,mve);
 
 			   iyb+=(int)(mve/dy);
-			   
+
 			   /* reset to original if out of range */
-			   if ( (iyb<0) || 
-			        ((iyb+nyb)>ny) || 
-			        (nyb<2) || 
+			   if ( (iyb<0) ||
+			        ((iyb+nyb)>ny) ||
+			        (nyb<2) ||
 			        (nyb>ny)) {iyb=0;nyb=ny;
 				           x1begb=x1beg;
 					   x1endb=x1end;}
@@ -839,17 +844,17 @@ main (int argc,char **argv)
 			   for (i=0,czbp=czb; i<nyb; i++) {
 			       czp = cz+(iyb+i)*nx+ixb;
 			       for (j=0; j<nxb; j++)
-				    *czbp++ = *czp++; 
-			   }						
+				    *czbp++ = *czp++;
+			   }
 
 			} else if (keysym==XK_Up || keysym==XK_KP_Up ) {
-			  /*********** 
-			   * move zoom box up in .... vertical* 
+			  /***********
+			   * move zoom box up in .... vertical*
 			   ***********                          */
 			  mve = (x1endb - x1begb)/mvefac ;
 			  x1begb = x1begb - mve ;
 			  x1endb = x1endb - mve ;
-			  msg="move "; 
+			  msg="move ";
 			  /* check for bounds of full window */
 			  if (x1begb < x1beg){
 			    if ( lock ) { x1begb = x1begb + mve ;
@@ -863,10 +868,10 @@ main (int argc,char **argv)
 			  if (verbose) fprintf(stderr,"%s %g\n",msg,mve);
 
 			  iyb+=-(int)(mve/dy);
-			  
+
 			  /* reset to original if out of range */
-			   if ( (iyb<0) || 
-			        (nyb<2) || 
+			   if ( (iyb<0) ||
+			        (nyb<2) ||
 			        (nyb>ny)) {iyb=0;nyb=ny;
 				           x1begb=x1beg;
 					   x1endb=x1end;}
@@ -877,18 +882,18 @@ main (int argc,char **argv)
 			   for (i=0,czbp=czb; i<nyb; i++) {
 			       czp = cz+(iyb+i)*nx+ixb;
 			       for (j=0; j<nxb; j++)
-				    *czbp++ = *czp++; 
-			   }						
-				
+				    *czbp++ = *czp++;
+			   }
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
-			
+
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-									
+
 			} else if (keysym==XK_o || keysym==XK_KP_Subtract ) {
-			  /*********** 
-			   *zoom out .... vertical* 
+			  /***********
+			   *zoom out .... vertical*
 			   ***********            */
 			  mve = (x1endb - x1begb)/mvefac ;
 			  x1begb = x1begb - mve ;
@@ -909,7 +914,7 @@ main (int argc,char **argv)
  		           nyb=(int)((x1endb-x1begb)/dy);
 			   iyb+=-(int)(mve/dy);
 			   if ( (iyb<0) || (nyb>ny)) {iyb=0;nyb=ny;}
-			  
+
 			  /*   .... and horizontal */
 			  mve = (x2endb - x2begb)/mvefac ;
 			  x2begb = x2begb - mve ;
@@ -929,30 +934,30 @@ main (int argc,char **argv)
 			  }
 			   nxb=(int)((x2endb-x2begb)/dx);
 			   ixb+=-(int)(mve/dx);
- 			   if ( (ixb<0)        || 
-			        ((ixb+nxb)>nx) || 
-			        (nxb<0)        || 
+ 			   if ( (ixb<0)        ||
+			        ((ixb+nxb)>nx) ||
+			        (nxb<0)        ||
 			        (nxb>nx))  { ixb=0;nxb=nx;
 				             x2begb=x2beg;
 					     x2endb=x2end;}
-			   
+
 			   if (czb!=cz) free1(czb);
 			   czb = ealloc1(nxb*nyb,
 				     sizeof(signed char));
 			   for (i=0,czbp=czb; i<nyb; i++) {
 			       czp = cz+(iyb+i)*nx+ixb;
 			       for (j=0; j<nxb; j++)
-				    *czbp++ = *czp++; 
-			   }			 	
+				    *czbp++ = *czp++;
+			   }
 			  /* clear area and force an expose event */
 		   	  XClearArea(dpy,win,0,0,0,0,True);
-			 
+
 			  /* note that image is out of date */
 			  imageOutOfDate = 1;
-								
+
 			} else if (keysym==XK_i || keysym==XK_KP_Add ) {
-			  /*********** 
-			   *zoom in .... vertical* 
+			  /***********
+			   *zoom in .... vertical*
 			   ***********           */
 			  mve = (x1endb - x1begb)/(2.*mvefac) ;
 			  x1begb = x1begb + mve ;
@@ -967,13 +972,13 @@ main (int argc,char **argv)
 
 			   nxb=(int)((x2endb-x2begb)/dx);
 			   nyb=(int)((x1endb-x1begb)/dy);
-			   if ( (ixb<0) || 
+			   if ( (ixb<0) ||
 			        (nxb>nx)||
 				(ixb>nx)||
 				(nxb<0) ) {ixb=0;nxb=nx;
 				             x2begb=x2beg;
 					     x2endb=x2end;}
-			   if ( (iyb<0) || 
+			   if ( (iyb<0) ||
 			        (nyb>ny)||
 				(iyb>ny)||
 				(nyb<0) ) {iyb=0;nyb=ny;
@@ -982,7 +987,7 @@ main (int argc,char **argv)
 
 			  /* clear area and force an expose event */
 			  XClearArea(dpy,win,0,0,0,0,True);
-			 
+
 			  /* note that image is out of date */
 			  imageOutOfDate = 1;
 			if (czb!=cz) free1(czb);
@@ -991,16 +996,16 @@ main (int argc,char **argv)
 					for (i=0,czbp=czb; i<nyb; i++) {
 					    czp = cz+(iyb+i)*nx+ixb;
 					    for (j=0; j<nxb; j++)
-						    *czbp++ = *czp++; 
-					}					
+						    *czbp++ = *czp++;
+					}
 			} else if (keysym==XK_c || keysym==XK_Page_Down) {
-		  		
+
 				/* Change clip for image */
  		       		clip += clip/10. ;
 				if (verbose) warn("clip=%g\n",clip);
  				/* note that image is out of date */
-				 imageOutOfDate = 1;				
-				 
+				 imageOutOfDate = 1;
+
 			} else if (keysym==XK_a || keysym==XK_Page_Up) {
 
 				/* Change clip for image */
@@ -1008,28 +1013,29 @@ main (int argc,char **argv)
 				if (verbose) warn("clip=%g\n",clip);
 				/* note that image is out of date */
 				imageOutOfDate = 1;
-				
+
 				if (czb!=cz) free1(czb);
 					czb = ealloc1(nxb*nyb,
 						sizeof(signed char));
 					for (i=0,czbp=czb; i<nyb; i++) {
 					    czp = cz+(iyb+i)*nx+ixb;
 					    for (j=0; j<nxb; j++)
-						    *czbp++ = *czp++; 
-					}				
-			/* end of section for moving clipping and zooming GK */		    
+						    *czbp++ = *czp++;
+					}
+			/* end of section for moving clipping and zooming GK */
 
-			} else if (keysym==XK_q || keysym==XK_Q) {
 			/* This is the exit from the event loop */
+			} else if (keysym==XK_q || keysym==XK_Q) {
 				break;
+
 			} else if (keysym==XK_p || keysym==XK_P) {
 			/* invoke pswigb with appropriate data */
 				char *cmdline, cmdtemp[256];
 				float cmdfloat;
 				int iargc;
-				FILE *plotfp;	/*fp for plot data*/					
+				FILE *plotfp;	/*fp for plot data*/
 
-				cmdline = (char *) emalloc(BUFSIZ);				
+				cmdline = (char *) emalloc(BUFSIZ);
 				strcpy(cmdline,"psimage");
 				for(iargc = 1; iargc < argc; iargc++) {
 					strcat(cmdline," ");
@@ -1085,7 +1091,7 @@ main (int argc,char **argv)
 				free(cmdline);
 				efwrite(z,sizeof(float),nz,plotfp);
 				epclose(plotfp);
-				
+
 			} else if (keysym==XK_r) {
 				Colormap mycp=xCreateRGBColormap(dpy,win,"rgb_up",verbose);
 
@@ -1119,11 +1125,10 @@ main (int argc,char **argv)
                                 /* note that image is out of date */
                                 imageOutOfDate = 1;
 
-
 			} else if (keysym==XK_H) {
 
                                 Colormap mycp=xCreateHSVColormap(dpy,win,"hsv_down",verbose);
-                                
+
                                 XSetWindowColormap(dpy,win,mycp);
 				XInstallColormap(dpy,mycp);
 
@@ -1136,7 +1141,6 @@ main (int argc,char **argv)
 				continue;
 			}
 
-
 		/* else if button down (1 == zoom, 2 == mouse tracking */
 		} else if (event.type==ButtonPress) {
 			/* if 1st button: zoom */
@@ -1144,10 +1148,10 @@ main (int argc,char **argv)
 
 				/* track pointer and get new box */
 				xRubberBox(dpy,win,event,&xb,&yb,&wb,&hb);
-			
+
 				/* if new box has tiny width or height */
 				if (wb<4 || hb<4) {
-				
+
 					/* reset box to initial values */
 					x1begb = x1beg;
 					x1endb = x1end;
@@ -1158,11 +1162,11 @@ main (int argc,char **argv)
 					ixb = iyb = 0;
 					if (czb!=cz) free1(czb);
 					czb = cz;
-			
+
 				/* else, if new box has non-zero width */
 				/* and height */
 				} else {
-			
+
 					/* calculate new box parameters */
 					if (style==NORMAL) {
 					    zoomBox(x,y,width,height,
@@ -1179,7 +1183,7 @@ main (int argc,char **argv)
 						    &nxb,&ixb,&x2begb,&x2endb,
 						    &nyb,&iyb,&x1begb,&x1endb);
 					}
-			
+
 					/* make new bytes in zoombox */
 					if (czb!=cz) free1(czb);
 					czb = ealloc1(nxb*nyb,
@@ -1187,16 +1191,16 @@ main (int argc,char **argv)
 					for (i=0,czbp=czb; i<nyb; i++) {
 					    czp = cz+(iyb+i)*nx+ixb;
 					    for (j=0; j<nxb; j++)
-						    *czbp++ = *czp++; 
+						    *czbp++ = *czp++;
 					}
 				}
-			
+
 				/* clear area and force an expose event */
 				XClearArea(dpy,win,0,0,0,0,True);
-			
+
 				/* note that image is out of date */
 				imageOutOfDate = 1;
-		
+
 			/* else if 2nd button down: display mouse coords */
 			} else if (event.xbutton.button==Button2) {
 
@@ -1220,7 +1224,7 @@ main (int argc,char **argv)
 
 		/* else if pointer has moved */
 		} else if (event.type==MotionNotify) {
-			
+
 			/* if button2 down, show mouse location */
 			if (showloc)
 				xMouseLoc(dpy,win,event,style,True,
@@ -1230,8 +1234,13 @@ main (int argc,char **argv)
 
 		/* else if button2 released, stop tracking */
 		} else if (event.type==ButtonRelease &&
-			   event.xbutton.button==Button2) {
+			   	event.xbutton.button==Button2) {
 			showloc = 0;
+
+		/* exit */
+		} else if (event.type==ClientMessage &&
+				event.xclient.data.l[0] == wm_delete_window) {
+			break;
 		}
 
 	} /* end of event loop */
@@ -1250,13 +1259,13 @@ main (int argc,char **argv)
 		free((void**)curvefile);
 		free((void**)curvecolor);
 	}
-    	free1float(z); 
+    	free1float(z);
 
 	return EXIT_SUCCESS;
 }
 
 /* update parameters associated with zoom box */
-static void zoomBox (int x, int y, int w, int h, 
+static void zoomBox (int x, int y, int w, int h,
 	int xb, int yb, int wb, int hb,
 	int nx, int ix, float x1, float x2,
 	int ny, int iy, float y1, float y2,
@@ -1267,9 +1276,9 @@ static void zoomBox (int x, int y, int w, int h,
 	if (wb==0 || hb==0) {
 		*nxb = nx; *ixb = ix; *x1b = x1; *x2b = x2;
 		*nyb = ny; *iyb = iy; *y1b = y1; *y2b = y2;
-		return;		
-	} 
-	
+		return;
+	}
+
 	/* clip box */
 	if (xb<x) {
 		wb -= x-xb;
@@ -1281,18 +1290,18 @@ static void zoomBox (int x, int y, int w, int h,
 	}
 	if (xb+wb>x+w) wb = x-xb+w;
 	if (yb+hb>y+h) hb = y-yb+h;
-	
+
 	/* determine number of samples in rubber box (at least 2) */
 	*nxb = MAX(nx*wb/w,2);
 	*nyb = MAX(ny*hb/h,2);
-	
+
 	/* determine indices of first samples in box */
 	*ixb = ix+(xb-x)*(nx-1)/w;
 	*ixb = MIN(*ixb,ix+nx-*nxb);
 	*iyb = iy+(yb-y)*(ny-1)/h;
 	*iyb = MIN(*iyb,iy+ny-*nyb);
-	
-	
+
+
 	/* determine box limits to nearest samples */
 	*x1b = x1+(*ixb-ix)*(x2-x1)/(nx-1);
 	*x2b = x1+(*ixb+*nxb-1-ix)*(x2-x1)/(nx-1);
@@ -1306,7 +1315,7 @@ static unsigned char *newInterpBytes (int n1in, int n2in, unsigned char *bin,
 {
 	unsigned char *bout;
 	float d1in,d2in,d1out,d2out,f1in,f2in,f1out,f2out;
-	
+
 	f1in = f2in = f1out = f2out = 0.0;
 	d1in = d2in = 1.0;
 	d1out = d1in*(float)(n1in-1)/(float)(n1out-1);
@@ -1404,32 +1413,32 @@ a two-dimensional contiguous array of unsigned char values.
 
 Constant extrapolation of zin is used to compute zout for
 output x and y outside the range of input x and y.
- 
+
 Mapping of bytes between arrays is done to preserve appearance of `gridblocks':
 no smooth interpolation is performed.
 
 *****************************************************************************/
-{         
+{
 	int ixout,iyout,iin,jin;
 	float xoff,yoff;
-	
+
 	xoff=fxout+0.5*dxin-fxin;
 	yoff=fyout+0.5*dyin-fyin;
 	for (iyout=0;iyout<nyout;iyout++) {
 		jin=(int)((iyout*dyout+yoff)/dyin);
-		jin=MIN(nyin-1,MAX(jin,0));						
+		jin=MIN(nyin-1,MAX(jin,0));
 		for (ixout=0;ixout<nxout;ixout++) {
 			iin=(int)((ixout*dxout+xoff)/dxin);
-			iin=MIN(nxin-1,MAX(iin,0));	
+			iin=MIN(nxin-1,MAX(iin,0));
 			zout[nxout*iyout+ixout]=zin[nxin*jin+iin];
 		}
 	}
 }
-   
+
 void xMouseLoc(Display *dpy, Window win, XEvent event, int style, Bool show,
 	int x, int y, int width, int height,
 	float x1begb, float x1endb, float x2begb, float x2endb,
-        float *z, float f1, float d1, int n1,float f2, float d2, 
+        float *z, float f1, float d1, int n1,float f2, float d2,
         int n2, int verbose)
 {
 	static XFontStruct *fs=NULL;
@@ -1471,7 +1480,7 @@ void xMouseLoc(Display *dpy, Window win, XEvent event, int style, Bool show,
 	}
 
 	/* draw string indicating mouse location */
-       
+
         /* ZM: computing amplitude at the poked point from dataset */
         amp = getamp(z,f1,d1,n1,f2,d2,n2,x1,x2,verbose);
         sprintf(string,"(%0.6g,%0.6g,%0.6g)",x2,x1,amp); /* ZM */
@@ -1527,9 +1536,9 @@ Author: Zhaobo Meng, ConocoPhillips, Feb. 03,2004
         if (d2==0.0) err("d2 can not be 0.0");
 
 	x1last = f1 + (n1-1)*d1;
-	if (x1<f1 || x1>x1last) return -999.0; 	
+	if (x1<f1 || x1>x1last) return -999.0;
 	x2last = f2 + (n2-1)*d2;
-	if (x2<f2 || x2>x2last) return -999.0; 	
+	if (x2<f2 || x2>x2last) return -999.0;
 
         x1i = (x1-f1)/d1;
         ix1 = MIN(x1i,n1-1);
