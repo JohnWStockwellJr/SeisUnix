@@ -52,6 +52,7 @@ Author: Jack K. Cohen, Center for Wave Phenomena
 ****************************************************************************/
 /**************** end self doc ********************************/
 
+#define _POSIX_C_SOURCE 200809L // added - ben
 
 #include "par.h"
  

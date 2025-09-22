@@ -1,10 +1,16 @@
-/* Copyright (c) Colorado School of Mines, 2011.*/
+/* Copyright (c) Colorado School of Mines, 2012.*/
 /* All rights reserved.                       */
 
 /*********************** self documentation **********************/
 
+#define _POSIX_C_SOURCE 200809L // added - ben
 
 #include "cwp.h"
+/* next 3 lines edited - ben */
+#include <stdio.h>   // for fdopen, FILE
+#include <unistd.h>  // for mkstemp
+#include <stdlib.h>  // for NULL and general utilities
+
 
 /*****************************************************************************
 TEMPORARY_FILENAME - Creates a file name in a user-specified directory.
