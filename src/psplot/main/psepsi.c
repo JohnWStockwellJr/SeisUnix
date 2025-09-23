@@ -3,6 +3,8 @@
 
 /* PSEPSI: $Revision: 1.10 $ ; $Date: 2011/11/17 00:10:53 $	*/
 
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
 #include "psplot.h"
 #include "par.h"
 
