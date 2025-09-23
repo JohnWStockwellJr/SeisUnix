@@ -59,6 +59,8 @@ Authors: SEP: Einar Kjartansson, Stew Levin CWP: Shuki Ronen, Jack Cohen
  */
 /**************** end self doc ********************************/
 
+#define _POSIX_C_SOURCE 200809L
+
 #ifndef TEST
 
 #ifdef SU_LINE_HEADER
@@ -70,6 +72,10 @@ int out_line_hdr=1;
 int out_line_hdr=0;
 
 #endif
+
+#include <strings.h>   // for swab()
+#include <unistd.h>  // for swab() and fileno()
+#include <stdio.h>   // for fileno()
 
 #include "su.h"
 #include "segy.h"

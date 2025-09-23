@@ -177,7 +177,7 @@ void zcoorTopog(float fxs,float dxs,int nxs,Surface *srf,float *sz,
                 float *nangl);
 
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	int	na,nat,nt,nxs,nxo,nzo,nx,nz,nxt,nx0,mx,npv,nsrf,*nxzsrf;
 	float	dt,xs,fxs,dxs,exs,fxo,fzo,dxo,dzo,exo,ezo,fa,ea,amin,eat,

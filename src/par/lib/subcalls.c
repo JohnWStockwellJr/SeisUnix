@@ -102,6 +102,8 @@ CWP: Shuki Ronen, Jack Cohen
 ***************************************************************************/
 /**************** end self doc ********************************/
 
+#define _POSIX_C_SOURCE 200809L
+
 #include "par.h"
 
 #define ERROR	NULL
