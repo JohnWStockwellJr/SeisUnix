@@ -102,7 +102,7 @@ NULL};
 #define	DIV	4
 #define	ZIPPER	5
 #define	ZIPPOL	6
-#define	TPANOP	7
+#define	TPANOP	6
 #define	PTADD	7
 #define	PTSUB	8
 #define	PTMUL	9
